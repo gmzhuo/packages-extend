@@ -29,7 +29,7 @@ define Package/$(PKG_NAME)
   SUBMENU:=config store server daemon
   TITLE:=servd
   MAINTAINER:=soft
-  DEPENDS:= +libubus +libubox +libstdcpp +libezxml +libblobmsg-json \
+  DEPENDS:= +libubus +libubox +libstdcpp +libblobmsg-json \
   +libubus +libstdcpp +libexpat +libnl-tiny +libev +zlib +libcore
   MENU:=1
 endef
