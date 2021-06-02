@@ -15,7 +15,7 @@ FileRevision:1.0
 	<Progress Flag="0x400010" Id="5" >0</Progress>
 	<UpgradeInfo Flag="0x400010" Id="6" >Success</UpgradeInfo>
 	<MD5Sum maxLength="64" Id="7" Flag="0x200004"></MD5Sum>
-	<HostName maxLength="128" Id="8" Flag="0x200004"/>
+	<Hostname maxLength="128" Id="8" Flag="0x200004"/>
 	<LogBufferSize Flag="0x200002" Id="9" Unit="KB">128</LogBufferSize>
 	<LogServer maxLength="128" Id="10" Flag="0x200004"/>
 	<LogServerPort Id="11" Flag="0x200002"/>
