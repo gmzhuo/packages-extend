@@ -39,6 +39,7 @@ define Package/zygoted/install
 	$(INSTALL_DIR) $(1)/etc/dropbear/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libbase.so $(1)/usr/lib/servd/base.so
 	$(INSTALL_BIN) files/authorized_keys $(1)/etc/dropbear/authorized_keys
+	$(INSTALL_BIN) files/control.xml $(1)/etc/control.xml
 endef
 
 
