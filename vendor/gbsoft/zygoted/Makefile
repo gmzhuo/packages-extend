@@ -5,7 +5,7 @@ PKG_VERSION:=v1.0
 PKG_RELEASE:=2
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL=https://github.com/gmzhuo/zygoted.git
+PKG_SOURCE_URL=git@github.com:gmzhuo/zygoted.git
 PKG_SOURCE_DATE:=2020-02-27
 PKG_SOURCE_VERSION:=e1568dddf7a33666f1b43a9353bc4c8cb076801c
 include $(INCLUDE_DIR)/package.mk
