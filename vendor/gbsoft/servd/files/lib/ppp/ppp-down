@@ -1,0 +1,9 @@
+#!/bin/sh
+. /usr/share/libubox/jshn.sh
+PPP_IPPARAM="$6"
+json_init
+
+json_add_string "Action" "Down"
+json_add_string "Interface" ${PPP_IPPARAM}
+
+ubus -s "/var/run/ubus.servd.sock" send "Service.PPP.Client" "$(json_dump)"

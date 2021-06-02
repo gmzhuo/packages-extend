@@ -1,0 +1,11 @@
+#!/bin/sh
+PPP_IPPARAM="$6"
+json_init
+json_add_string "Action" "Up"
+json_add_string "Interface" ${PPP_IPPARAM}
+json_add_string Protocol "dhcpv6"
+json_add_string LocalIPAddress "$4"
+json_add_string RemoteIPAddress "$5"
+
+ubus -s "/var/run/ubus.servd.sock" send "Service.PPP.Client" "$(json_dump)"
+

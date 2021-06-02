@@ -1,0 +1,13 @@
+#!/bin/sh /etc/rc.common
+
+START=85
+STOP=1
+USE_PROCD=1
+
+start_service() {
+	procd_open_instance
+	procd_set_param command lua /usr/sbin/webd.lua
+	procd_set_param respawn
+	procd_close_instance
+}
+

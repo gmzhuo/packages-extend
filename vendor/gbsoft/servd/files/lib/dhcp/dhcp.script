@@ -1,0 +1,33 @@
+#!/bin/sh
+[ -z "$1" ] && echo "Error: should be run by udhcpc" && exit 1
+
+. /usr/share/libubox/jshn.sh
+
+json_init
+json_add_string "Action" "$1"
+
+json_add_string "Interface" ${INTERFACE}
+json_add_string "IPAddress" ${ip-0.0.0.0}
+json_add_string "DHCPServer" ${ip-0.0.0.0}
+json_add_string "SubnetMask" ${subnet-0.0.0.0}
+json_add_string "LeaseTimeRemaining" ${lease}
+
+json_add_array IPRouters
+	for i in $router; do
+		json_add_string "" ${i}
+	done
+json_close_array
+
+json_add_array DNSServers
+	for i in $dns; do
+		json_add_string "" ${i}
+	done
+json_close_array
+
+if [ "$1" = "bound" -o "$1" = "renew" ] ;then
+	sleep 1
+fi
+
+ubus -s "/var/run/ubus.servd.sock" send "Service.DHCP.Client" "$(json_dump)"
+
+exit 0

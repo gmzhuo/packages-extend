@@ -1,0 +1,18 @@
+#!/bin/sh
+. /usr/share/libubox/jshn.sh
+PPP_IPPARAM="$6"
+
+json_init
+json_add_string "Action" "Up"
+
+json_add_string Protocol "dhcpv4"
+json_add_string "Interface" ${PPP_IPPARAM}
+json_add_string "LocalIPAddress" ${4}
+json_add_string "RemoteIPAddress" ${5}
+
+json_add_array DNSServers
+[ -n ${DNS1} ] && json_add_string "" "${DNS1}"
+[ -n ${DNS2} ] && json_add_string "" "${DNS2}"
+json_close_array
+
+ubus -s "/var/run/ubus.servd.sock" send "Service.PPP.Client" "$(json_dump)"
