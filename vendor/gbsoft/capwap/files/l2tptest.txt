@@ -1,0 +1,23 @@
+tftp 8a000000 openwrt-ar71xx-generic-tew-732br-squashfs-sysupgrade.bin;bootm 8a000000
+
+
+arping 192.168.3.3 -I l2br0
+
+iptables -I INPUT -j ACCEPT
+ifconfig l2br0 192.168.3.1 up
+/overlay/l2tp add 192.168.2.142
+/overlay/l2tp add 192.168.2.200
+ip ro add table local 192.168.3.0/24 dev l2br0 src 192.168.3.1
+
+/overlay/l2tp add 192.168.2.200
+/overlay/l2tp add 192.168.2.163
+/overlay/l2tp flush
+
+/overlay/l2tp del 192.168.2.163
+
+/overlay/l2tp add 192.168.2.163
+ifconfig l2br0 192.168.3.3 up
+ping 192.168.3.1 
+arping 192.168.3.1 -I l2br0
+
+tftp 8a000000 openwrt-ar71xx-generic-tew-732br-squashfs-sysupgrade.bin&&bootm 8a000000

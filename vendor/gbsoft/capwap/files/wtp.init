@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+START=90
+
+start() {
+	. /lib/functions.sh
+
+	local firmware=$(find_mtd_part "firmware")
+
+	/usr/bin/WTP "${firmware}"&
+}
+
+stop() {
+	killall WTP
+}

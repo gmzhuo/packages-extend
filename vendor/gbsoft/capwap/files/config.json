@@ -1,0 +1,42 @@
+{
+	"groups":{
+		"缺省组":{
+			"name":"缺省组",
+			"macType":"local",
+			"memo":"缺省组",
+			"radios":[
+				{
+					"groupname":"缺省组",
+					"wtpname":"",
+					"radioID":1,
+					"hwmode":"g",
+					"htmode":"ht20",
+					"txpower":20,
+					"channel":0,
+					"wlans":
+						[
+							{
+								"radioID":1,
+								"wlanID":-1,
+								"ssid":"HT无线AP",
+								"encryption":"none",
+								"key":""
+							}
+						]
+				}
+			]
+		}
+	},
+	"main":{
+		"enable":1,
+		"priority":10,
+		"pureACAuth":false,
+		"default":"缺省组",
+		"pingInterval":60,
+		"silentInterval":240,
+		"maxDiscoveryInterval":10,
+		"maxDiscoveries":2,
+		"idleTimeout":180
+	}
+}
+
