@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/uiutls.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/global.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<script>
+
+var commandExe = function()
+{
+	var random_num = Math.random();	
+	$("#cmdout").val("检测中,请等待10秒钟...");
+	function hostPingCB(json)
+	{
+		json = json;
+		$("#cmdout").val(json.info);
+	}
+	hostPing(document.myForm.hostip.value, hostPingCB);
+}
+function keydown(evt)
+{
+	var keyCode = evt.keyCode ? evt.keyCode : evt.which ? evt.which : evt.charCode;
+	if (keyCode==13) {
+		commandExe();
+	}
+}
+</script>
+<title>内网检测</title>
+</head>
+<body onKeyDown="keydown(event)">
+<form name="myForm">
+  <div id="maindiv">
+    <div id="divtitle">内网检测</div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable">
+    <tbody id="loglist">
+    	<tr>
+            <td width="20%" class="tdhead">内网IP(PING)</td>
+            <td width="80%"><input type="text" name="hostip" maxlength="128" style="width:350px;" /><input type="button" value="执行"  onclick="commandExe()"/> <input type="button" value="清除" onclick="javascript:window.location.reload();"/></td>
+        </tr>
+    	<tr>
+            <td width="20%" class="tdhead">检测结果</td>
+            <td class="tdhead" style="text-align:left;">
+            <textarea style="width:80%; height:180px;" name="cmdout" id="cmdout" readonly="readonly" value="" ></textarea>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</form>
+</div>
+</body>
+</html>

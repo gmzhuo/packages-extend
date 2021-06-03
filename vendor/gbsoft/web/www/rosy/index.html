@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="<%=luci.i18n.context.lang%>">
+
+<head>
+	<meta charset="utf-8">
+	<title>
+		LuCI
+	</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="x5-fullscreen" content="true">
+	<meta name="full-screen" content="yes">
+	<meta name="x5-page-mode" content="app">
+	<meta name="browsermode" content="application">
+	<meta name="theme-color" content="#0099CC">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="msapplication-TileColor" content="#0099CC">
+
+	<meta name="application-name" content="LuCI">
+	<meta name="apple-mobile-web-app-title" content="LuCI">
+	<meta name="msapplication-TileImage" content="logo.png" />
+	<link rel="icon" href="logo.png" sizes="144x144">
+	<link rel="apple-touch-icon-precomposed" href="logo.png" sizes="144x144">
+
+	<link rel="stylesheet" href="cascade.css?v=git-18.297.31128-0073c8d">
+	<link rel="shortcut icon" href="favicon.ico">
+	<script src="resource/cbi.js?v=git-18.297.31128-0073c8d"></script>
+	<script src="resource/xhr.js?v=git-18.297.31128-0073c8d"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="easyui.css">
+	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.net/Public/js/easyui/themes/icon.css">
+
+</head>
+
+<body class="lang aaaa logged-in">
+	<header>
+		<div class="fill">
+			<div class="container">
+				<span class="showSide"></span>
+				<a class="brand" href="#">Caaaa</a>
+				<div class="btn-con pull-right">
+					<span id="xhr_poll_status" style="display:none" onclick="XHR.running() ? XHR.halt() : XHR.run()">
+						<span class="label success" id="xhr_poll_status_on"><span class="mobile-hide">
+								Auto Refresh</span>
+							on</span>
+						<span class="label" id="xhr_poll_status_off" style="display:none"><span class="mobile-hide">
+								Auto Refresh</span>
+							off</span>
+					</span>
+					<span class="label logout"><a data-title="aaaa" href="aaaa">Caaaa</a></span>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="main">
+		<div style="" class="loading">
+			<span>
+				<div class="loading-img">
+					<img src="loading.svg">
+				</div>Loading...
+			</span>
+		</div>
+	
+		<div class="main-left">
+			<div class="nav-container">
+				<a class="brand" href="#">
+					mt7623</a>
+				<div class="navbar-container">
+					<ul class="nav">
+						<li class="slide"><a class="menu" data-title="运行状态" href="#">运行状态</a>
+							<ul class="slide-menu">
+								<li><a data-title="系统信息" href="#" onclick="addTab('系统信息','status_sys.html')">系统信息</a></li>
+								<li><a data-title="终端列表" href="#" onclick="addTab('终端列表','status_stationlist.html')">终端列表</a></li>
+							</ul>
+						</li>
+						<li class="slide"><a class="menu" data-title="网络配置" href="#">网络配置</a>
+							<ul class="slide-menu">
+								<li><a data-title="内网配置" href="javascript:void(0)" onclick="addTab('内网配置','network_inner.html');return false;">内网配置</a></li>
+								<li><a data-title="外网配置" href="javascript:void(0)" onclick="addTab('外网配置','network_outer.html');return false;">外网配置</a></li>
+								<li><a data-title="无线配置" href="javascript:void(0)" onclick="addTab('无线配置','ap_config.html');return false;">无线配置</a></li>
+								<li><a data-title="DDNS" href="javascript:void(0)" onclick="addTab('DDNS','network_ddns.html');return false;">DDNS</a></li>
+								<li><a data-title="端口映射" href="javascript:void(0)" onclick="addTab('端口映射','network_natpmp.html');return false;">端口映射</a></li>
+								<li><a data-title="防火墙规则" href="javascript:void(0)" onclick="addTab('防火墙规则','network_firewall.html');return false;">防火墙规则</a></li>
+							</ul>
+						</li>
+						<li class="slide"><a class="menu" data-title="认证广告" href="#">认证广告</a>
+							<ul class="slide-menu">
+								<li><a data-title="认证设置" href="javascript:void(0)" onclick="addTab('认证设置','mkt_config.html');return false;">认证设置</a></li>
+								<li><a data-title="MAC白名单" href="javascript:void(0)" onclick="addTab('MAC白名单','mkt_whitemac.html');return false;">MAC白名单</a></li>
+								<li><a data-title="在线用户" href="javascript:void(0)" onclick="addTab('在线用户','mkt_users.html');return false;">在线用户</a></li>
+							</ul>
+						</li>
+						<li class="slide"><a class="menu" data-title="系统工具" href="#">系统工具</a>
+							<ul class="slide-menu">
+								<li><a data-title="基本选项" href="javascript:void(0)" onclick="addTab('基本选项','set_basic.html');return false;">基本选项</a></li>
+								<li><a data-title="登录管理" href="javascript:void(0)" onclick="addTab('登录管理','set_mng.html');return false;">登录管理</a></li>
+								<li><a data-title="配置管理" href="javascript:void(0)" onclick="addTab('配置管理','set_set.html');return false;">配置管理</a></li>
+								<li><a data-title="系统日志" href="javascript:void(0)" onclick="addTab('系统日志','set_log.html');return false;">系统日志</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="main-right">
+			<div id="maincontent">
+				<div class="container">
+					<div class="logoImg">
+						<img src="logo.png" alt="Rosy">
+						<a class="brand" href="#">mt7623</a>
+					</div>
+
+					<noscript>
+						<div class="alert-message warning">
+							<h4>
+								JavaScript required!
+							</h4>
+							<p>
+								You must enable JavaScript in your browser or LuCI will not work properly.
+							</p>
+						</div>
+					</noscript>
+
+
+
+					<div id="tt" class="easyui-tabs" style="width:100%;height:500px;border: none">
+						<div title="系统信息" closable="false">
+							<iframe scrolling="auto" frameborder="0"  src="status_sys.html" style="width:100%;height:100%;"></iframe>
+						</div>
+					</div>
+
+
+  			</div>
+			</div>
+		</div>
+	</div>
+	<footer class="mobile-hide">
+    <a href="https://github.com/openwrt/luci">Powered by gbsoft (green bamboo)</a>
+	</footer>
+
+
+<script>                                         
+    var luciLocation = "/rosy/";
+
+    function addTab(title, url){
+			if ($('#tt').tabs('exists', title)){
+				$('#tt').tabs('select', title);
+			} else {
+				var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+
+				$('#tt').tabs('add',{
+					title:title,
+					content:content,
+					closable:true
+				});
+			}
+			return false;
+		}
+
+</script>
+</body>
+<script src="js/jquery.min.js?v=git-18.247.71242-9541751"></script>
+<script type="text/javascript" src="http://www.jeasyui.net/Public/js/easyui/jquery.easyui.min.js"></script>
+<script src="js/script.js?v=git-18.247.71242-9541751"></script>
+</html>

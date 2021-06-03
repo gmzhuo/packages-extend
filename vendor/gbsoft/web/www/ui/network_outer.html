@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiutils.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<script src="network_outer.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<style>
+body{overflow-y:auto; overflow-x:auto;}
+.Left{float:left; height:100%; width:280px; border-right:solid 3px #ddd; padding:0 10px;}
+.Right{float:left; width:400px; height:100%;}
+</style>
+<title>配置管理</title>
+</head>
+<body>
+
+<div style="height:1024px;"> 
+  <div id="leftgp" class="Left">
+  	<div id="ifacetree" align="top"></div>
+  </div>
+
+  <div id="maindiv" class="Right">
+  	<div id="configEdit">
+  	<div id="divtitle" style="width:684px;"><span id="linename">wan1配置</span></div>
+    <form method="POST" id="ifaceset">
+    <table id="logtable" style="width:684px">
+    	<input type="hidden" value="" name="Alias">
+      <tbody id="aplist" style="font-size:12px;">
+      <tr>
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					线路启用
+				</td>
+				<td>
+					<label><input type="radio" name="Enable" id="autoon" value="true" checked>
+						<span>开启</span></label>
+						<label><input type="radio" name="Enable" id="autooff" value="false">
+						<span>关闭</span>
+					</label>
+				</td>
+			</tr>
+			<input type="hidden" id="pureACAuth" name="pureACAuth" value="true"/>
+			<tr>
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					线路协议
+				</td>
+				<td>
+					<select id="proto" name="proto" style="width:155px;">
+					</select>
+				</td>
+			</tr>
+			<tr class="form-item-natvpn">
+				<td style="width:35%; text-align:right; padding-right:10px;">设备序列号</td>
+				<td><input type="text" id="deviceno" name="deviceno" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-pptp">
+				<td style="width:35%; text-align:right; padding-right:10px;">服务器地址</td>
+				<td><input type="text" id="server" name="server" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-pppoe">
+				<td style="width:35%; text-align:right; padding-right:10px;">用户名</td>
+				<td><input type="text" id="UserName" name="UserName" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-pppoe">
+				<td style="width:35%; text-align:right; padding-right:10px;">密码</td>
+				<td><input type="password" id="Password" name="Password" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">IP地址</td>
+				<td><input type="text" id="IPAddress" name="IPAddress" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">IP掩码</td>
+				<td><input type="text" id="SubnetMask" name="SubnetMask" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">IP网关</td>
+				<td><input type="text" id="GatewayIPAddress" name="GatewayIPAddress" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">主DNS</td>
+				<td><input type="text" id="dns1" name="dns1" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">备DNS</td>
+				<td><input type="text" id="dns2" name="dns2" maxlength="32"/>
+				</td>
+			</tr>
+  
+			<tr>
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					线路带宽
+				</td>
+				<td>
+					<select id="SpeedType" name="SpeedType" style="width:155px;">
+						<option value="none">未配置</option>
+						<option value="manul">手动设置</option>
+						<option value="A1M">1Mb/s ADSL</option>
+						<option value="A2M">2Mb/s ADSL</option>
+						<option value="A3M">3Mb/s ADSL</option>
+						<option value="A4M">4Mb/s ADSL</option>
+						<option value="A6M">6Mb/s ADSL</option>
+						<option value="A8M">8Mb/s ADSL</option>
+						<option value="F4M">4Mb/s  光纤</option>
+						<option value="F6M">6Mb/s  光纤</option>
+						<option value="F8M">8Mb/s  光纤</option>
+						<option value="F10M">10Mb/s 光纤</option>
+						<option value="F15M">15Mb/s 光纤</option>
+						<option value="F20M">20Mb/s 光纤</option>
+						<option value="F30M">30Mb/s 光纤</option>
+						<option value="F50M">50Mb/s 光纤</option>
+						<option value="F100M">100Mb/s 光纤</option>
+						<option value="H20M">20Mb/s 家用光纤</option>
+						<option value="H50M">50Mb/s 家用光纤</option>
+						<option value="H60M">60Mb/s 家用光纤</option>
+						<option value="H80M">80Mb/s 家用光纤</option>
+						<option value="H100M">100Mb/s 家用光纤</option>
+						<option value="H200M">200Mb/s 家用光纤</option>
+					</select>
+				</td>
+			</tr>
+			<tr class="form-item-speed">
+				<td style="width:35%; text-align:right; padding-right:10px;">上传带宽</td>
+				<td><input type="text" id="Upload" name="Upload" maxlength="32"/>Kbps
+				</td>
+			</tr>
+			<tr class="form-item-speed">
+				<td style="width:35%; text-align:right; padding-right:10px;">下载带宽</td>
+				<td><input type="text" id="Download" name="Download" maxlength="32"/>Kbps
+				</td>
+			</tr>
+			<tr>
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					显示高级设置
+				</td>
+				<td>
+					<label><input type="radio" name="advance" id="advanceon" value="1">
+						<span>开启</span></label>
+					<label><input type="radio" name="advance" id="advanceoff" value="0"  checked>
+						<span>关闭</span></label>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					通断检测
+				</td>
+				<td>
+					<label><input type="radio" name="linkcheck" id="linkcheckon" value="1" checked>
+					<span>开启</span></label>
+					<label><input type="radio" name="linkcheck" id="linkcheckoff" value="0">
+					<span>关闭</span></label>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">检测地址</td>
+				<td><input type="text" id="checkaddr" name="checkaddr" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">开启时间</td>
+				<td><input type="text" id="checktime" name="checktime" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					转发模式
+				</td>
+				<td>
+					<select id="nat" name="nat" style="width:155px;">
+						<option value="1">NAT模式</option>
+						<option value="0">全公网模式</option>
+						<option value="2">透明桥模式</option>
+						<option value="3">电信通模式</option>
+					</select>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					运营商ISP
+				</td>
+				<td>
+					<select id="isp" name="isp" style="width:155px;">
+						<option value="auto">自动识别</option>
+						<option value="none">不分配</option>
+						<option value="ctc">电信</option>
+						<option value="cnc">联通</option>
+						<option value="edu">教育网</option>
+						<option value="cmcc">中国移动</option>
+					</select>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">接口MTU</td>
+				<td><input type="text" id="mtu" name="mtu" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">MAC克隆</td>
+				<td><input type="text" id="macaddr" name="macaddr" maxlength="32"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div id="divsavebtn"><span class="head">&nbsp;</span>
+		<input type="button" id="configsave" value="保存" onclick="ifacedata_submit()"/>
+		<!--<input type="button" value="确定" onclick="presubmit()"/>-->
+		<input type="button" value="取消" onclick=";"/>
+	</div>
+  </form>
+  </div>
+  </div>
+</body>
+</html>

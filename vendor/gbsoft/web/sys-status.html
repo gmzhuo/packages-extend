@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="hrms/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="hrms/css/iconfont.css" type="text/css">
+<style type="text/css">
+a {
+	text-decoration: none;
+}
+
+a hover: {
+	text-decoration: none;
+}
+
+#applyProModel th, #toDoTaskModel th {
+	width: 33.33%;
+}
+
+#applyProModel td, #toDoTaskModel td {
+	width: 33.33%;
+}
+</style>
+</head>
+<body>
+	<div class="body_all">
+		<div class="welcome_head">
+			<!-- /centriole_oa/rest//overtime/toOvertimeApply -->
+			<a class="J_menuItem" id="overtime" href="javascript:void(0)" data-href="/hrms/centriole_oa/rest/overtime/toOvertimeApply" data-index="0">
+				<div class="request">
+					<ul class="request_carousel">
+						<li class="icon iconfont"></li>
+						<li class="request_title">加班</li>
+					</ul>
+				</div>
+			</a>
+			<div class="request">
+				<ul class="request_carousel" id="leaverequest" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">请假</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="punch" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">补卡</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="reserve" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">预约</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="wechat" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">签到</li>
+				</ul>
+			</div>
+			<div class="request_strut"></div>
+			
+			
+		</div>
+
+		<div class="welcome_body">
+			<!-- 公告展示 -->
+			<div class="body_module" id="noticeModel" style="display: none;">
+				<div class="body_module_title" style="background-color: cornflowerblue;" id="noticePanl">
+					<span class="body_module_title_span" id="notice">公告列表<span id="bulletinTotal"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="noticeTable">
+						<tbody><tr>
+							<th><span>发布者</span></th>
+							<th style="text-align: left;"><span>标题</span></th>
+							<th style="text-align: right;"><span>发布日期</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+			<div class="body_module" id="personalDayStatModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="abnormal">异常考勤<span id="personalDayStat"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="personalDayStatTable">
+						<tbody><tr>
+							<th><span>日期</span></th>
+							<th class="table_right"><span>状态</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="arvhiceToDoModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="matter">待办事项<span id="arvhiceToDo"></span></span>
+				</div>
+				<div style="height: 266px;overflow-y: auto;">
+					<table class="body_module_table" id="arvhiceToDoTable">
+						<tbody><tr>
+							<th><span>待办提醒说明</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="toDoTaskModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="examinationly">待审批<span id="toDoTask"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="toDoTaskTable">
+						<tbody><tr>
+							<th><span>流程名称</span></th>
+							<th style="text-align: center;"><span>申请人工号</span></th>
+							<th style="text-align: right;"><span>申请人</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="applyProModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="myApply">我的申请<span id="applyPro"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="applyProTable">
+						<tbody><tr>
+							<th><span>流程名称</span></th>
+							<th style="text-align: center;"><span>业务编号</span></th>
+							<th style="text-align: right;"><span>批复人</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	<script src="/js/tr069.js"></script>
+	<script src="../js/uiapi/login.js"></script>
+
+	<script src="hrms/js/bootstrap.js"></script>
+	<script src="hrms/js/bootstrap-table.js"></script>
+	<script src="hrms/js/bootstrap-table-zh-CN.js"></script>
+	<script src="hrms/js/json-tree.js"></script>
+
+
+</body>
+</html>

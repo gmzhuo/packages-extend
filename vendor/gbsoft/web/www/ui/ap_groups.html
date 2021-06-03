@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<script>
+//var gpsval = new Array('一楼:1','二楼:2','三楼:3');
+var gpsval = new Array();
+var gps = new Array();
+var gpidx = new Array();
+//var aps = new Array("00:11:11:11:11:22;1;大厅;1", "00:11:11:11:11:23;2;走廊;0", "00:11:11:11:11:24;-1;00:11:11:11:11:24;1");
+var aps = new Array('24:05:0f:5c:62:bb;-1;24:05:0f:5c:62:bb;0;0;R2_V1.2;2', 'cc:85:6c:03:af:34;-1;cc:85:6c:03:af:34;0;0;R1_V1.1;0');
+var gpeditidx = -1;
+var curgpidx = -1;
+var maxgpid = -1;
+
+window.showModalDialog = function (url, arg, feature) {
+	document.forms[0].subwinretval.val="";
+
+	var opFeature = feature.split(";");
+	var featuresArray = new Array();
+	if (document.all) {
+	   for (var i = 0; i < opFeature.length - 1; i++) {
+			var f = opFeature[i].split("=");
+		   featuresArray[f[0]] = f[1];
+		}
+	}
+	else {
+
+		for (var i = 0; i < opFeature.length - 1; i++) {
+			var f = opFeature[i].split(":");
+		   featuresArray[f[0].toString().trim().toLowerCase()] = f[1].toString().trim();
+		}
+	}
+
+	var h = "200px", w = "400px", l = "100px", t = "100px", r = "yes", c = "yes", s = "no";
+	if (featuresArray["dialogheight"]) h = featuresArray["dialogheight"];
+	if (featuresArray["dialogwidth"]) w = featuresArray["dialogwidth"];
+	if (featuresArray["dialogleft"]) l = featuresArray["dialogleft"];
+	if (featuresArray["dialogtop"]) t = featuresArray["dialogtop"];
+	if (featuresArray["resizable"]) r = featuresArray["resizable"];
+	if (featuresArray["center"]) c = featuresArray["center"];
+	if (featuresArray["status"]) s = featuresArray["status"];
+	var modelFeature = "height = " + h + ",width = " + w + ",left=" + l + ",top=" + t + ",model=yes,alwaysRaised=yes" + ",resizable= " + r + ",celter=" + c + ",status=" + s;
+
+	var model = window.open(url, "", modelFeature, null);
+
+	model.dialogArguments = arg;
+	return document.forms[0].subwinretval.val;
+}
+　
+var showGpByid = function(val, idx, i)
+{
+	var f = document.forms[0];
+	if(idx!=-1) $("#gpname").val(val);//f.gpname.value = val;
+	else $("#gpname").val("");//f.gpname.value='';
+	
+	$("#curgpname").text(val);
+	
+	if(val==''||val=='全部'||val=='默认组')
+	{
+		//f.gpbtn.value="添加";
+		$("#gpbtn").val("添加");
+		idx = -1;
+	}
+	else{
+		//f.gpbtn.value="修改";
+		$("#gpbtn").val("修改");
+	}
+	if(idx==-1||idx==-2)
+		gpeditidx = -1;
+	else
+		gpeditidx = i;
+	if(val=='全部')
+		showgplist(-1);
+	else if(val=='默认组')
+		showgplist(-2);
+	else
+		showgplist(idx);
+}
+
+var apmac2name = function(mac)
+{
+	for(var i=0; i<aps.length; i++)
+	{
+		var tmp = aps[i].split(";");
+		if(tmp[0]==mac) 
+		{
+			if(tmp.length>=4&&tmp[2]!="")
+				return tmp[2];
+			else
+				return mac;
+		}
+	}
+	return mac;
+}
+
+var apmac2gpid = function(mac)
+{
+	for(var i=0; i<aps.length; i++)
+	{
+		var tmp = aps[i].split(";");
+		if(tmp[0]==mac) return tmp[1];
+	}
+	return mac;
+}
+
+var chggp2untag = function(id)
+{
+	for(var i=0; i<aps.length; i++)
+	{
+		var tmp = aps[i].split(";");
+		if(tmp[1]==parseInt(id))
+		{
+			aps[i] = tmp[0]+';-1;'+tmp[2]+';'+tmp[3];
+		}
+	}
+}
+
+var gpid2name = function(id)
+{
+	for(var i=0; i<gpidx.length; i++)
+	{
+		if(gpidx[i]==id) return gps[i];
+	}
+	return "默认组";
+}
+
+var getmacstatus = function(mac){
+	for(var i=0; i<aps.length; i++)
+	{
+		var tmp = aps[i].split(";");
+		if(tmp[0]==mac) return tmp[3];
+	}
+	return mac;
+}
+
+var getapstatus = function(st)
+{
+	if(st=='0')
+		return '离线';
+	else
+		return '在线';
+}
+
+var chgapname = function(mac)
+{
+	var dlogData = showModalDialog("chg_ap_name.html?mac="+mac+"&name="+apmac2name(mac)+"&gpid="+apmac2gpid(mac), "", "dialogHeight:200px; dialogWidth:400px; help:no;");
+	if(dlogData==""||dlogData==undefined)
+		return false;
+	else
+		window.location.reload();
+	/*
+	if(dlogData==""||dlogData==undefined) return false;
+	dlogData += ';'+getmacstatus(mac);
+	for(var i=0; i<aps.length; i++)
+	{
+		var tmp = aps[i].split(";");
+		if(tmp[0]==mac)
+		{
+			aps[i] = dlogData;
+			showgplist(curgpidx);
+			presubmit();
+			return true;
+		}
+	}
+	aps[apmacs.length] = dlogData;
+	showgplist(curgpidx);
+	presubmit();
+	*/
+}
+
+var chgapcfg = function(mac, gpid)
+{
+	var dlogData = showModalDialog("chg_ap_cfg.asp?mac="+mac+"&apname="+apmac2name(mac)+"&gpid="+gpid, "", "dialogHeight:400px; dialogWidth:650px; help:no;");
+	if(dlogData==""||dlogData==undefined)
+		return false;
+	else
+		window.location.reload();
+}
+
+var chgapgp = function(n, mac, name)
+{
+	for(var i=0; i<aps.length; i++)
+	{
+		if(aps[i].indexOf(mac)!=-1)
+		{
+			aps[i] = mac+';'+$("#"+n).val()+';'+name+';'+getmacstatus(mac);
+			return;
+		}
+	}
+	aps[aps.length] = mac+';'+$("#"+n).val()+';'+name+';'+getmacstatus(mac);
+}
+
+var deleteap = function(mac)
+{
+	$.ajax({
+		type: "POST",
+		url: "/doform/DELAP",
+		data: "mac="+mac,
+		success: function(data){
+			window.location.reload();
+		},
+		failure: function() {
+			window.location.reload();
+  		}
+	});
+	$("body input:button").remove();
+	$("body input:submit").remove();
+}
+
+var showgplist = function(idx)
+{
+	var indx = 1;
+	$("#aplist tr").remove();
+	for(var i=0; i<aps.length; i++)
+	{
+		var tmp = aps[i].split(";");
+		if(tmp.length<4) continue;
+
+		if(idx==-1||(idx==-1&&tmp[1]==-1)||(idx==-2&&tmp[1]==-1)||idx==tmp[1]){
+			var ln = '';
+			if(idx==-1||idx==-2){
+				ln = '<tr><td align="center">'+eval(indx++)+'</td><td style="text-align:center;"><a href="#" onclick="chgapname(\''+tmp[0]+'\')" title="修改AP名称">'+apmac2name(tmp[0])+'</a></td><td align="center"><a href="#" onclick="chgapcfg(\''+tmp[0]+'\', \''+tmp[1]+'\')" title="修改AP配置">'+tmp[0]+'</a></td><td align="center">'+getapstatus(tmp[3])+'</td><td align="center">';
+				if(apmac2name(tmp[0])==tmp[0])
+					ln += '<select style="width:120px;" id="gpsel'+indx+'" name="gpsel" onchange="chgapgp(\'gpsel'+indx+'\', \''+tmp[0]+'\', \''+tmp[0]+'\')">';
+				else
+					ln += '<select style="width:120px;" id="gpsel'+indx+'" name="gpsel" onchange="chgapgp(\'gpsel'+indx+'\', \''+tmp[0]+'\', \''+apmac2name(tmp[0])+'\')">';
+				ln += '<option value="-1">默认组</option>';
+				for(var j=0;j<gps.length;j++)
+				{
+					ln += '<option value='+gpidx[j]+'>'+gpid2name(parseInt(gpidx[j]))+'</option>';
+				}
+				ln += '</select></td>';
+				ln += '<td align="center"><input type=button value="编辑" onclick="chgapcfg(\''+tmp[0]+'\', \''+tmp[1]+'\')"><input type=button value="删除" onclick="deleteap(\''+tmp[0]+'\', \''+tmp[1]+'\')"></td><td align="center"><input type="checkbox" id="ap'+i+'" value="'+tmp[0]+'"></td>';
+				ln += '</tr>';
+				
+				$("#aplist").append(ln);
+				if(parseInt(tmp[1])>=0)
+					$("#gpsel"+indx).val(parseInt(tmp[1]));
+				
+			}
+			else
+			{
+				ln = '<tr align="center"><td align="center">'+eval(indx++)+'</td><td style="text-align:center;"><a href="#" onclick="chgapname(\''+tmp[0]+'\')" title="修改AP名称">'+apmac2name(tmp[0])+'</a><td align="center"><a href="#" onclick="chgapcfg(\''+tmp[0]+'\')" title="修改AP配置">'+tmp[0]+'</a></td><td align="center">'+getapstatus(tmp[3])+'</td><td align="center">'+gpid2name(parseInt(tmp[1]))+'</td>';
+				ln += '<td><input type=button value="编辑" onclick="chgapcfg(\''+tmp[0]+'\', \''+tmp[1]+'\')"><input type=button value="删除" onclick="deleteap(\''+tmp[0]+'\')"></td><td align="center"><input type="checkbox" id="ap'+i+'" value="'+tmp[0]+'"></td>';
+				ln += '</tr>';
+				$("#aplist").append(ln);
+			}
+		}
+	}
+	curgpidx = idx;
+}
+
+var chgpname = function()
+{
+	var f = document.forms[0];
+	var curindex = 0;
+	if("default"==f.gpname.value)
+	{
+		alert("组名称不能为 default, 请重新设置.");
+		return false;
+	}
+	if(""==f.gpname.value)
+	{
+		alert("组名称不能不空.");
+		return false;
+	}
+	for(var i=0;i<gps.length;i++)
+	{
+		if(gpeditidx!=-1&&i==gpeditidx) continue;
+		if(gps[i]==f.gpname.value)
+		{
+			alert("组名称不能重复.");
+			return false;
+		}
+	}
+	if(gpeditidx!=-1){
+		gps[gpeditidx] = f.gpname.value;
+		var ss = gpsval[gpeditidx].split("|");
+		gpsval[gpeditidx] = f.gpname.value+"|"+gpidx[gpeditidx]+"|"+ss[2]+"|"+ss[3];
+	}else{
+		curindex = gpsval.length;
+		gps[curindex] = f.gpname.value;
+		gpsval[curindex] = f.gpname.value+"|"+maxgpid+"";
+		gpidx[curindex] = maxgpid;
+		maxgpid++;
+	}
+	f.gpname.value = '';
+	f.gpbtn.value="添加";
+	gpeditidx = -1;
+	showgp();
+	presubmit();
+}
+
+var rmgp = function(idx)
+{
+	if(!confirm('确定删除该分组？删除后所有AP将移至《默认组》中.')) return false;
+	chggp2untag(gpidx[idx]);
+	gps.remove(idx);
+	gpsval.remove(idx);
+	gpidx.remove(idx);
+	presubmit();
+	$("body input:button").remove();
+	$("body input:submit").remove();
+	//showgp();
+	//f.gpname.value = '';
+	//f.gpbtn.value="添加";
+	//gpeditidx = -1;
+}
+
+var gpclk = function(obj)
+{
+}
+
+var showgp = function()
+{
+	var gpsdiv='';
+	var j = 0;
+	$("#divgroup span").remove();
+	$("#divgroup a").remove();
+	$("#divgroup input").remove();
+	$("#divgroup div").remove();
+	$("#divgroup hr").remove();
+	gpsdiv = '<div id="divgroup" style="margin-top:5px;"><div class="delgponex" onclick="gpclk(this)" id="gpname" style="color:#fff;"><b>AP分组</b></div></div>';
+	gpsdiv += '<div class="delgponex" onclick="gpclk(this)" id="gpname" style="margin-top:5px;"><a href="javascript:showGpByid(\'全部\', -1)" class="addgp" style="width:140px; text-align:center;" title="点击显示所有AP"><span style="color:#fff;">全部显示</span></a></div></div>'; 
+	for(var i=0; i<gps.length; i++)
+	{
+		if(gps[i]!=''){
+			gpsdiv += '<div class="delgponex" onclick="gpclk(this)" id="gpname"><a href="javascript:showGpByid(\''+gps[i]+'\', '+gpidx[i]+','+i+')" class="normalgp"><span>&nbsp;'+gps[i]+'</span></a><input type="button" value="删除" title="删除该分组" class="delgp" onclick="rmgp('+i+')"></div>'; 
+		}
+	}
+	//gpsdiv += '<div class="divgpone"><div class="delgpspan">&nbsp;</div>';
+	//gpsdiv += '<div class="delgponex" onclick="gpclk(this)" id="gpname"><a class="ungp" title="点击显示默认组的AP" href="javascript:showGpByid(\'默认组\', -1)"><span>默认组</span></a></div></div>'; 
+	//gpsdiv += '<div class="divgpone"><div class="delgpspan">&nbsp;</div>';
+	gpsdiv += '<input type="text" id="gpname" name="gpname" value="" maxlength="6" style="width:90px; margin-top:10px;"/>';
+    gpsdiv += '<input type="button" value="添加" id="gpbtn" name="gpbtn" onclick="chgpname()"/>';
+	$("#divgroup").append(gpsdiv);
+	
+	showGpByid('全部', -1);
+}
+
+var initgparr = function()
+{
+	for(var i=0;i<gpsval.length;i++)
+	{
+		var tmp = gpsval[i].split("|");
+		if(tmp.length<4) continue;
+		gps[i]=tmp[0];
+		gpidx[i]=tmp[1];
+		if(parseInt(tmp[1])>=maxgpid) maxgpid = parseInt(tmp[1])+1;//new gpid
+	}
+	if(maxgpid<1) maxgpid=1;
+}
+
+var deleteXap = function()
+{
+	var macs="";
+	for(var i=0; i<aps.length; i++)
+	{
+		if($("#ap"+i).attr("checked")=="checked")
+			macs += $("#ap"+i).val()+"-";
+	}
+	if(macs!="")
+		deleteap(macs);
+}
+
+var presubmit = function()
+{
+	var f = document.forms[0];
+	parseSubmitObj(f, "gps", gpsval);
+	parseSubmitObj(f, "aps", aps);
+	f.submit();
+	$("body input:button").remove();
+	$("body input:submit").remove();
+}
+
+function init()
+{
+	initgparr();
+	showgp();
+}
+</script>
+<style>
+body{overflow-y:auto; overflow-x:auto;}
+.Left{float:left; height:100%; width:150px; border-right:solid 3px #ddd; padding:0 10px;}
+.Right{float:left; width:750px; height:100%;}
+a{ font-weight:bold; color:#039; text-decoration:none;};
+</style>
+<title>AP组管理</title>
+</head>
+<body onload="init()">
+<form method="POST" action="/doform/SET_AP_GROUP">
+  <input type=hidden name="page" value="ap_groups.asp">
+  <input type=hidden name="subwinretval" value="">
+<div style="height:1024px;"> 
+  <div id="leftgp" class="Left"><div id="divgroup"></div></div>
+  <div id="maindiv" class="Right">
+    <div id="divtitle" style="width:830px;">AP列表 (<span id="curgpname">全部</span>)</div>
+    <table id="logtable" style="width:851px;">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="6%" align="center">序号</th>
+        <th width="20%" align="center">AP名称</th>
+        <th width="20%" align="center">MAC地址</th>
+        <th width="10%" align="center">状态</th>
+        <th width="20%" align="center">分组</th>
+        <th width="14%" align="center">操作</th>
+        <th width="10%" align="center"><a href="#" onclick="deleteXap()" title="批量删除"><span style="color:#FFF;">批量删除</span></a></th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span><input type="button" value="确定" onclick="presubmit()"/><input type="button" value="取消" onclick="javascript:window.location.reload();"/></div>
+  </div>
+</div>
+</form>
+</div>
+</body>
+</html>

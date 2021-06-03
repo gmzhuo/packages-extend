@@ -1,0 +1,184 @@
+	@charset "utf-8";
+/* CSS Document */
+
+html, body {
+	margin:0px;
+	height:160px;
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	text-align:center;
+	background:url(../images/bg.jpg) repeat-x;
+}
+#mbody, #mlogo, #alogo
+{
+	text-align:center;
+	width:1024px;
+	margin-top:2px;
+	margin-left:auto;
+	margin-right:auto;
+}
+#mm li
+{
+	float:left;
+	width:160px;
+	height:55px;
+	text-align:left;
+	vertical-align:bottom;
+}
+#mm1 {
+	margin:0px;
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+}
+
+#mm1 li
+{
+	text-align:left;
+	margin:0px;
+}
+
+.mainmenuout{background-color:#77f;color:#FFF;padding-top:15px;margin-left:1px;margin-right:1px;}
+.mainmenuover{background-color:#33f;color:#FFF;padding-top:15px}
+
+
+#mm1 span
+{
+	display:inline-block;
+	float:left;
+	width:160px;
+	height:40px;
+	text-align:center;
+	cursor:pointer;
+	cursor:hand;
+}
+
+.mm1span
+{
+	color:#429cF5;
+}
+
+.mm1spanout
+{
+	color:#000;
+}
+
+.mm1mouseout
+{
+	float:left;
+	width:170px;
+	height:55px;
+	text-align:center;
+	background-color:#eee;
+}
+
+.mm1mouseover
+{
+	float:left;
+	width:170px;
+	height:57px;
+	text-align:center;
+	font-weight:bold;
+	cursor:pointer; cursor:hand;
+}
+#menu
+{
+/*	background:#0054A3 url(../images/top_menu_bg.jpg) repeat-x;*/
+	color:#000;
+}
+#menu ul
+{
+	margin:0px;
+	padding:0px;
+	border:0px;
+	height:42px;
+}
+#menu ul li,  {
+	text-align:center;
+	display:inline-block;
+	float:left;
+	height:42px;
+	line-height:45px;
+	width:130px;
+	margin:0px;
+	padding:0px;
+	color:#000;
+	font-weight:bold;
+	font-size:16px;
+}
+
+.menuclick{
+	text-align:center;
+	display:inline-block;
+	float:left;
+	height:42px;
+	line-height:45px;
+	width:120px;
+	margin:0px;
+	padding:0px;
+	font-weight:bold;
+	font-size:16px;
+	background:url(../images/top_menu_active.jpg);
+	height:165px;
+	color:#000;
+}
+
+.menumouseout{
+	text-align:center;
+	display:inline-block;
+	float:left;
+	height:42px;
+	line-height:45px;
+	width:120px;
+	margin:0px;
+	padding:0px;
+	color:#000;
+	font-weight:bold;
+	font-size:16px;
+}
+
+.menumouseover{
+	text-align:center;
+	display:inline-block;
+	float:left;
+	height:42px;
+	line-height:45px;
+	width:120px;
+	margin:0px;
+	padding:0px;
+	color:#000;
+	font-weight:bold;
+	font-size:16px;
+	cursor:pointer;
+}
+
+#mframe
+{
+	width:1024px;
+}
+.menuitmclick
+{
+	cursor:pointer;
+	color:#FF6600;
+}
+.menuitmnormal
+{
+	cursor:pointer;
+	color:#000000;
+}
+
+#copyright
+{
+	line-height:25px;
+	font-size:12px;
+	color:#FFF;
+	background:#666;
+	border-top:1px solid #000;
+	position:relative;
+	bottom:0px;
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+}
+
+a{
+	text-decoration:none;
+	font-size:16px;
+	font-weight:bold;
+}
+

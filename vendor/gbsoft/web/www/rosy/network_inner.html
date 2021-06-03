@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiutils.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<script src="network_inner.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<style>
+body{overflow-y:auto; overflow-x:auto;}
+.Left{float:left; height:100%; width:280px; border-right:solid 3px #ddd; padding:0 10px;}
+.Right{float:left; width:400px; height:100%;}
+</style>
+<title>配置管理</title>
+</head>
+<body>
+
+<div style="height:1024px;"> 
+  <div id="leftgp" class="Left">
+  	<div id="ifacetree" align="top"></div>
+  </div>
+
+  <div id="maindiv" class="Right">
+  	<div id="configEdit">
+  	<div id="divtitle" style="width:684px;"><span id="linename">wan1配置</span></div>
+    <form method="POST" id="ifaceset">
+    <table id="logtable" style="width:684px">
+    	<input type="hidden" value="" name="Alias">
+    	<input type="hidden" value="" name="proto">
+      <tbody id="aplist" style="font-size:12px;">
+      <tr>
+				<td style="width:35%; text-align:right; padding-right:10px;">
+					线路启用
+				</td>
+				<td>
+					<label><input type="radio" name="auto" id="autoon" value="1" checked>
+						<span>开启</span></label>
+						<label><input type="radio" name="auto" id="autooff" value="0">
+						<span>关闭</span>
+					</label>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">IP地址</td>
+				<td><input type="text" id="IPAddress" name="IPAddress" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">IP掩码</td>
+				<td><input type="text" id="SubnetMask" name="SubnetMask" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">IP网关</td>
+				<td><input type="text" id="gateway" name="gateway" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">主DNS</td>
+				<td><input type="text" id="dns1" name="dns1" maxlength="32"/>
+				</td>
+			</tr>
+			<tr class="form-item-static">
+				<td style="width:35%; text-align:right; padding-right:10px;">备DNS</td>
+				<td><input type="text" id="dns2" name="dns2" maxlength="32"/>
+				</td>
+			</tr>
+  
+			<tr class="form-item-advance">
+				<td style="width:35%; text-align:right; padding-right:10px;">MAC克隆</td>
+				<td><input type="text" id="macaddr" name="macaddr" maxlength="32"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div id="divsavebtn"><span class="head">&nbsp;</span>
+		<input type="button" id="configsave" value="保存" onclick="ifacedata_submit()"/>
+		<!--<input type="button" value="确定" onclick="presubmit()"/>-->
+		<input type="button" value="取消" onclick=";"/>
+	</div>
+  </form>
+  <div id="divtitle" style="width:684px;"><span id="linename">DHCP配置</span></div>
+    <form method="POST" id="ifacedhcp">
+    <table id="logtable" style="width:684px">
+    	<input type="hidden" value="" name="iface">
+      <tbody id="aplist" style="font-size:12px;">
+      <tr>
+				<td width="35%" class="tdhead">DHCP服务</td>
+				<td>
+					<label><input type="radio" name="Enable"
+						id="ignoreOff" value="true" checked><span>开启</span></label>
+					<label><input type="radio" name="Enable"
+						id="ignoreOn" value="false"><span>关闭</span></label>
+				</td>
+			</tr>
+			<tr>
+				<td width="35%" class="tdhead">非法DHCP防止</td>
+				<td>
+					<label><input type="radio" name="IllegalKiller"
+						id="illegalKillerOn" value="1" checked><span>开启</span></label>
+					<label><input type="radio" name="IllegalKiller"
+						id="illegalKillerOff" value="0"><span>关闭</span></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdhead">起始地址</td>
+				<td><input type="text" name="MinAddress" id="MinAddress" maxlength="15" /></td>
+			</tr>
+			<tr>
+				<td class="tdhead">结束地址</td>
+				<td><input type="text" name="MinAddress" id="MinAddress" maxlength="15" /></td>
+			</tr>
+			<tr>
+				<td class="tdhead">租期</td>
+				<td><input type="text" name="LeaseTime" id="LeaseTime" maxlength="5" /></td>
+			</tr>
+		</tbody>
+	</table>
+	<div id="divsavebtn"><span class="head">&nbsp;</span>
+		<input type="button" id="configsave" value="保存" onclick="dhcpdata_submit()"/>
+		<!--<input type="button" value="确定" onclick="presubmit()"/>-->
+		<input type="button" value="取消" onclick=";"/>
+	</div>
+  </form>
+  </div>
+  </div>
+</body>
+</html>

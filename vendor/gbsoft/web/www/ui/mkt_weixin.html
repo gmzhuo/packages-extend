@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/webportal.js"></script>
+<script src="mkt_weixin.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title>认证设置</title>
+
+</head>
+<body>
+<form method="post" id="weixinForm">
+  <input type=hidden name="page" value="mkt_config.asp">
+<div id="maindiv">
+  <div id="divtitle">微信认证参数</div>
+  <div id="divline">&nbsp;</div>
+  <div id="divgroup"> </div>
+  <div id="divline">&nbsp;</div>
+  <table id="normaltable" style="width:985px" class="normaltable">
+    <tr>
+      <td width="30%" class="tdhead">开关</td>
+      <td width="70%">
+      	<label><input type="radio" name="enable" id="weixinon" value="on"
+        	checked><span>开启</span></label>
+		<label><input type="radio" name="enable" id="weixinoff" value="off">
+        	<span>关闭</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">门店名称</td>
+      <td width="70%"><input type="text" name="storeName" id="storeName"  style="width:200px;" />
+		</td>
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">无线SSID</td>
+      <td width="70%"><input type="text" name="SSID" id="SSID"  style="width:200px;"  />
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">商店编号(shopID)</td>
+      <td width="70%"><input type="text" name="shopID" id="shopID"   style="width:200px;"/>
+        	</td>
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">应用编号(appID)</td>
+      <td width="70%"><input type="text" name="appID" id="appID"  style="width:240px;"/>
+        	</td>
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">应用密码(secretKey)</td>
+      <td width="70%"><input type="text" name="secretKey" id="secretKey"   style="width:240px;" />
+        	</td>
+    </tr>
+  </table>
+  <div id="divsavebtn"><span class="head">&nbsp;</span>
+    <input type="button" value="保存" onclick="configSubmit()" />
+    <input type="button" value="取消" onclick="javascript:window.location.reload();"/>
+  </div>
+</div>
+</form>
+</body>
+</html>

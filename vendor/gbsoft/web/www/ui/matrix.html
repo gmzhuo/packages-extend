@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<title>CPEManager</title>
+		<script src="/luci-static/argon/js/jquery.min.js?v=2.2.1"></script>
+        <script src="/luci-static/argon/js/jquery.i18n.properties.min.js?v=1.2.7"></script>
+        <script type="text/javascript" src="/js/tr069.js"></script>
+        <script type="text/javascript" src="/js/login.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/vue/dist/vue.min.js"></script>
+		<script type="text/javascript" src="/js/loadinit.js"></script>
+		<style type="text/css">
+			button {
+				border: 2px solid rgb(0, 217, 0); border-radius: 10px; margin: 20px; padding: 3px; background-color: aqua; color: rgb(255, 0, 255);
+			}
+			.button-placeholder {
+				width:60%;display:inline-block;
+			}
+			.navigator {
+				height:28px;
+			}
+			.navigator, .itemsview, .editview {
+				border:3px solid #00d900;border-radius:10px;margin-bottom:3px;margin:10px;padding:3px
+			}
+			.path-node {
+				cursor:pointer;
+			}
+			.field-id, .field-value {
+				width:280px;display:inline-block;
+			}
+			.item-line {
+				width:280px;display:inline-block;cursor:pointer;
+			}
+			.edit-line, .item-line {
+				margin:8px;
+			}
+			.path-node-op {
+				float:right;
+				margin: 0px;
+				margin-right: 6px;
+			}
+			p {
+				display:none;
+			}
+			a:hover p{
+				display:block;
+				position: absolute ;
+				right:100px;
+				top:300px;
+			}
+		</style>
+		<script>
+			var modalData;
+			var dataProvider ={
+				data:[
+					[0, 0, 1, 3, 0, 9, 7, 0, 0],
+					[7, 0, 0, 0, 0, 0, 0, 0, 6],
+					[5, 6, 0, 0, 0, 0, 0, 1, 8],
+					[0, 4, 0, 6, 9, 3, 0, 7, 0],
+					[0, 0, 0, 0, 5, 0, 0, 0, 0],
+					[0, 7, 0, 4, 8, 2, 0, 5, 0],
+					[6, 3, 0, 0, 0, 0, 0, 8, 1],
+					[2, 0, 0, 0, 0, 0, 0, 0, 9],
+					[0, 0, 4, 9, 0, 1, 3, 0, 0],
+				],
+				data2:[],
+				opinfo:[]
+			};
+
+			document.addEventListener('frame-loaded', function (ev) {
+				modalApp = new Vue({
+					el: '#cpeManager',
+					data: dataProvider,
+					created: function() {
+						for(row = 0; row <9; ++row) {
+							for(col = 0; col < 9; ++col) {
+								if(this.data[row][col] == 0) {
+									this.data[row][col] = "";
+								}
+							}
+						}
+						this.init();
+					},
+					watch: {
+						data2:{
+							handler(newValue, oldValue) {
+								for(prow = 0; prow < 3; ++prow) {
+									for(pcol = 0; pcol < 3; ++pcol) {
+										for(row = 0; row < 3; ++row) {
+											for(col = 0; col < 3; ++col) {
+												var vold = oldValue[prow][pcol][row][col].value;
+												var vnew = newValue[prow][pcol][row][col].value;
+												if(vold != vnew) {
+													this.opinfo.push("wset [" + (pcol * 3 + col + 1) + "," + (prow * 3 + row + 1) + "] = " + info.values[0]);
+												}
+											}
+										}
+									}
+								}
+							},
+							deep: true
+						}
+					},
+					methods: {
+						init:function() {
+							this.data2.splice(0);
+							this.opinfo.splice(0);
+							for(prow = 0; prow < 3; ++prow) {
+								var lpalace = [];
+								for(pcol = 0; pcol < 3; ++pcol) {
+									var palace = [];
+									for(row = 0; row < 3; ++row) {
+										var line = [];
+										for(col = 0; col < 3; ++col) {
+											var value = dataProvider.data[prow * 3 + row][pcol * 3 +col];
+											if(value == "") {
+												value = "0";
+											}
+											if(typeof(value) == "string") {
+												value = parseInt(value);
+											}
+											var info = {
+												value:value?value:"",
+												confirmed:value != 0,
+												values:[]
+											}
+											for(v = 1; v <= 9 && !info.confirmed; ++v) {
+												info.values.push(v);
+											}
+											line.push(info)
+										}
+										palace.push(line);
+									}
+									lpalace.push(palace);
+								}
+								this.data2.push(lpalace);
+							}
+						},
+						clear: function() {
+							for(row = 0; row <9; ++row) {
+								for(col = 0; col < 9; ++col) {
+									this.data[row][col] = 0;
+								}
+							}
+						},
+						click:function(i, j) {
+							
+						},
+						placeholder:function(values) {
+							return values.join(",");
+						},
+						shrink2:function() {
+							for(prow = 0; prow < 3; ++prow) {
+								for(pcol = 0; pcol < 3; ++pcol) {
+									for(row = 0; row < 3; ++row) {
+										for(col = 0; col < 3; ++col) {
+											var info = this.data2[prow][pcol][row][col];
+											if(info.value != "")
+												continue;
+											if(info.values.length == 1) {
+												this.data2[prow][pcol][row][col].value = info.values[0];
+												this.opinfo.push("set [" + (pcol * 3 + col + 1) + "," + (prow * 3 + row + 1) + "] = " + info.values[0]);
+											}
+										}
+									}
+								}
+							}
+							for(prow = 0; prow < 3; ++prow) {
+								for(pcol = 0; pcol < 3; ++pcol) {
+									for(v = 1; v <= 10; ++v) {
+										var row = 4;
+										var col = 4;
+										var count = 0;
+										for(row1 = 0; row1 < 3; ++row1) {
+											for(col1 = 0; col1 < 3; ++col1) {
+												var info = this.data2[prow][pcol][row1][col1];
+												for(j = 0; j < info.values.length; ++j) {
+													if(info.values[j] == v) {
+														count += 1;
+														row = row1;
+														col = col1;
+													}
+												}
+											}
+										}
+										if(count == 1) {
+											var info = this.data2[prow][pcol][row][col];
+											if(info.value != "")
+												continue;
+											this.data2[prow][pcol][row][col].value = v;
+											this.opinfo.push("set2 [" + (pcol * 3 + col + 1) + "," + (prow * 3 + row + 1) + "] = " + v);
+										}
+									}
+								}
+							}
+						},
+						shrink:function() {
+							this.opinfo.push("do shrink");
+							for(prow = 0; prow < 3; ++prow) {
+								for(pcol = 0; pcol < 3; ++pcol) {
+									for(row = 0; row < 3; ++row) {
+										for(col = 0; col < 3; ++col) {
+											var info = this.data2[prow][pcol][row][col];
+											var value = info.value;
+											if(value == "")
+												continue;
+											if(typeof(value) == "string") {
+												value = parseInt(value);
+											}
+											for(row1 = 0; row1 < 3; ++row1) {
+												for(col1 = 0; col1 < 3; ++col1) {
+													if(row1 != row || col1 != col) {
+														for(j = 0; j < this.data2[prow][pcol][row1][col1].values.length; ++j) {
+															if(value == this.data2[prow][pcol][row1][col1].values[j]) {
+																this.data2[prow][pcol][row1][col1].values.splice(j, 1);
+															}
+														}
+													}
+												}
+											}
+
+
+											for(prow1 = 0; prow1 < 3; ++prow1) {
+												if(prow1 == prow) {
+													continue;
+												}
+
+												for(row1 = 0; row1 < 3; ++row1) {
+													for(j = 0; j < this.data2[prow1][pcol][row1][col].values.length; ++j) {
+														if(value == this.data2[prow1][pcol][row1][col].values[j]) {
+															this.data2[prow1][pcol][row1][col].values.splice(j, 1);
+														}
+													}
+												}
+											}
+
+											for(pcol1 = 0; pcol1 < 3; ++pcol1) {
+												if(pcol1 == pcol) {
+													continue;
+												}
+
+												for(col1 = 0; col1 < 3; ++col1) {
+													for(j = 0; j < this.data2[prow][pcol1][row][col1].values.length; ++j) {
+														if(value == this.data2[prow][pcol1][row][col1].values[j]) {
+															this.data2[prow][pcol1][row][col1].values.splice(j, 1);
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							this.shrink2();
+						}
+					}
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="main" id="cpeManager">
+			<div class="path-node" v-for="(row, py) in data" >
+				<div v-for="(col, px) in row" style="display:inline-block;">
+					<input type="text" v-model="data[py][px]" style="width: 14px" />
+				</div>
+			</div>
+			<div>
+				<button type="button" @click="clear()" >清除</button>
+				<button type="button" @click="init()" >初始化</button>
+				<button type="button" @click="shrink()" >排除候选</button>
+			</div>
+			<div class="path-node" v-for="(prow, py) in data2" >
+				<div v-for="(pcol, px) in prow" style="border:3px solid #00d900;display:inline-block;">
+					<div class="path-node" v-for="(row, y) in pcol" >
+						<span v-for="(col, x) in row" >
+							<a v-if='!col.confirmed'><input type="text" v-model="data2[py][px][y][x].value" style="width: 14px" /><p>{{placeholder(col.values)}}</p></a>
+							<input type="text" :value="col.value" style="width: 14px" disabled="disabled" v-else/>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div v-for="(row, x) in opinfo">
+				{{row}}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

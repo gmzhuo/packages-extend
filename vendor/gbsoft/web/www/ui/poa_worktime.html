@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/poa.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="/js/uiutils.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="/js/jqtable/css/jquery.dataTables.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="/js/jqtable/js/jquery.dataTables.min.js"></script>
+<link type="text/css" href="css/style.css" rel="stylesheet">
+<script type="text/javascript" src="poa_worktime.js"></script>
+<title>节假日安排</title>
+</head>
+<body>
+<div id="maindiv">
+    <table width="100%" class="display" id="holidays" cellspacing="0">
+		<thead>
+            <tr>
+	            	<th width="15%">年</th>
+                <th width="15%">月份</th>
+                <th width="15%">日期</th>
+                <th width="18%">类型</th>
+                <th width="18%">信息</th>
+                <th width="8%">编辑</th>
+                <th width="8%">删除</th>
+            </tr>
+		</thead>
+	</table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span><input type="button" value="添加节假日信息" 
+    	onclick="openSpecialDayEditDialog()"/ style="alignment-adjust:central"></div>
+</div>
+</body>
+<<script type="text/x-mustache" id="specialDayEdit">
+	<div id="dialog-specialDayEdit" title="节假日编辑">
+	<form method="POST" id="specialDayEditForm" name="specialDayEditForm"
+		action="/doform/SET_NET_CONFIG">
+		<div id="maindiv" style="width:100%">
+			<table id="logtable" style="width:100%">
+				<tbody id="loglist">
+                	<tr>
+						<td style="width:20%; text-align:right; padding-right:10px;">年份</td>
+						</td>
+						<td>
+							<input type="text" name="year" id="year" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:20%; text-align:right; padding-right:10px;">月份</td>
+						<td>
+							<select name="month" id="month" 
+								style="width:155px" >
+							<option value="1">一月</option>
+							<option value="2">二月</option>
+							<option value="3">三月</option>
+							<option value="4">四月</option>
+							<option value="5">五月</option>
+							<option value="6">六月</option>
+							<option value="7">七月</option>
+							<option value="8">八月</option>
+							<option value="9">九月</option>
+							<option value="10">十月</option>
+							<option value="11">十一月</option>
+							<option value="12">十二月</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:20%; text-align:right; padding-right:10px;">日期</td>
+						<td>
+							<select name="day" id="day" 
+								style="width:155px" >
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>
+							<option value="24">24</option>
+							<option value="25">25</option>
+							<option value="26">26</option>
+							<option value="27">27</option>
+							<option value="28">28</option>
+							<option value="29">29</option>
+							<option value="30">30</option>
+							<option value="31">31</option>
+							</select>
+						</td>
+					</tr>
+      				<tr>
+						<td style="width:20%; text-align:right; padding-right:10px;">类型</td>
+						<td>
+							<select name="type" id="type" 
+								style="width:155px" >
+							<option value="1">节假日</option>
+							<option value="2">补班</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:20%; text-align:right; padding-right:10px;">信息</td>
+						<td>
+							<select name="info" id="info" 
+								style="width:155px" >
+							<option value="补班">补班</option>
+							<option value="元旦">元旦</option>
+							<option value="春节">春节</option>
+							<option value="清明">清明</option>
+							<option value="五一">五一</option>
+							<option value="端午">端午</option>
+							<option value="高温假">高温假</option>
+							<option value="中秋">中秋</option>
+							<option value="国庆">国庆</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</form>
+	</div>	
+</script>
+</html>

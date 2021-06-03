@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/sysinfo.js"></script>
+<script src="../js/uiapi/ac.js"></script>
+<script src="../js/uiutils.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="ap_firmware.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="/js/jqtable/css/jquery.dataTables.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script type="text/javascript" language="javascript" src="/js/jqtable/js/jquery.dataTables.min.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title>用户列表</title>
+<script>
+
+function hostInfoDumpCB(json)
+{
+	json = json;
+	if(json.state != 0) {
+		return;
+	}
+
+	for(var j = 0; j < json.hosts.length; ++j){
+	//添加一行
+	var host = json.hosts[j];
+	if(host.status & 65536) {
+		host.info = "已认证";
+	} else if(host.status & (65536 * 4)){
+		host.info = "认证中";
+	} else {
+		host.info = "未认证";
+	}
+	usersTable.row.add( [ 
+		host.host,
+		host.pid || "未记录",
+		host.macaddr,
+		host.info]).draw( false );
+	}
+}
+
+$(function(){
+	usersTable = $('#users').DataTable({"language": {
+				"lengthMenu": "每页 _MENU_ 条记录",
+				"zeroRecords": "没有找到记录",
+				"info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+				"infoEmpty": "无记录",
+				"infoFiltered": "(从 _MAX_ 条记录过滤)",
+				"search": "查找",
+				"paginate": {
+        			"first":      "第一页",
+					"last":      "最后一页",
+					"next":       "下一页",
+					"previous":   "上一页"
+    			},
+		},});
+		$('#users tbody').on( 'mousedown', 'tr', function () {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				wtpDataTable.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+			} );
+	hostInfoDump(hostInfoDumpCB);
+});
+</script>
+</head>
+<body>
+  <div id="maindiv">
+    <table width="100%" class="display" id="users" cellspacing="0">
+		<thead>
+            <tr>
+                <th width="80">IP地址</th>
+                <th width="80">认证用户</th>
+                <th width="100">MAC地址</th>
+                <th width="80">认证状态</th>
+            </tr>
+		</thead>
+	</table>
+  </div>
+</body>
+</html>

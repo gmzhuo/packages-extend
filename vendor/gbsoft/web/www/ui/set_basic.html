@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<script src="../js/uiutils.js"></script>
+<script src="/js/zoneinfo.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<script>
+
+function presubmit()
+{
+	var values = {}
+
+	values["Device.DeviceInfo.HostName"] = $("#systemconfig input[name='hostname']").val();
+	values["Device.Time.LocalTimeZone"] = $("#systemconfig input[name='zonename']").val();
+	if($("#systemconfig input[name='y']").val()) {
+		values["Device.Time.LocalTimeSet.CurrentLocalTime"] = $("#systemconfig input[name='y']").val() + "-" +
+				$("#systemconfig input[name='mo']").val() + "-" +
+				$("#systemconfig input[name='d']").val() + "T" +
+				$("#systemconfig input[name='h']").val() + ":" +
+				$("#systemconfig input[name='mi']").val() + "-" +
+				"00Z";			
+	}
+		
+	values["Device.ManagementServer.PeriodReboot.Enable"] = $("#systemconfig input[name='autoreboot']:checked").val() == "yes"?"true":"false";
+	values["Device.ManagementServer.PeriodReboot.Hour"] = $("#systemconfig input[name='rebooth']").val() || "0";
+	values["Device.ManagementServer.PeriodReboot.Miniute"] = $("#systemconfig input[name='rebootm']").val() || "0"
+
+	function setupCB(json) {
+		alert("系统参数保存成功.!!!如果设置的重启时间在系统启动的两个小时内!!!,系统将忽略本次重启!!!并在下一个重启时间执行.");
+		dumpSystemConfig();
+		setTimeout("dumpSystemTime();", 3000);
+	}
+
+	var parameters = {
+		ParameterList: values,
+		SID: 2
+	};
+
+	TR069_RPC("SetParameterValues", parameters, setupCB);
+	return false;
+}
+
+var formTimeInited = false;
+function systemTimeCB(result)
+{
+	var ParameterList = result.ParameterList;
+
+	$("#systemTime").text(ParameterList["Device.Time.CurrentLocalTime"].Value);
+}
+
+function systemConfigCB(result)
+{
+	var data = {
+		domains: {
+			zonename: new Array(),
+		},
+	};
+
+	for(var j = 0; j < TZInfo.length; j++) {
+		data.domains.zonename.push({
+				value:TZInfo[j][0],
+				text:TZInfo[j][0],
+			})
+	}
+
+	var ParameterList = result.ParameterList;
+
+	$("#systemTime").text(ParameterList["Device.Time.CurrentLocalTime"].Value);
+
+	data.values = {}
+
+	data.values.hostname = ParameterList["Device.DeviceInfo.HostName"].Value
+	data.values.zonename = ParameterList["Device.Time.LocalTimeZone"].Value
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Sun"].Value == "true") {
+		data.values.D0 = "yes";
+	} else  {
+		data.values.D0 = "no";
+	}
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Mon"].Value == "true") {
+		data.values.D1 = "yes";
+	} else  {
+		data.values.D1 = "no";
+	}
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Tue"].Value == "true") {
+		data.values.D2 = "yes";
+	} else  {
+		data.values.D2 = "no";
+	}
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Wen"].Value == "true") {
+		data.values.D3 = "yes";
+	} else  {
+		data.values.D3 = "no";
+	}
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Thu"].Value == "true") {
+		data.values.D4 = "yes";
+	} else  {
+		data.values.D4 = "no";
+	}
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Fri"].Value == "true") {
+		data.values.D5 = "yes";
+	} else  {
+		data.values.D5 = "no";
+	}
+
+	if (ParameterList["Device.ManagementServer.PeriodReboot.Sat"].Value == "true") {
+		data.values.D6 = "yes";
+	} else  {
+		data.values.D6 = "no";
+	}
+
+	data.values.rebooth = ParameterList["Device.ManagementServer.PeriodReboot.Hour"].Value;
+	data.values.rebootm = ParameterList["Device.ManagementServer.PeriodReboot.Miniute"].Value;
+
+	$("#systemconfig").forminit2(data);
+}
+
+function dumpSystemConfig()
+{
+	var parameters ={ ParameterNames: [
+		"Device.DeviceInfo.DomainName",
+		"Device.DeviceInfo.HostName",
+		"Device.Time.LocalTimeZone",
+		"Device.Time.CurrentLocalTime",
+		
+		"Device.ManagementServer.PeriodReboot.Enable",
+		"Device.ManagementServer.PeriodReboot.Hour",
+		"Device.ManagementServer.PeriodReboot.Miniute",
+
+		"Device.ManagementServer.PeriodReboot.Sun",
+		"Device.ManagementServer.PeriodReboot.Mon",
+		"Device.ManagementServer.PeriodReboot.Tue",
+		"Device.ManagementServer.PeriodReboot.Wen",
+		"Device.ManagementServer.PeriodReboot.Thu",
+		"Device.ManagementServer.PeriodReboot.Fri",
+		"Device.ManagementServer.PeriodReboot.Sat",
+	]};
+	TR069_RPC("GetParameterValues", parameters, systemConfigCB);
+}
+
+function dumpSystemTime()
+{
+	var parameters ={ ParameterNames: [
+		"Device.Time.CurrentLocalTime"
+	]};
+	TR069_RPC("GetParameterValues", parameters, systemTimeCB);
+}
+
+$(function(){
+	dumpSystemConfig();
+	dumpSystemTime();
+	setInterval("dumpSystemTime()", 1000);
+});
+
+</script>
+<title>基本选项</title>
+</head>
+<body>
+<form id="systemconfig" method="POST" action="/doform/SET_USER_CONFIG">
+<input type="hidden" name="page" value="set_mng.asp" />
+	<div id="maindiv">
+		<div id="divtitle">基本选项</div>
+		<div id="divline">&nbsp;</div>
+		<table id="logtable">
+    <tbody id="loglist">
+			<tr>
+				<td class="tdhead"  style="width:20%">主机名称</td>
+				<td><input type="text" name="hostname" id="hostname" maxlength="32" /></td>
+			</tr>
+			<tr>
+				<td class="tdhead">系统时区</td>
+				<td>
+					<select id="zonename" name="zonename" size="1">
+						<option value="UTC" >UTC</option>
+						<option value="Asia/Chongqing" selected="selected">Asia/Chongqing</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdhead">系统时间</td>
+				<td><div id="systemTime"></div></td>
+			</tr>
+			<tr>
+				<td class="tdhead">修改时间</td>
+				<td>
+					<input id="y" name="y" type="text" value=""
+						style="width:40px" />年&nbsp;
+					<input id="mo" name="mo" type="text" value=""
+						style="width:20px" />月&nbsp;
+					<input id="d" name="d" type="text" value=""
+						style="width:20px" />日&nbsp;
+					<input id="h" name="h" type="text" value=""
+						style="width:20px" />时&nbsp;
+					<input id="mi" name="mi" type="text" value=""
+						style="width:20px" />分&nbsp;
+				</td>
+			</tr>
+		</tbody>
+    </table>
+    <div id="divtitle">定时重启</div>
+    <div id="divline">&nbsp;</div>
+		<table id="logtable">
+    <tbody id="loglist">
+    	<tr>
+				<td class="tdhead" style="width:20%">自动重启</td>
+				<td>
+					<span class="v">
+						<label><input type="radio" name="autoreboot" id="autorebooton" value="yes" checked>
+							<span>开启</span></label>
+						<label><input type="radio" name="autoreboot" id="autorebootoff" value="no">
+							<span>关闭</span></label>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdhead">重启时间</td>
+				<td>
+					<input id="rebooth" name="rebooth" type="text" value=""
+						style="width:40px" />时
+					<input id="rebootm" name="rebootm" type="text" value=""
+						style="width:40px" />分&nbsp;&nbsp;
+				</td>
+			</tr>
+			<tr>
+				<td class="tdhead">重启星期</td>
+				<td>
+					<input id="D0" name="D0" type="checkbox" value="yes"  /><label for="D0">日</label>&nbsp;
+					<input id="D1" name="D1" type="checkbox" value="yes"  /><label for="D1">一</label>&nbsp;
+					<input id="D2" name="D2" type="checkbox" value="yes"  /><label for="D2">二</label>&nbsp;
+					<input id="D3" name="D3" type="checkbox" value="yes"  /><label for="D3">三</label>&nbsp;
+					<input id="D4" name="D4" type="checkbox" value="yes"  /><label for="D4">四</label>&nbsp;
+					<input id="D5" name="D5" type="checkbox" value="yes"  /><label for="D5">五</label>&nbsp;
+					<input id="D6" name="D6" type="checkbox" value="yes"  /><label for="D6">六</label>&nbsp;
+				</td>
+			</tr>
+			
+		</tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span>
+    	<input type="button" value="确定"  onclick="presubmit()"/>
+    	<input type="button" value="取消" onclick="javascript:window.location.reload();"/>
+    </div>
+  </div>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+
+    
+    
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>HRMS - 登录</title>
+    <link rel="shortcut icon" href="hrms/favicon.ico">
+    <link href="hrms/css/bootstrap.css" rel="stylesheet">
+    <link href="hrms/css/font-awesome.css" rel="stylesheet">
+    <link href="hrms/css/animate.css" rel="stylesheet">
+    <link href="hrms/css/style.css" rel="stylesheet">
+    <link href="hrms/css/login.css" rel="stylesheet">
+    <!--[if lt IE 8]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <style type="text/css">
+    	@media (max-width:768px){
+    		*{font-size:28px;}
+    		.form-control,h4{font-size:20px;}
+    	}
+    </style>
+    
+    <script>
+        if(window.top!==window.self){window.top.location=window.location};
+    </script>
+
+</head>
+
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="signin-info">
+                    <div class="logopanel m-b">
+                        <h1>[ HRMS ]</h1>
+                    </div>
+                    <div class="m-b"></div>
+                    <h4>欢迎使用 <strong>HRMS</strong></h4>
+                    <ul class="m-b">
+                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> <a href="http://39.108.226.50:8080/train/rest/user/login.html"  target="view_window">....</a></li>
+                    </ul>
+                    
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <form id="login_form" method="post" action="">
+                    <h2 class="no-margins">登录到HRMS</h2>
+                    <input id="name" name="username" type="text" class="form-control uname" placeholder="用户名" />
+                    <input name="password" type="password" class="form-control pword m-b" placeholder="口令" />
+                    
+                    <button type="submit" id="btn-login" onclick="userLogin(document.loginform)" class="btn btn-success btn-block">登录</button>
+                </form>
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 2016 All Rights Reserved. ....
+            </div>
+        </div>
+    </div>
+<script src="hrms/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+	function loginCB(json, status, context)
+	{
+		if(json.result == "success") {
+			window.location = "index.html"
+		} else {
+			alert("登录失败，无效的用户名或密码");
+		}
+	}
+
+	function userLogin(f)
+	{
+		var myDate = new Date();
+		login($("input[name='username']").val(), $("input[name='password']").val(), myDate.getTime()/1000, loginCB);
+		return false;
+	}
+
+	var name = "";
+	function changeImg() {
+		var imgSrc = $("#imgObj");
+		var src = imgSrc.attr("src");
+		imgSrc.attr("src", chgUrl(src));
+	}
+	//...   
+	//................................   
+	function chgUrl(url) {
+		var timestamp = (new Date()).valueOf();
+		url = url.substring(0, 23);
+		if ((url.indexOf("&") >= 0)) {
+			url = url + "&tamp=" + timestamp;
+		} else {
+			url = url + "?timestamp=" + timestamp;
+		}
+		return url;
+	}
+	$(function(){
+		$("#index_code").val("");
+		if(name!=="")
+			$("#name").val(name);
+	});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="/js/tr069.js"></script>
+<script src="../js/uiapi/login.js"></script>
+</body>
+</html>
+

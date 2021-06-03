@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{
+	overflow-x:hidden;                /*隐藏底部的横向滚动条*/
+	scrollbar-arrow-color: #fff;   /*三角箭头的颜色*/
+	scrollbar-face-color: #ccc;       /*立体滚动条的颜色*/
+	scrollbar-3dlight-color: #ccc;    /*立体滚动条亮边的颜色*/
+	scrollbar-highlight-color: #999;  /*滚动条空白部分的颜色*/
+	scrollbar-shadow-color: #999;     /*立体滚动条阴影的颜色*/
+	scrollbar-darkshadow-color: #666; /*滚动条强阴影颜色*/
+	scrollbar-track-color: #fff;      /*立体滚动条背景颜色*/
+	scrollbar-base-color: #f8f8f8;    /*滚动条的基本颜色*/
+}
+
+/* Turn on a 13x13 scrollbar */
+::-webkit-scrollbar {
+  width: 13px;/*对垂直流动条有效*/
+  height: 13px;/*对水平流动条有效*/
+}
+/*CSS的坐标系，左上角为(0,0),往右往下为增加，往上往左为减少*/
+/*显示滚动条上方的渐增按钮*/
+::-webkit-scrollbar-button:start:decrement,
+/*显示滚动条上方的渐减按钮*/
+::-webkit-scrollbar-button:end:increment {
+  display: block
+}
+
+/*隐藏滚动条上方的渐增按钮*/
+::-webkit-scrollbar-button:vertical:start:increment,
+::-webkit-scrollbar-button:vertical:end:decrement {
+  display: none;
+
+}
+
+/* 定义垂直滚动条渐增按扭的样式 */
+::-webkit-scrollbar-button:vertical:increment {
+  background-color: #ccc;
+  border: 1px solid #999;
+}
+
+/* 定义垂直滚动条渐减按扭的样式 */
+::-webkit-scrollbar-button:vertical:decrement {
+  background-color: #ccc;
+  border: 1px solid #999;
+}
+/*　　scrollbar-track　　　　上面是　scrollbar-track-piece　　*/
+/*　　scrollbar-track-piece　上面是　四个按扭与scrollbar-track-piece:start与scrollbar-track-piece:end与scrollbar-thumb　*/
+/* 垂直滚动条的第一层轨道*/
+::-webkit-scrollbar-track:vertical {
+  background-color: blue;
+  border: 1px solid pink;
+}
+
+
+/* 垂直滚动条的第二层轨道　*/
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+/* 垂直滚动条的第三层轨道的上段　*/
+::-webkit-scrollbar-track-piece:vertical:start {
+  border: 1px solid #ccc;
+}
+
+/* 垂直滚动条的滑动块 */
+::-webkit-scrollbar-thumb:vertical {
+  background-color: #ccc;
+  border: 1px solid #999;
+}
+
+/* Corner */
+::-webkit-scrollbar-corner:vertical {
+  background-color: black;
+}
+/*  http://www.cssportal.com/css-properties/resize.htm  */
+/* Resizer */
+::-webkit-scrollbar-resizer:vertical {
+  background-color:orange;
+}

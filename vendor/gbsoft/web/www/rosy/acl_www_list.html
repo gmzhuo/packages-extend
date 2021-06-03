@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/network.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/appiden.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="ap_configs.js"></script>
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<script type="text/javascript" src="js/common.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+
+<title>网址黑白名单</title>
+</head>
+<body>
+<div id="maindiv">
+  	<div id="divtitle"><span id="curgpname">网址白名单</span></div>
+    <table id="logtable" style="width:99%">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="30%" align="center">网址域名</th>
+        <th width="30%" align="center">备注</th>
+        <th width="8%" align="center">删除</th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<script type="text/x-mustache" id="wwwWhites">
+			{{#wwWhites}}
+			<tr class = "wwWhite">
+				<td>{{wwwDomain}}</td>
+                <td>{{memo}}</td>
+				<td class="center" ><a data="{{wwwDomain}}" class="ww-white-delete">
+					<img src="images/remove.gif" width="16" height="16">
+				</td>
+            </tr>
+			{{/wwwWhites}}
+		</script>
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  <div class="btns">
+                <form class="form form-horizontal" id="wwwWhiteForm" name="wwwWhiteForm"  action="#" autocomplete="off">
+                    	网址域名：<input id="wwwDomain" name="wwwDomain" type="text" value="" style="width:100px;height:30px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   		备注：<input id="memo" name="memo" type="text" value="" style="width:100px;height:30px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    	<button type="submit" class="btn btn-primary btn-l "><span>添加</span></button>
+                	</form>
+                </div>
+<br/><br/>
+<div id="maindiv">
+  	<div id="divtitle"><span id="curgpname">网址黑名单</span></div>
+    <table id="logtable" style="width:99%">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="30%" align="center">网址域名</th>
+        <th width="30%" align="center">备注</th>
+        <th width="8%" align="center">删除</th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<script type="text/x-mustache" id="qqBlacks">
+			{{#wwwBlacks}}
+			<tr class = "wwwBlack">
+				<td>{{wwwDomain}}</td>
+                <td>{{memo}}</td>
+				<td class="center" ><a data="{{wwwDomain}}" class="www-black-delete">
+					<img src="images/remove.gif" width="16" height="16">
+				</td>
+            </tr>
+			{{/wwwBlacks}}
+		</script>
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  <div class="btns">
+                <form class="form form-horizontal" id="wwwBlackForm" name="wwwBlackForm"  action="#" autocomplete="off">
+                    	网址域名：<input id="wwwDomain" name="wwwDomain" type="text" value="" style="width:100px;height:30px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   		备注：<input id="memo" name="memo" type="text" value="" style="width:100px;height:30px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    	<button type="submit" class="btn btn-primary btn-l "><span>添加</span></button>
+                	</form>
+                </div>
+</body>
+<script src="acl_www_list.js"></script>
+</html>
+

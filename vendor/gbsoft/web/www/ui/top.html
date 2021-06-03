@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="/js/tr069.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<link type="text/css" href="css/main.css" rel="stylesheet">
+<title>路由器管理</title>
+<style>
+body{background:#ddd;}
+</style>
+</head>
+<body>
+<form name="loginform" method="post" action="/logout/auth">
+<div style="height:55px; text-align:center;">
+  <div id="alogo" style="height:60px; margin-top:0px; text-align:left;background-color:#fff;"><img src="images/logo.png" alt="LOGO" width="194" height="45" style="margin-top:5px; margin-left:20px;"><span style="position:relative; left:700px; top:0px;"><a href="#" id="logout" style="font-size:14px">退出登录</a></span></div>
+</div>
+<div style="height:8px; background-color:#eee;margin-left:auto; margin-right:auto; width:1024px;"></div>
+<div id="mlogo" style="text-align:left; margin-left:auto; margin-right:auto; width:1024px; background-color:#429cF5; height:55px;">
+    <div style="width:1024px; line-height:90px; background-color:#429cF5;">
+      <div style="width:1024px;">
+        <ul id="mm1" style="list-style:none; margin:0px; padding:0px;">
+            <li><span class="mainmenuover" style="vertical-align:bottom; line-height:30px;" id="status">运行状态</span></li>
+            <li><span class="mainmenuout" style="vertical-align:bottom; line-height:30px;" id="network">网络配置</span></li>
+            <li><span class="mainmenuout" style="vertical-align:bottom; line-height:30px;" id="mkt">认证广告</span></li>
+            <li><span class="mainmenuout" style="vertical-align:bottom; line-height:30px;" id="set">系统工具</span></li>
+        </ul>
+      </div>
+    </div>
+</div>
+<div style="height:8px; background-color:#eee;margin-left:auto; margin-right:auto; width:1024px;"></div>
+<div style="background:#ddd">
+<div style="margin-left:auto; margin-right:auto; width:1024px;background-color:#fff;">
+  <table id="mbody" align="center" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr>
+      <td id="menu">
+      	<div id="submenu_status" style="display: block;">
+          <ul>
+            <!--<li id="status_user">在线用户</li>-->
+            <li class="menumouseout" id="status_sys">系统信息</li>
+            <li class="menumouseout menuclick" id="status_stationlist">终端列表</li>
+          </ul>
+        </div>
+        <div id="submenu_network" style="display:none;">
+          <ul>
+            <li class="menumouseout" id="network_inner">内网配置</li>
+            <li class="menumouseout" id="network_outer">外网配置</li>
+            <li class="menumouseout" id="ap_config">无线配置</li>
+            <li class="menumouseout" id="network_ddns">DDNS</li>
+            <li class="menumouseout" id="network_natpmp">端口映射</li>
+            <li class="menumouseout" id="network_firewall">防火墙规则</li>
+          </ul>
+        </div>
+        <div id="submenu_poa" style="display:none;">
+          <ul>
+            <li class="menumouseout" id="poa_set">OA基本设置</li>
+            <li class="menumouseout" id="poa_device">设备维护</li>
+            <li class="menumouseout" id="poa_department">部门信息</li>
+            <li class="menumouseout" id="poa_employee">员工信息</li>
+            <li class="menumouseout" id="poa_macowner">手机MAC地址</li>
+            <li class="menumouseout" id="poa_worktime">假日设置</li>
+            <li class="menumouseout" id="poa_attendance_report">考勤报表</li>
+            <li class="menumouseout" id="poa_task_report">任务报表</li>
+          </ul>
+        </div>
+        <div id="submenu_acl" style="display:none;">
+          <ul>
+            <li class="menumouseout" id="acl_config">基本配置</li>
+            <li class="menumouseout" id="acl_rule">上网行为规则</li>
+            <li class="menumouseout" id="acl_qq_list">QQ黑白名单</li>
+            <li class="menumouseout" id="acl_www_list">网址黑白名单</li>
+          </ul>
+        </div>
+        <div id="submenu_mkt" style="display:none;;">
+          <ul>
+            <li class="menumouseout" id="mkt_config">认证设置</li>
+            <li class="menumouseout" id="mkt_whitemac">MAC白名单</li>
+            <li class="menumouseout" id="mkt_users">在线用户</li>
+          </ul>
+        </div>
+        <div id="submenu_emenu" style="display:none;;">
+          <ul>
+            <li class="menumouseout" id="emenu_config">基本设置</li>
+            <li class="menumouseout" id="emenu_menu">菜品配置</li>
+            <li class="menumouseout" id="emenu_set">座桌配置</li>
+            <li class="menumouseout" id="emenu_analysis">数据分析</li>
+          </ul>
+        </div>
+        <div id="submenu_wl" style="display:none;">
+          <ul>
+            <li class="menumouseout" id="ap_configs">配置管理</li>
+            <li class="menumouseout" id="ap_firmware">AP固件管理</li>
+            <li class="menumouseout" id="ap_radius">RADIUS服务</li>
+            <li class="menumouseout" id="ap_radius_cert">RADIUS证书</li>
+          </ul>
+        </div>
+        <div id="submenu_set" style="display:none;">
+          <ul>
+						<li class="menumouseout" id="set_basic">基本选项</li>
+            <li class="menumouseout" id="set_mng">登陆管理</li>
+            <li class="menumouseout" id="set_set">配置管理</li>
+            <li class="menumouseout" id="set_log">系统日志</li>
+          </ul>
+        </div>
+        </td>
+    </tr>
+  </tbody></table>
+</div>
+<div style="height:8px; background-color:#eee;margin-left:auto; margin-right:auto; width:1024px;"></div>
+</div>
+</form>
+
+</body></html>

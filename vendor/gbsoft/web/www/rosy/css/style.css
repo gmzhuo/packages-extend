@@ -1,0 +1,218 @@
+@charset "utf-8";
+/* CSS Document */
+
+.checkbox_off{ background:url(../index_files/status_aplist_data/radio_off.jpg) no-repeat; width:95px; height:26px;border: 0px; text-align:left; padding-left:58px;}
+.checkbox_on{ background:url(../index_files/status_aplist_data/radio_on.jpg) no-repeat; width:95px; height:26px;border: 0px; text-align:left; padding-left:12px;}
+
+body{
+	background:#f8f8f8;
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+}
+a{font-weight:bold; color:#429cF5; text-decoration:none;};
+#maindiv{
+	margin:20px;
+}
+#divtitle
+{
+	height:30px; background:#429cF5;
+	font-size:16px; font-weight:bold;
+	color:#FFF; line-height:30px;
+	padding-left:20px;
+}
+#divgroup{
+	line-height:40px;
+	background:#EEE;
+}
+#divline{
+	background:#333;
+	font-size:1px;
+	height:2px;
+}
+
+#divgroup a, #divgroup a:visited, #divgroup a:link{
+	cursor:pointer;
+	cursor:hand;
+	background:#429cF5;
+	display:inline-block;
+	line-height:30px;
+	margin:1px;
+	width:100px;
+	text-align:left;
+	font-size:14px;
+	text-decoration:none;
+}
+#divgroup a:active{
+	cursor:pointer;
+	cursor:hand;
+	background:#03F;
+	display:inline-block;
+	line-height:30px;
+	margin:1px;
+	width:100px;
+	text-align:left;
+	font-size:14px;
+	text-decoration:none;
+	color:#FF0;
+}
+.normalgp{
+	font-weight:bold;
+	color:#fff;
+}
+
+#divgroup a:hover, #divgroup a:active, .divgpoff{
+	background:#03C;
+	color:#000;
+}
+
+.addgp{
+	background:url(../index_files/status_aplist_data/images/addgp.png) #F00;
+	color:#F00;
+	font-size:16px;
+	font-weight:bold;
+}
+.ungp{
+	background:url(../index_files/status_aplist_data/images/addgp.png) #F00;
+	color:#F00;
+	font-size:16px;
+	font-weight:bold;
+}
+.delgp{
+	position:relative; height:30px; font-size:8px; padding:0px; width:40px;
+	border:solid 1px #666;
+	background:#666;
+	margin:0px;
+	color:#FFF;
+}
+.delgp:hover{
+	position:relative; height:30px; font-size:8px; padding:0px; width:40px;
+	border:solid 1px #666;
+	background:#333;
+	margin:0px;
+	color:#FC0;
+}
+.delgpspan
+{
+	line-height:12px;
+	text-align:right;
+	display:inline-block;
+	width:140px;
+	background-color:transparent;
+	padding-left:3px;
+}
+.divgpone
+{
+	display:inline-block;
+	line-height:40px;
+	margin:1px;
+	width:145px;
+	text-align:center;
+	font-size:14px;
+	z-index:100;
+}
+.delgponex{	
+	background:#429cF5;
+	display:inline-block;
+	line-height:40px;
+	width:145px;
+	text-align:center;
+	font-size:14px;
+	border:solid 1px #FFF;
+	z-index:100;
+}
+
+#editgroup
+{
+	background:#EEE;
+	line-height:35px;
+}
+.head
+{
+	display:inline-block;
+	width:35%;
+	text-align:right;
+	padding-right:30px;
+	height:35px;
+	line-height:35px;
+}
+#listbody, #divoneline{
+	height:35px;
+	line-height:35px;
+	border-bottom:1px solid #000;
+	background-color:transparent;
+}
+#divsavebtn{
+	text-align:left;
+	line-height:40px;
+	height:40px;
+	vertical-align:middle;
+}
+#divsavebtn input[type='button']{
+	margin-right:20px;
+}
+#logtable{
+	width:980px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.divcenter{
+	margin-left:auto;
+	margin-right:auto;
+}
+#logtable th
+{
+	line-height:30px;
+}
+#loglist td{
+	background:#eee;
+	line-height:25px;
+	font-size:12px;
+}
+
+#loglist tr:hover{
+	background:#ccc;
+	line-height:25px;
+	font-size:12px;
+	cursor:default;
+}
+#loglist tr:hover td{background:none;}
+
+#aplist td{
+	background:#eee;
+	line-height:25px;
+	font-size:12px;
+}
+
+#aplist tr:hover{
+	background:#ccc;
+	line-height:25px;
+	font-size:12px;
+	cursor:default;
+}
+#aplist tr:hover td{background:none;}
+
+.normaltable{
+	margin-left:auto;
+	margin-right:auto;
+}
+.normaltable td{
+	background:#eee;
+	line-height:25px;
+	font-size:12px;
+}
+
+.normaltable tr:hover{
+	background:#ccc;
+	line-height:25px;
+	font-size:12px;
+	cursor:default;
+}
+.normaltable tr:hover td{background:none;}
+
+.tdhead{
+	padding-right:10px;
+	text-align:right;
+}
+.adurltext{
+	width:250px;
+	margin-left:20px;
+}

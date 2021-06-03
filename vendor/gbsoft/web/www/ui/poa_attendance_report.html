@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/poa.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="/js/uiutils.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="/js/jqtable/css/jquery.dataTables.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="/js/jqtable/js/jquery.dataTables.min.js"></script>
+<link type="text/css" href="css/style.css" rel="stylesheet">
+
+<title>AP列表</title>
+</head>
+<body>
+<div id="maindiv">
+    <table width="100%" class="display" id="wtps" cellspacing="0">
+		<thead>
+            <tr>
+                <th width="7%">姓名</th>
+                <th width="10%">员工编号</th>
+                <th width="8%">事假</th>
+                <th width="8%">病假</th>
+                <th width="8%">旷工</th>
+                <th width="8%">迟到</th>
+				<th width="8%">早退</th>
+            </tr>
+		</thead>
+	</table>
+</div>
+<script src="poa_attendance_report.js"></script>
+<script type="text/x-mustache" id="wtpEdit">
+	<div id="dialog-wtpEdit" title="AP配置">
+	<form name="wtpEditForm" id="wtpEditForm" action="#" class="form form-group"
+		style="padding-top:25px;padding-right:25px;padding-left:25px">
+		<input type="hidden" id="name" name="name" maxlength="32"/>
+		<div class="form-item form-item-input form-item-pppoe">
+			<label class="k">安装位置</label>
+			<span class="v"><input type="text" name="location" id="location" value="" class="ipt-text" 
+				autocomplete="off" datatype="text" maxLength="31" minLength="1" 
+				reqMsg="location" /></span>
+			<em class="t"></em>
+		</div>
+		<br/>
+		<div class="form-item form-item-input form-item-pppoe">
+			<label class="k">归&nbsp;属&nbsp;组&nbsp;</label>
+			<select id="groupname" name="groupname" style="width:155px;">
+		</div>
+	</form>
+	</div>
+</script>
+</body></html>

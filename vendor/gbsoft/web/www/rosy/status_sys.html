@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/iframe_content.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<link rel="stylesheet" href="cascade.css?v=git-18.297.31128-0073c8d">
+<title></title>
+<script type="text/javascript">
+
+function showSysinfo()
+{
+	function sysinfoResult(result)
+	{
+		var ParameterList = result.ParameterList;
+		var uptime = parseInt(ParameterList["Device.DeviceInfo.UpTime"].Value);
+		var day = uptime;
+		day /= (3600 * 24);
+		day = day.toFixed(0);
+
+		var hour = uptime;
+		hour /= 3600;
+		hour = hour.toFixed(0);
+		hour %= 24;
+
+		var miniute = uptime;
+		miniute /= 60;
+		miniute = miniute.toFixed(0);
+		miniute %= 60;
+
+		var second = uptime;
+		second %= 60;
+
+		$("#uptime").text(day + "天" + hour + "小时" + miniute + "分钟" + second + "秒");
+		$("#currenttime").text(ParameterList["Device.Time.CurrentLocalTime"].Value);
+		$("#softversion").text(ParameterList["Device.DeviceInfo.SoftwareVersion"].Value);
+		$("#model").text(ParameterList["Device.DeviceInfo.ModelName"].Value);
+		$("#hardwareversion").text(ParameterList["Device.DeviceInfo.HardwareVersion"].Value);
+		$("#sn").text(ParameterList["Device.DeviceInfo.SerialNumber"].Value);
+
+		var memfree = parseInt(ParameterList["Device.DeviceInfo.MemoryStatus.Free"].Value);
+		var memtotal = parseInt(ParameterList["Device.DeviceInfo.MemoryStatus.Total"].Value);
+		var memused = memtotal - memfree;
+		var rateused = memused * 100 / memtotal;
+		rateused = rateused.toFixed(2);
+		$("#memused").text(rateused + "%");
+	}
+
+	var parameters ={ ParameterNames: [
+		"Device.DeviceInfo.Manufacturer",
+		"Device.DeviceInfo.ManufacturerOUI",
+		"Device.DeviceInfo.ModelName",
+		"Device.DeviceInfo.Description",
+		"Device.DeviceInfo.ProductClass",
+		"Device.DeviceInfo.SerialNumber",
+		"Device.DeviceInfo.HardwareVersion",
+		"Device.DeviceInfo.SoftwareVersion",
+		"Device.DeviceInfo.MemoryStatus.Total",
+		"Device.DeviceInfo.MemoryStatus.Free",
+		
+		"Device.Time.CurrentLocalTime",
+		"Device.DeviceInfo.UpTime",
+	]};
+	TR069_RPC("GetParameterValues", parameters, sysinfoResult);
+	
+
+}
+
+showSysinfo();
+</script>
+</head>
+<body>
+<h2 name="content">系统状态</h2>
+<div class="cbi-section">
+	<h3><System</h3>
+	<div class="table" width="100%">
+		<div class="tr"><div class="td left" width="33%">设备型号</div><div id="model" class="td left"></div></div>
+		<div class="tr"><div class="td left" width="33%">内存使用率</div><div id="memused" class="td left"></div></div>
+		<div class="tr"><div class="td left" width="33%">系统时间</div><div id="currenttime" class="td left"></div></div>
+		<div class="tr"><div class="td left" width="33%">开机时间</div><div id="uptime" class="td left"></div></div>
+		<div class="tr"><div class="td left" width="33%">软件版本号</div><div id="softversion" class="td left"></div></div>
+		<div class="tr"><div class="td left" width="33%">硬件版本号</div><div id="hardwareversion" class="td left"></div></div>
+		<div class="tr"><div class="td left" width="33%">产品序列号</div><div id="sn" class="td left"></div></div>
+	</div>
+</div>
+</body>
+</html>

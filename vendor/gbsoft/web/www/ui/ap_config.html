@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiutils.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="ap_config.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<style>
+body{overflow-y:auto; overflow-x:auto;}
+.Left{float:left; height:100%; width:280px; border-right:solid 3px #ddd; padding:0 10px;}
+.Right{float:left; width:400px; height:100%;}
+</style>
+<title>配置管理</title>
+</head>
+<body>
+
+<div style="height:1024px;"> 
+  <div id="leftgp" class="Left">
+  	<div id="wifitree" align="top"></div>
+  </div>
+
+  <div id="maindiv"  class="Right">
+    <div id="radioEdit">
+  	<div id="divtitle" style="width:684px;"><span id="curgpname">无线设备</span></div>
+    <form method="POST" id="radioEditForm">
+    <input type="hidden" value="" name="RadioPathName">
+    <table id="logtable" style="width:684px">
+      <tbody id="aplist" style="font-size:12px;">
+      	<tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">开关</td>
+          <td>
+          	<label><input type="radio" name="Enable" id="wifion" value="true" checked>
+				<span>开启</span></label>
+			<label><input type="radio" name="Enable" id="wifioff" value="false">
+				<span>关闭</span></label>
+          </td>
+        </tr>
+        <tr>
+            	<td style="width:35%; text-align:right; padding-right:10px;">
+					发射功率
+				</td>
+					<td>
+						<select id="TransmitPower" name="TransmitPower" style="width:155px;">
+							<option value="0">0 dBm (1 mW)</option>
+							<option value="2">4 dBm (2 mW)</option>
+							<option value="4">5 dBm (3 mW)</option>
+							<option value="6">7 dBm (5 mW)</option>
+							<option value="8">8 dBm (6 mW)</option>
+							<option value="11">9 dBm (7 mW)</option>
+							<option value="14">10 dBm (10 mW)</option>
+							<option value="17">11 dBm (12 mW)</option>
+							<option value="20">12 dBm (15 mW)</option>
+							<option value="23">13 dBm (19 mW)</option>
+							<option value="26">14 dBm (25 mW)</option>
+							<option value="29">15 dBm (31 mW)</option>
+							<option value="32">16 dBm (39 mW)</option>
+							<option value="35">17 dBm (50 mW)</option>
+							<option value="38">18 dBm (63 mW)</option>
+							<option value="41">19 dBm (79 mW)</option>
+							<option value="44">20 dBm (100 mW)</option>
+							<option value="46">21 dBm (126 mW)</option>
+							<option value="48">22 dBm (159 mW)</option>
+							<option value="51">23 dBm (200 mW)</option>
+							<option value="54">24 dBm (252 mW)</option>
+							<option value="57">25 dBm (318 mW)</option>
+							<option value="60">26 dBm (400 mW)</option>
+							<option value="64">27 dBm (500 mW)</option>
+							<option value="68">28 dBm (636 mW)</option>
+							<option value="72">29 dBm (800 mW)</option>
+							<option value="77">30 dBm (1000 mW)</option>
+							<option value="82">31 dBm (1272 mW)</option>
+							<option value="90">32 dBm (1600 mW)</option>
+							<option value="100">33 dBm (2000 mW)</option>
+						</select>
+					</td>
+            </tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">HWMODE</td>
+          <td><select id="OperatingStandards" name="OperatingStandards" style="width:155px;">
+            <option value="b,g,n">11bgn</option>
+						<option value="b">11b</option>
+						<option value="g">11g</option>
+						<option value="n">11n</option>
+						<option value="b,g">11bg</option>
+						<option value="a">11a</option>
+						<option value="b,n">11bn</option>
+						<option value="g,n">11gn</option>
+						<option value="a">11ac</option>
+            </select></td>
+        </tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">频宽</td>
+          <td><select id="OperatingChannelBandwidth" name="OperatingChannelBandwidth" style="width:155px;">
+              <option value="HT20" selected>HT20</option>
+			<option value="HT40">HT40</option>
+			<option value="HT40-">HT40-</option>
+			<option value="HT40+">HT40+</option>
+			<option value="VHT20">VHT20</option>
+			<option value="VHT40">VHT40</option>
+			<option value="VHT80">VHT80</option>
+			<option value="VHT80_80">VHT80_80</option>
+			<option value="VHT160">VHT160</option>
+            </select></td>
+        </tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">信道</td>
+          <td><select id="Channel" name="Channel" style="width:155px;">
+              <option value="0">自动选择</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+	      <option value="36">36</option>
+              <option value="40">40</option>
+              <option value="44">44</option>
+              <option value="48">48</option>
+              <option value="52">52</option>
+              <option value="56">56</option>
+              <option value="60">60</option>
+              <option value="64">64</option>
+              <option value="100">100</option>
+              <option value="104">104</option>
+              <option value="108">108</option>
+              <option value="112">112</option>
+              <option value="116">116</option>
+              <option value="120">120</option>
+              <option value="124">124</option>
+              <option value="128">128</option>
+              <option value="132">132</option>
+              <option value="136">136</option>
+              <option value="140">140</option>
+              <option value="149">149</option>
+              <option value="153">153</option>
+              <option value="157">157</option>
+              <option value="161">161</option>
+              <option value="165">165</option>
+            </select></td>
+        </tr>  
+      </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span>
+      <input type="button" id="btadd" value="保存" onclick="radioSubmit()"/>
+      <!--<input type="button" value="确定" onclick="presubmit()"/>-->
+      <input type="button" value="取消" onclick="javascript:window.location.reload();"/>
+    </div>
+    </form>
+    </div>
+    <div id="ssidEdit" style="display:none">
+    <div id="divtitle" style="width:684px;"><span id="curgpname">无线服务SSID</span></div>
+    <form method="POST" id="wlanEditForm">
+    	<input type="hidden" value="" name="AccessPointPathName">
+    	<input type="hidden" value="" name="SSIDReference">
+    	<table id="logtable" style="width:684px">
+      <tbody id="aplist" style="font-size:12px;">
+        
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">SSID</td>
+          <td><input type="text" id="SSID" name="SSID" maxlength="32"/></td>
+        </tr>
+	 <tr>
+		<td style="width:35%; text-align:right; padding-right:10px;">工作模式</td>
+		<td>
+			<select id="mode" name="mode" style="width:155px;">
+				<option value="ap" selected>AP(接入点)</option>
+				<option value="wdsap">中继接入</option>
+			</select>
+		</td>
+	</tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">隐藏网络</td>
+          <td>
+          	<label for="hidessid"> <input type="checkbox" id="SSIDAdvertisementEnabled" 
+				name="SSIDAdvertisementEnabled" value="true" > <span>隐藏网络不被发现</span></label>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">安全模式</td>
+          <td><select id="encryption" name="encryption" style="width:155px;">
+              <option value="none">禁用</option>
+              <option value="psk">WPA-PSK</option>
+              <option value="psk2">WPA2-PSK</option>
+              <option value="mixed-psk">WPA-PSK/WPA2-PSK</option>
+              <option value="wpa">WPA-EAP(802.1x)</option>
+              <option value="wpa2">WPA2-EAP(802.1x)</option>
+            </select></td>
+        </tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">密钥</td>
+          <td><input type="text" id="KeyPassphrase" name="KeyPassphrase" /></td>
+        </tr>
+	<tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">vlan</td>
+          <td><input type="text" id="VLAN" name="VLAN" /></td>
+        </tr>
+        <tr>
+          <td style="width:35%; text-align:right; padding-right:10px;">最大无线客户端</td>
+          <td><input type="text" id="MaxAssociatedDevices" name="MaxAssociatedDevices" maxlength="2"/></td>
+        </tr>
+       </tbody>
+    </table>
+		<div id="divtitle" style="width:684px;"><span id="curgpname">无线设备选择</span></div>
+		<table id="logtable" style="width:684px">
+      <tbody id="aplist" style="font-size:12px;">
+        <script type="text/x-mustache" id="radios">
+				{{#radioids}}
+				<tr class="radioid">
+					<td style="width:35%; text-align:right; padding-right:10px;">radio{{__Instance}}({{Alias}})</td>
+          <td><input type="checkbox" name="radio{{__Instance}}"/></td>
+        </tr>
+				{{/radioids}}
+				</script>
+      </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span>
+      <input type="button" id="btadd" value="保存" onclick="wlanSubmit()"/>
+      <!--<input type="button" value="确定" onclick="presubmit()"/>-->
+      <input type="button" value="取消" onclick="javascript:window.location.reload();"/>
+    </div>
+    </form>
+  </div>
+  </form>
+  </div>
+</div>
+
+
+</body>
+</html>

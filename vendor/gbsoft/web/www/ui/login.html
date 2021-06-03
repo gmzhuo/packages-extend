@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="/js/tr069.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<link type="text/css" href="css/common.css"  rel="stylesheet" />
+<link type="text/css" href="css/global.css"  rel="stylesheet" />
+<title>>企业级智能路由器</title>
+<script type="text/javascript">
+var connstat= new Array("未插网线","未连接","连接中","已连接");
+window.onload = function(){
+	$(window).trigger("resize");
+	$("#menu li:eq(0)").trigger("click");
+	$("input[name=user]").trigger("focus");
+	
+};
+
+var set_all_btn_style = function()
+{
+	var btn = document.getElementsByTagName("INPUT");
+	for (var i=0; i<btn.length; i++){
+		if (btn[i].type=="button"){
+			$("#"+btn[i].id).addClass("btn");
+			$("#"+btn[i].id).mouseover(function(){
+				$(this).removeClass("btn");
+				$(this).addClass("btn_over");
+			}); 
+			$("#"+btn[i].id).mouseout(function(){
+				$(this).removeClass("btn_over");
+				$(this).addClass("btn");
+			});
+		}
+	}
+}
+
+$(function(){
+	if(parent.window!=window) { 
+		parent.window.location = window.location.toString();
+	}
+	var loc = window.location.toString().split('?');
+	if(loc.length > 1)
+		window.location = loc[0];
+	
+	//当文档窗口发生改变时 触发  
+    $(window).resize(function(){
+		if($("body").width()<1024) {$("#logo_img").width(1024);}
+		else{$("#logo_img").width($("body").width());};
+	});
+	set_all_btn_style();
+});
+document.onkeydown = function(evt)
+{
+	var keyCode = evt.keyCode ? evt.keyCode : evt.which ? evt.which : evt.charCode;
+	if (keyCode==13) 
+	{
+		userLogin(document.forms[0]);
+	}
+}
+function loginCB(json, status, context)
+{
+	if(json.result == "success") {
+		window.location = "index.html"
+	} else {
+		alert("登录失败，无效的用户名或密码");
+	}
+}
+
+
+
+function userLogin(f)
+{
+	var myDate = new Date();
+	login($("input[name='user']").val(), $("input[name='pass']").val(), myDate.getTime()/1000, loginCB);
+	return false;
+}
+function clear()
+{
+	document.loginform.login_pass.value="";
+}
+</script>
+</head>
+<body>
+<form name="loginform"  method="post" action="">
+  <div id="mlogo" style="text-align:left; margin-left:auto; margin-right:auto; width:1024px; height:55px;">
+    <div style="padding-top:20px;"><img src="images/logo.png" alt="LOGO" width="182" height="25"/></div>
+  </div>
+  <div style="font-size:0px; background:#429cF5; height:4px;"></div>
+  <div style="text-align:center;">
+    <table cellpadding="0" cellspacing="0" id="logintable">
+      <tr>
+        <td id="login_title" colspan="2">登录</td>
+      </tr>
+      <tr>
+        <td height="20" colspan="2"></td>
+      </tr>
+      <tr>
+        <td style="text-align:right; width:80px;">登陆用户名</td>
+        <td style="padding-left:10px;"><input type="text" class="text" maxlength="20" name="user" value="" style="width:120px;" autocomplete="off"/>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align:right;">登陆密码</td>
+        <td style="padding-left:10px;"><input type="password" class="text" maxlength="20" name="pass" style="width:120px;" autocomplete="off"/>
+        </td>
+      </tr>
+      <tr>
+        <td height="10" colspan="2"></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td style="padding-left:10px;"><input type="button" value="登陆" class="btn" onclick="userLogin(document.loginform)" id="btn_login" />
+          &nbsp;
+          <input type="button" value="取消" class="btn" onclick="clear()" id="btn_cancal" /></td>
+      </tr>
+      <tr>
+        <td height="20" colspan="2"></td>
+      </tr>
+    </table>
+  </div>
+</form>
+</body>
+</html>
