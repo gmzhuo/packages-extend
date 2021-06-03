@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			html,body {
+				height: 100%;
+			}
+			#wrapper {
+				position: relative;
+				height: 100%;
+			}
+			#header {
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100px;
+				background-color: #ff0000;
+			}
+			#main {
+				position: absolute;
+				top: 100px;
+				bottom: 0px;
+				width: 100%;
+				background-color: #00ff00;
+			}
+			#maintree {
+				float: left;
+				width: 200px;
+				height: 100%;
+				background-color: #0000ff;
+			}
+			#maincontent {
+				width: 100%;
+				height: 100%;
+				background-color: #000cc0;
+			}
+			#toolbar {
+				height: 100px;
+				background-color: #000cc0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="header">
+				the header
+			</div>
+			<div id="main">
+				<div id="maintree">
+					the device tree
+				</div>
+				<div id="maincontent">
+					<div id="toolbar">
+						the tool bar
+					</div>
+					<div id="form">
+						the form
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="/js/jquery-3.2.1.min.js"></script>
+		<script src="/js/jstree.min.js"></script>
+		<script>
+		$(function () {
+			$(window).resize(function () {
+				var h = Math.max($(window).height() - 0, 420);
+				$('#container, #data, #tree, #data .content').height(h).filter('.default').css('lineHeight', h + 'px');
+			}).resize();
+
+			$('#tree')
+				.jstree({
+					'core' : {
+						'data' : {
+							'url' : 'cgi-bin/test.cgi?operation=get_node',
+							'data' : function (node) {
+								return { 'id' : node.id };
+							}
+						},
+						'check_callback' : function(o, n, p, i, m) {
+							if(m && m.dnd && m.pos !== 'i') { return false; }
+							if(o === "move_node" || o === "copy_node") {
+								if(this.get_node(n).parent === this.get_node(p).id) { return false; }
+							}
+							return true;
+						},
+						'themes' : {
+							'responsive' : false,
+							'variant' : 'small',
+							'stripes' : true
+						}
+					},
+					'sort' : function(a, b) {
+						return this.get_type(a) === this.get_type(b) ? (this.get_text(a) > this.get_text(b) ? 1 : -1) : (this.get_type(a) >= this.get_type(b) ? 1 : -1);
+					},
+					'contextmenu' : {
+						'items' : function(node) {
+							var tmp = $.jstree.defaults.contextmenu.items();
+							delete tmp.create.action;
+							tmp.create.label = "New";
+							tmp.create.submenu = {
+								"create_folder" : {
+									"separator_after"	: true,
+									"label"				: "Folder",
+									"action"			: function (data) {
+										var inst = $.jstree.reference(data.reference),
+											obj = inst.get_node(data.reference);
+										inst.create_node(obj, { type : "default" }, "last", function (new_node) {
+											setTimeout(function () { inst.edit(new_node); },0);
+										});
+									}
+								},
+								"create_file" : {
+									"label"				: "File",
+									"action"			: function (data) {
+										var inst = $.jstree.reference(data.reference),
+											obj = inst.get_node(data.reference);
+										inst.create_node(obj, { type : "file" }, "last", function (new_node) {
+											setTimeout(function () { inst.edit(new_node); },0);
+										});
+									}
+								}
+							};
+							if(this.get_type(node) === "file") {
+								delete tmp.create;
+							}
+							return tmp;
+						}
+					},
+					'types' : {
+						'default' : { 'icon' : 'folder' },
+						'file' : { 'valid_children' : [], 'icon' : 'file' }
+					},
+					'unique' : {
+						'duplicate' : function (name, counter) {
+							return name + ' ' + counter;
+						}
+					},
+					'plugins' : ['state','dnd','sort','types','contextmenu','unique']
+				})
+				.on('delete_node.jstree', function (e, data) {
+					$.get('cgi-bin/test.cgi?operation=delete_node', { 'id' : data.node.id })
+						.fail(function () {
+							data.instance.refresh();
+						});
+				})
+				.on('create_node.jstree', function (e, data) {
+					$.get('cgi-bin/test.cgi?operation=create_node', { 'type' : data.node.type, 'id' : data.node.parent, 'text' : data.node.text })
+						.done(function (d) {
+							data.instance.set_id(data.node, d.id);
+						})
+						.fail(function () {
+							data.instance.refresh();
+						});
+				})
+				.on('rename_node.jstree', function (e, data) {
+					$.get('cgi-bin/test.cgi?operation=rename_node', { 'id' : data.node.id, 'text' : data.text })
+						.done(function (d) {
+							data.instance.set_id(data.node, d.id);
+						})
+						.fail(function () {
+							data.instance.refresh();
+						});
+				})
+				.on('move_node.jstree', function (e, data) {
+					$.get('cgi-bin/test.cgi?operation=move_node', { 'id' : data.node.id, 'parent' : data.parent })
+						.done(function (d) {
+							//data.instance.load_node(data.parent);
+							data.instance.refresh();
+						})
+						.fail(function () {
+							data.instance.refresh();
+						});
+				})
+				.on('copy_node.jstree', function (e, data) {
+					$.get('cgi-bin/test.cgi?operation=copy_node', { 'id' : data.original.id, 'parent' : data.parent })
+						.done(function (d) {
+							//data.instance.load_node(data.parent);
+							data.instance.refresh();
+						})
+						.fail(function () {
+							data.instance.refresh();
+						});
+				})
+				.on('changed.jstree', function (e, data) {
+					if(data && data.selected && data.selected.length) {
+						$.get('cgi-bin/test.cgi?operation=get_content&id=' + data.selected.join(':'), function (d) {
+							if(d && typeof d.type !== 'undefined') {
+								$('#data .content').hide();
+								switch(d.type) {
+									case 'text':
+									case 'txt':
+									case 'md':
+									case 'htaccess':
+									case 'log':
+									case 'sql':
+									case 'php':
+									case 'js':
+									case 'json':
+									case 'css':
+									case 'html':
+										$('#data .code').show();
+										$('#code').val(d.content);
+										break;
+									case 'png':
+									case 'jpg':
+									case 'jpeg':
+									case 'bmp':
+									case 'gif':
+										$('#data .image img').one('load', function () { $(this).css({'marginTop':'-' + $(this).height()/2 + 'px','marginLeft':'-' + $(this).width()/2 + 'px'}); }).attr('src',d.content);
+										$('#data .image').show();
+										break;
+									default:
+										$('#data .default').html(d.content).show();
+										break;
+								}
+							}
+						});
+					}
+					else {
+						//$('#data .content').hide();
+						//$('#data .default').html('Select a file from the tree.').show();
+					}
+				}).on('select_node.jstree', function (e, data) {
+					data.node.id = data.node.id;
+					function get_values_done(d) {
+						var pl = d.ParameterList;
+							
+						$("#valueform p").remove(); 
+						$("#valueform input").remove(); 
+
+						for(var o in pl){  
+							o = o; 
+							var line = '<p style="line-height: 20px;">' + o + ':<input type="text" name="' + o + '" value="' + pl[o].Value + '"/></p>';
+							$("#valueform").append(line); 
+      			}
+						$("#valueform").append('<input  style="line-height: 30px;" type="submit" value="Submit">')
+					}
+
+					function get_attributes_done(d) {
+						$.get('cgi-bin/test.cgi?operation=get_parameter_values', { 'id' : data.node.id })
+						.done(get_values_done)
+						.fail(function () {
+						});
+					}
+
+					$.get('cgi-bin/test.cgi?operation=get_parameter_attributes', { 'id' : data.node.id })
+						.done(get_attributes_done)
+						.fail(function () {
+						});
+					
+				});
+		});
+		</script>
+</html>

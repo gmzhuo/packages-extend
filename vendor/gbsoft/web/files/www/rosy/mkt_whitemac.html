@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/webportal.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="mkt_whitemac.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title>用户列表</title>
+<script>
+//var userinfo = new Array('user1^00:00:00:00:00:01^2014-01-01^3^0','user2^00:00:00:00:00:02^2014-01-02^30^1');
+var userinfo = new Array();
+var forcedown = function(mac)
+{
+	$.ajax({
+		type: "POST",
+		url: "/doform/CLIENT_DOWN",
+		data: "mac="+mac,
+		success: function(data){
+			alert("已向用户["+mac+"]发送下线命令.");
+			window.location.reload();
+		},
+		failure: function() {
+			window.location.reload();
+  		}
+	});
+}
+
+var showuserlist = function()
+{
+	var indx = 1;
+	$("#aplist tr").remove();
+	for(var i=0; i<userinfo.length; i++)
+	{
+		var tmp = userinfo[i].split("|");
+		if(tmp.length<5) continue;
+		var ln = '';
+		ln = '<tr><td align="center">'+indx+'</td>';
+		ln += '<td align="center">'+tmp[0]+'</td>';
+		ln += '<td align="center">'+tmp[1]+'</td>';
+		ln += '<td align="center">'+(tmp[5]==""?"0.0.0.0":tmp[5])+'</td>';
+		ln += '<td align="center">'+formatDate(tmp[2])+'</td>';
+		ln += '<td align="center">'+tmp[3]+'</td>';
+		ln += '<td align="center">'+(tmp[4]=='0'?'离线':'在线')+'</td>';
+		if(tmp[4]=='0')
+			ln += '<td align="center">--</td></tr>';
+		else
+			ln += '<td align="center"><input type="button" value="强制下线" onclick="forcedown(\''+tmp[1]+'\')"></td></tr>';
+		
+		$("#aplist").append(ln);
+		indx++;
+	}
+}
+
+$(function(){
+	showuserlist();
+});
+</script>
+</head>
+<body>
+  <div id="maindiv">
+
+<form method="POST" action="/doform/SET_NET_CONFIG">
+  <input type=hidden name="page" value="set_net.asp">
+  <div id="maindiv">
+    <div id="divtitle">白名单添加</div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable">
+    <tbody id="loglist">
+    	<tr>
+            <td width="20%" class="tdhead">MAC地址</td>
+            <td width="30%"><input type="text" name="macaddr" id="macaddr" maxlength="18" /></td>
+            <td width="20%" class="tdhead">备注</td>
+            <td width="30%"><input type="text" name="memo" id="memo" maxlength="15" /></td>
+        </tr>
+ 
+    </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span><input type="button" value="添加"  onclick="presubmit()"/><input type="button" value="取消" onclick="javascript:window.location.reload();"/></div>
+  </div>
+</form>
+
+    <div id="divtitle">MAC列表</div>
+    <div id="divline">&nbsp;</div>
+    <div id="divgroup"> </div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable" style="width:985px">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="15%" align="center">MAC地址</th>
+        <th width="15%" align="center">备注</th>
+        <th width="10%" align="center">操作</th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<script type="text/x-mustache" id="macWhites">
+			{{#macWhites}}
+			<tr class = "macWhite">
+				<td>{{macaddr}}</td>
+				<td>{{memo}}</td>
+				<td class="center"><a data="{{macaddr}}" class="mac-white-delete">
+				<img src="images/remove.gif" width="16" height="16"></td>
+                        </tr>
+			{{/macWhites}}
+		</script>
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</body>
+</html>

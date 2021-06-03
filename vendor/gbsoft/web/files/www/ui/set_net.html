@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/network.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<script>
+
+function interfaceDumpCB(json)
+{
+	if(json.state == 0) {
+		for(var j = 0; j < json.parameter.length; ++j){
+			var iface = json.parameter[j];
+			if(iface.name == "lan") {
+				$("#lanip").val(iface.options.ipaddr);
+				$("#lanmask").val(iface.options.netmask);
+				$("#langw").val(iface.options.gateway);
+				$("#landns").val(iface.options.dns[0]);
+			}
+		}
+	}
+	json = json;
+}
+
+$(function(){
+	//showgp();
+	interfaceDump(interfaceDumpCB);
+	$("#mngport").val('80');
+/*
+	$("#lanip").val('192.168.2.124');
+	$("#lanmask").val('255.255.255.0');
+	$("#langw").val('192.168.2.1');
+	$("#landns").val('8.8.8.8');
+	
+*/
+});
+var presubmit = function()
+{
+	var f = document.forms[0];
+	if(f.lanip.value==""||!checkIp(f.lanip.value))
+	{
+		alert("管理IP地址格式错误!");
+		f.lanip.focus();
+		return false;
+	}
+	if(f.lanmask.value==""||!checkMask(f.lanmask.value))
+	{
+		alert("子网掩码格式错误!");
+		f.lanmask.focus();
+		return false;
+	}
+	if(f.mngport.value==""||!checkDigital(f.mngport)||parseInt(f.mngport.value)<=0||parseInt(f.mngport.value)>65535)
+	{
+		alert("管理端口格式错误!");
+		f.mngport.focus();
+		return false;
+	}
+
+	var info = new Object();
+	var interface = "lan";
+	var options = new Object();
+	options.ipaddr = f.lanip.value;
+	options.netmask = f.lanmask.value;
+	options.gateway = f.langw.value;
+	options.dns = new Array();
+	options.dns.push(f.landns.value);
+
+	info.interface = interface;
+	info.options = options;
+	function setInterfaceCb(data, context) {
+		alert("配置已保存");
+		interfaceDump(interfaceDumpCB, {}, {"interface":"lan"});		
+	}
+	setInterface(info, setInterfaceCb);
+
+	return false;
+}
+</script>
+<title>网络设置</title>
+</head>
+<body>
+<form method="POST" action="/doform/SET_NET_CONFIG">
+  <input type=hidden name="page" value="set_net.asp">
+  <div id="maindiv">
+    <div id="divtitle">网络设置</div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable">
+    <tbody id="loglist">
+    	<tr>
+            <td width="40%" class="tdhead">管理IP地址</td>
+            <td width="60%"><input type="text" name="lanip" id="lanip" maxlength="15" /></td>
+        </tr>
+    	<tr>
+            <td class="tdhead">子网掩码</td>
+            <td><input type="text" name="lanmask" id="lanmask" maxlength="15" /></td>
+        </tr>
+    	<tr>
+            <td class="tdhead">网关</td>
+            <td><input type="text" name="langw" id="langw" maxlength="15" /></td>
+        </tr>
+    	<tr>
+            <td class="tdhead">DNS务器</td>
+            <td><input type="text" name="landns" id="landns" maxlength="15" /></td>
+        </tr>
+    	<tr>
+            <td class="tdhead">管理端口号</td>
+            <td><input type="text" name="mngport" id="mngport" maxlength="5" /></td>
+        </tr>
+    </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span><input type="button" value="确定"  onclick="presubmit()"/><input type="button" value="取消" onclick="javascript:window.location.reload();"/></div>
+  </div>
+</form>
+</div>
+</body>
+</html>

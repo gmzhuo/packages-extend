@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style>
+
+body{TEXT-ALIGN: center;}
+
+#center{ MARGIN-RIGHT: auto;
+
+MARGIN-LEFT: auto;
+
+
+vertical-align:middle;
+
+
+}
+
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/webportal.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="mkt_whitemac.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title>用户列表</title>
+<script>
+//var userinfo = new Array('user1^00:00:00:00:00:01^2014-01-01^3^0','user2^00:00:00:00:00:02^2014-01-02^30^1');
+var userinfo = new Array();
+var forcedown = function(mac)
+{
+	$.ajax({
+		type: "POST",
+		url: "/doform/CLIENT_DOWN",
+		data: "mac="+mac,
+		success: function(data){
+			alert("已向用户["+mac+"]发送下线命令.");
+			window.location.reload();
+		},
+		failure: function() {
+			window.location.reload();
+  		}
+	});
+}
+
+var showuserlist = function()
+{
+	var indx = 1;
+	$("#aplist tr").remove();
+	for(var i=0; i<userinfo.length; i++)
+	{
+		var tmp = userinfo[i].split("|");
+		if(tmp.length<5) continue;
+		var ln = '';
+		ln = '<tr><td align="center">'+indx+'</td>';
+		ln += '<td align="center">'+tmp[0]+'</td>';
+		ln += '<td align="center">'+tmp[1]+'</td>';
+		ln += '<td align="center">'+(tmp[5]==""?"0.0.0.0":tmp[5])+'</td>';
+		ln += '<td align="center">'+formatDate(tmp[2])+'</td>';
+		ln += '<td align="center">'+tmp[3]+'</td>';
+		ln += '<td align="center">'+(tmp[4]=='0'?'离线':'在线')+'</td>';
+		if(tmp[4]=='0')
+			ln += '<td align="center">--</td></tr>';
+		else
+			ln += '<td align="center"><input type="button" value="强制下线" onclick="forcedown(\''+tmp[1]+'\')"></td></tr>';
+		
+		$("#aplist").append(ln);
+		indx++;
+	}
+}
+
+$(function(){
+	showuserlist();
+});
+</script>
+</head>
+<body>
+  <div id="maindiv">
+  <br/>
+<div style="display:block;margin-left: auto; margin-right: auto;">认证页面预览,如需替换，请将认证页面使用7-zip打包为tar.gz压缩文件并在"系统工具-配置管理-界面替换"中替换，认证主页面为webportal.shtml</div>
+<br/>
+<iframe src="/ui/webportal.shtml" frameborder="no" marginheight="0" marginwidth="0" width="100%" height=600px" name="mframe">
+  </div>
+</body>
+</html>

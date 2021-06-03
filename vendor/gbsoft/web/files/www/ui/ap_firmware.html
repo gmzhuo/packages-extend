@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/ac.js"></script>
+<script src="../js/uiutils.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="ap_firmware.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<style>
+body{overflow-y:auto; overflow-x:auto;}
+.Left{float:left; height:100%; width:320px; border-right:solid 3px #ddd; padding:0 10px;}
+.Right{float:left; width:660px; height:100%;}
+</style>
+<title>配置管理</title>
+</head>
+<body>
+
+<div style="height:1024px;"> 
+  <div id="maindiv" class="Left">
+  	<div id="Left" style="width:320px;"><span id="curgpname">AP固件添加</span></div>
+    <form method="POST" id="acConfigForm">
+    <table id="logtable" style="width:320px">
+      	<tbody id="aplist" style="font-size:12px;">
+        	<tr>
+            	<td style="width:45%; text-align:right; padding-right:10px;">
+					固件名称
+				</td>
+                <td><input type="text" id="imageID" name="imageID" maxlength="32"/></td>
+            </tr>
+        	<tr>
+          		<td style="width:45%; text-align:right; padding-right:10px;">
+					硬件信息
+				</td>
+          		<td><input type="text" id="hardwareInfo" name="hardwareInfo" maxlength="32"/></td>
+       		</tr>
+            <tr>
+				<td style="width:45%; text-align:right; padding-right:10px;">描述</td>
+				<td><input type="text" id="memo" name="memo" maxlength="32"/>
+                </td>							
+			</tr>
+            <tr>
+				<td style="width:45%; text-align:right; padding-right:10px;">固件</td>
+				<td><input type="file" width="200" id="firmwareFile" name="fwapfilename" />
+                </td>							
+			</tr>
+		</tbody>
+	</table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span>
+      <input type="button" id="configsave" value="添加" onclick="commitFirmware()"/>
+      <!--<input type="button" value="确定" onclick="presubmit()"/>-->
+      <input type="button" value="取消" onclick=";"/>
+    </div>
+    </form>
+  </div>
+
+  <div id="maindiv" class="Right">
+  	<div id="divtitle" style="width:640px;"><span id="curgpname">AP固件列表</span></div>
+    <table id="logtable" style="width:660px">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="25%" align="center">固件名称</th>
+        <th width="20%" align="center">硬件信息</th>
+        <th width="20%" align="center">描述</th>
+        <th width="10%" align="center">删除</th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<script type="text/x-mustache" id="firmwares">
+			{{#firmwares}}
+			<tr class = "firmware">
+				<td>{{imageID}}</td>
+                            <td>{{vendorID}}-{{boardID}}-{{boardReversion}}</td>
+							<td>{{memo}}</td>
+							<td class="center" ><a data="{{index}}" class="firmware-delete"><img src="images/remove.gif" width="16" height="16"></td>
+            </tr>
+			{{/firmwares}}
+		</script>
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+
+
+</body>
+</html>

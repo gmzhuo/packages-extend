@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>请假申请</title>
+		
+		<link rel="stylesheet" href="toleave_data/bootstrap-datetimepicker.css">
+		<link rel="stylesheet" href="toleave_data/bootstrap-table.css">
+		<link rel="stylesheet" href="toleave_data/bootstrap-select.css">
+		<link rel="stylesheet" href="bootstrap.css">
+		<link rel="stylesheet" href="toleave_data/bootstrap-theme.css">
+		<link rel="stylesheet" href="toleave_data/styles.css"> 
+		<link rel="stylesheet" href="toleave_data/fileinput.css"> 
+		<style type="text/css">
+			
+			#leavetable tr td:nth-child(1){text-align:right;width:100px;}
+			#leavetable tr td{padding:7px;}
+			#diveditcontent-leave-req-insert-submit{width:30%;}
+			#leaveReason{max-width:485px;min-width:485px;max-height:100px;min-height:100px;border-radius:5px;}
+		</style>
+	</head>
+	<body id="body">
+		<form id="leaveform">
+			<table id="leavetable" style="margin:0 auto;width:600px;border:0;">
+				<tbody><tr>
+					<td colspan="2" style="text-align:center;">
+						<h2>请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假</h2>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</strong></td>
+					<td><span id="name"> 卓贵明</span></td>
+				</tr>
+				<tr>
+					<td><strong>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：</strong></td>
+					<td><span id="deptment"> 组员</span></td>
+				</tr>
+				<tr>
+					<td><strong>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</strong></td>
+					<td><span id="post">组员</span></td>
+				</tr>
+				<tr>
+					<td><strong>请假类型：</strong></td>
+					<td>
+						<select id="leaveType" name="leaveType" class="form-control" data-live-search="true" required="">
+							<option value="" selected="selected">   --请选择--   </option>
+							
+								  
+									  
+									
+										<option value="1" type="0">事假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="10" type="0">病假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="11" type="1">调休</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="12" type="0">陪产假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="13" type="0">3.8假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="14" type="0">6.1假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="2" type="0">产假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="3" type="0">产检</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="4" type="0">公假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="5" type="0">公出</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="6" type="0">出差</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="7" type="0">婚假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="8" type="1">年假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="9" type="0">特批</option>
+									  
+								
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>开始时间：</strong></td>
+					<td><input id="starttime" name="starttime" class="form_datetime form-control" required="" readonly="readonly" type="text"></td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>结束时间：</strong></td>
+					<td><input id="endtime" name="endtime" class="form_datetime form-control" required="" readonly="readonly" type="text"></td>
+				</tr>
+				<tr>
+					<td><strong>请假时长：</strong></td>
+					<td><span id="hourLength"></span>小时</td>
+				</tr>
+				<tr class="leaveInfoLength" style="display: none;">
+					<td><strong>剩余库存：</strong></td>
+					<td><span id="leaveInfoLength">0</span>小时</td>
+				</tr>
+				<tr>
+					<td><strong>审&nbsp;&nbsp;批&nbsp;&nbsp;人：</strong></td>
+					<td>
+						<select id="submit" name="approver" class="form-control" data-live-search="true">
+							<option value="" selected="selected">   --请选择--   </option>
+							
+								  
+									  
+									
+										<option value="35">沈斌</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="3">刘羽</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="4">刘丹</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="24">丁杰</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="26">唐锐</option>
+									  
+								
+							 
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>紧急联系人：</strong></td>
+					<td><input id="linkman" class="form-control" maxlength="10" type="text"></td>
+				</tr>
+				<tr>
+					<td><strong>关&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</strong></td>
+					<td><input id="relOfLinkman" class="form-control" maxlength="10" type="text"></td>
+				</tr>
+				<tr>
+					<td><strong>联系方式：</strong></td>
+					<td><input id="telOfLinkman" name="telOfLinkman" class="form-control" maxlength="11" type="text">
+						<span id="telCheck" style="color:#d45252;font-size:12px;"></span>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>请假事由：</strong></td>
+					<td><textarea id="leaveReason" name="leaveReason" required="" maxlength="200"></textarea></td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>附&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件：</strong></td>
+					<td><div class="file-input file-input-new"><div class="file-preview ">
+    <div class="close fileinput-remove">×</div>
+    <div class="file-drop-disabled">
+    <div class="file-preview-thumbnails">
+    </div>
+    <div class="clearfix"></div>    <div class="file-preview-status text-center text-success"></div>
+    <div class="kv-fileinput-error file-error-message" style="display: none;"></div>
+    </div>
+</div>
+<div class="kv-upload-progress hide" style="display: none;"><div class="progress">
+    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+        0%
+     </div>
+</div></div>
+<div class="input-group file-caption-main">
+   <div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+   <div class="file-caption-name"></div>
+</div>
+
+   <div class="input-group-btn">
+       <button type="button" tabindex="500" title="清除选中文件" class="btn btn-default fileinput-remove fileinput-remove-button"><i class="glyphicon glyphicon-trash"></i>  <span class="hidden-xs">移除</span></button>
+       <button type="button" tabindex="500" title="取消进行中的上传" class="btn btn-default hide fileinput-cancel fileinput-cancel-button"><i class="glyphicon glyphicon-ban-circle"></i>  <span class="hidden-xs">取消</span></button>
+       <a href="http://oa.centriole.cn/hrms/rest/base/fileUpload" tabindex="500" title="上传选中文件" class="btn btn-default fileinput-upload fileinput-upload-button"><i class="glyphicon glyphicon-upload"></i>  <span class="hidden-xs">上传</span></a>
+       <div tabindex="500" class="btn btn-primary btn-file"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;  <span class="hidden-xs">选择 …</span><input id="uploadFile" name="files" accept="image/png,image/gif,image/jpg,image/jpeg" placeholder="婚假、产假、病假需上传附件" multiple="" class="projectfile" type="file"></div>
+   </div>
+</div></div><div id="kvFileinputModal" class="file-zoom-dialog modal fade" tabindex="-1" aria-labelledby="kvFileinputModalLabel"><div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="kv-zoom-actions pull-right"><button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-vertical"></i></button><button type="button" class="btn btn-default btn-borderless" title="Toggle borderless mode" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button><button type="button" class="btn btn-default btn-close" title="Close detailed preview" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button></div>
+      <h3 class="modal-title">详细预览 <small><span class="kv-zoom-title"></span></small></h3>
+    </div>
+    <div class="modal-body">
+      <div class="floating-buttons"></div>
+      <div class="kv-zoom-body file-zoom-content"></div>
+<button type="button" class="btn btn-navigate btn-prev" title="View previous file"><i class="glyphicon glyphicon-triangle-left"></i></button> <button type="button" class="btn btn-navigate btn-next" title="View next file"><i class="glyphicon glyphicon-triangle-right"></i></button>
+    </div>
+  </div>
+</div>
+</div></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:center;">
+						<input id="diveditcontent-leave-req-insert-submit" class="btn btn-primary" value="申&nbsp;&nbsp;请">
+					</td>
+				</tr>
+			</tbody></table>
+		</form>
+	
+	<script src="jquery-1.js"></script>
+	<script src="bootstrap.js"></script>
+	<script src="toleave_data/bootstrap-select.js" charset="UTF-8"></script>
+	<script src="toleave_data/bootstrap-select-zh_CN.js" charset="UTF-8"></script>
+	<script src="toleave_data/bootstrap-table.js"></script> 
+	<script src="toleave_data/bootstrap-table-zh-CN.js" charset="UTF-8"></script>
+	<script src="toleave_data/bootstrap-datetimepicker.js"></script> 
+	<script src="toleave_data/bootstrap-datetimepicker_002.js" charset="UTF-8"></script> 
+	<script src="toleave_data/validate.js"></script>
+	<script src="toleave_data/fileinput.js"></script> 
+	<script src="toleave_data/initfileinput.js"></script>
+	<script src="toleave_data/zh.js"></script> 
+	<script src="json-tree.js"></script>
+	
+	<script type="text/javascript">
+		var orgn = {};
+		var ctx = '/hrms';
+		var systime="2018-10-21 22:07";
+		var empCode="338";
+		var name="卓贵明";
+		var id = "";
+		/*验证*/
+		function checkData(){
+			var options = {
+					leaveType:{isempty:false,text:"请选择假期类型"},
+					starttime:{isempty:false,text:"开始时间不能为空"},
+					endtime:{isempty:false,text:"结束时间不能为空"},
+					leaveReason:{isempty:false,text:"请填写请假事由"},
+					approver:{isempty:false,text:"请选择审批人"}
+			}
+			if(!$("#leaveform").validation(options)){
+				return "false";
+			}
+			
+			//获取上传的文件名集合
+			var titles = [];
+			$(".file-live-thumbs .file-preview-success").each(function(){
+				var title = $(this).find(".file-footer-caption").attr("title");
+				titles.push(title);
+			});
+			uploadExtraDataStander.files = titles;
+			var leaveRequest = {
+					"empId" : empCode,
+					"name" : name,
+					"department" : $("#department").html(),
+					"post" : $("#post").html(),
+					"leaveType" : $("#leaveType").val(),
+					"leaveReason" : $("#leaveReason").val().trim(),
+					"starttimestr" : $("#starttime").val()+":00",
+					"endtimestr" : $("#endtime").val()+":00",
+					"apprReply" : "0",
+					"submit" : $("#submit").val(),
+					"linkman" : $("#linkman").val().trim(),
+					"relOfLinkman" : $("#relOfLinkman").val().trim(),
+					"telOfLinkman" : $("#telOfLinkman").val(),
+					"hourLength" : $("#hourLength").html(),
+					"fileuploadcfg":JSON.stringify(uploadExtraDataStander),
+					"leaveRequestId":id
+			};
+			var sDate = new Date($("#starttime").val().replace(/-/g,"/"));
+	    	var eDate = new Date($("#endtime").val().replace(/-/g,"/"));
+	    	if(sDate>eDate && !$("#leaveform").validation(options)){
+	    		error("开始时间不能大于结束时间!");
+	    		return "false";
+	    	}
+			return leaveRequest;
+		}
+		//提交申请
+		function toleaverequest(leaveRequest){
+			$('#diveditcontent-leave-req-insert-submit').attr("disabled","true");
+			//console.log(123);
+			$.ajax({
+				url: "/hrms/rest/leaverequest/insertleaverequest",
+				type: "post",
+				data: leaveRequest,
+				dataType: "json",
+				success: function(data){
+					if(data.code == 200){
+						alert("提交成功！",function(){
+							location.reload();
+						});
+					}else{
+						error(data.content);
+					}
+	              	$('#diveditcontent-leave-req-insert-submit').removeAttr("disabled");
+				},
+				error: function(data) {
+		            error(JSON.stringify(data),function(){
+						$('#diveditcontent-leave-req-insert-submit').removeAttr("disabled");
+					});
+				}
+			});
+		}
+		
+		
+		$(function(){
+			/*判断是否是修改操作*/
+			if(id!=''){
+				$("#diveditcontent-leave-req-insert-submit").hide();
+			}
+			/*设置审批人选中*/
+			$("#submit").find("option[text='']").attr("selected",true);
+			$("#leaveType").find("option[text='']").attr("selected",true);
+			var uploadExtraData = {
+				"busyType":"2",
+				"itemType":$("#leaveType").val()
+			};
+			$("#uploadFile").fileInput('/hrms/rest/base/fileUpload',uploadExtraData);
+			$(".file-caption-main .fileinput-remove").click(function(){
+	    		var request = {
+	    				"fileName":"",
+	    				"tempDir":tempDir,
+	    				"busyType":uploadExtraData.busyType,
+	    				"itemType":uploadExtraData.itemType
+	    		};
+	    		$.ajax({
+	  			  type: "post",
+	  	          url: "/hrms/rest/base/fileDelete",
+	  	          dataType: "json",
+	  	          data: request,
+	  	          success: function(result){
+	  	          }
+	  		  	});
+	    	});
+			
+			$('#leaveType').change(function(){
+				if($(this).val() != ""){
+					$(this).next("span").remove();
+				}
+				//类型改变，更新upload参数
+				uploadExtraData.itemType = $("#leaveType").val();
+				$("#uploadFile").fileinput('refresh',{uploadExtraData:uploadExtraData});
+				
+				scanStock();
+				if(notNull($("#starttime").val()) && notNull($("#endtime").val()))
+					checkLeaveValidate();
+			});
+			$('#starttime').change(function(){
+				scanStock();
+				checkLeaveValidate();
+			});
+			$('#endtime').change(function(){
+				scanStock();
+				checkLeaveValidate();
+			});
+			$('#telOfLinkman').keyup(function(){
+				if($("#telOfLinkman").val() != ""){
+					if(!reg.test($("#telOfLinkman").val())){
+						$("#telCheck").text("请输入正确的手机号!");
+					}else{
+						$("#telCheck").text("");
+					}
+				}else{
+					$("#telCheck").text("");
+				}
+			});
+			$('#submit').change(function(){
+				if($(this).val() != ""){
+					$(this).next("span").remove();
+				}
+			});
+			
+			$('#diveditcontent-leave-req-insert-submit').click(function(){
+				if(checkData() != "false"){
+					toleaverequest(checkData());
+				}
+			});
+			
+		 	//请假时间计算
+			var checkLeaveValidate = function(){
+				var starttime = $("#starttime").val()+":00";
+				var endtime = $("#endtime").val()+":00";
+				var leaveType = $("#leaveType").val();
+			    if(jQuery.isEmptyObject($("#leaveType").val()) || $("#endtime").val() == "" || $("#starttime").val() == ""){
+			    	return;
+			    }
+			    var sDate = new Date($("#starttime").val().replace(/-/g,"/"));
+		    	var eDate = new Date($("#endtime").val().replace(/-/g,"/"));
+		    	if(sDate>eDate){
+		    		error("开始时间不能大于结束时间!");
+		    		return;
+		    	}
+				$.ajax({
+	    			url: "/hrms/rest/leaverequest/leavetimecheck",
+	    			type: "post",
+	    			data: {"starttimestr":starttime,"endtimestr":endtime,"leaveType":leaveType,"empId":empCode,"leaveRequestId":id},
+	    			dataType: "json",
+	    			success: function(data){
+	    				$("#hourLength").html(data.hours);
+	    				if(data.code!==200){
+							error(data.info);
+	    				}else{
+    						if(999.9<data.hours){
+    							error("请假时长最大不超过999");
+    						}
+	    				}
+	    					
+	    			},
+	    			error: function() {
+                        error("系统错误！");
+                	}
+	    		});
+			}
+			var notNull=function(content){
+				return content ? content==null || content=="" ? false:true:false;
+			}
+			//库存计算
+			var scanStock = function(){
+				$(".leaveInfoLength").hide();
+				var starttime = notNull($("#starttime").val())?$("#starttime").val():systime;
+				var endtime = notNull($("#endtime").val())?$("#endtime").val():starttime;
+				var leaveType = $("#leaveType").val();
+				//不需要计算
+				var type =$("#leaveType").find("option:selected").attr("type");
+				if(type==0){
+					return;
+				}
+				var sDate = new Date($("#starttime").val().replace(/-/g,"/"));
+		    	var eDate = new Date($("#endtime").val().replace(/-/g,"/"));
+		    	if(sDate>eDate){
+		    		return;
+		    	}
+				$.ajax({
+		    		url: "/hrms/rest/leaverequest/scanStock",
+	    			type: "post",
+	    			data: {"starttimestr":starttime+":00","leaveType":leaveType,"endtimestr":endtime+":00"},
+	    			dataType: "json",
+	    			success: function(data){
+	    				if(data.code==200){
+							$("#leaveInfoLength").text(data.data);
+							$(".leaveInfoLength").show();
+						}else{
+							$("#leaveInfoLength").text("0");
+							$(".leaveInfoLength").hide();
+						}
+	    			},
+	    			error: function() {
+                       error("系统错误");
+                	}
+	    		});
+			}
+	   	});
+		//日期控件
+		$("#starttime").datetimepicker({
+		    language:  'zh-CN',
+		    weekStart: 0,/*一周从哪一天开始 0表示星期天*/
+		    todayBtn: 'linked',/*日期时间选择器组件的底部显示一个 "Today" 按钮用以选择当前日期。*/
+		    autoclose: 1, /*当选择一个日期之后是否立即关闭此日期时间选择器。*/
+		    todayHighlight: 1,/*如果为true, 高亮当前日期*/
+		    startView: 2, /*日期时间选择器打开之后首先显示的视图。 2 or 'month' for month view (the default)*/
+		    forceParse: 0,/*当选择器关闭的时候，是否强制解析输入框中的值。*/
+		    //showMeridian: 1, /*选项里是否有天或小时*/
+		    defaultDate : new Date() ,
+		    format: 'yyyy-mm-dd hh:ii' ,
+		    minuteStep:30 
+		}).on('changeDate',function(){
+			var starttime = new Date($("#starttime").val().replace(/-/g, "/"));
+			var sm = starttime.getMinutes();
+			var sh = starttime.getHours();
+			if(sm>0&&sm<30)
+				starttime.setMinutes(30);
+			if(sm>30)
+				starttime.setHours(sh+1,00);
+			var starttimestr = starttime.Format("yyyy-MM-dd hh:mm");
+			$("#starttime").val(starttimestr);
+		});
+		$("#endtime").datetimepicker({
+			    language:  'zh-CN',
+			    weekStart: 0,/*一周从哪一天开始 0表示星期天*/
+			    todayBtn: 'linked',/*日期时间选择器组件的底部显示一个 "Today" 按钮用以选择当前日期。*/
+			    autoclose: 1, /*当选择一个日期之后是否立即关闭此日期时间选择器。*/
+			    todayHighlight: 1,/*如果为true, 高亮当前日期*/
+			    startView: 2, /*日期时间选择器打开之后首先显示的视图。 2 or 'month' for month view (the default)*/
+			    forceParse: 0,/*当选择器关闭的时候，是否强制解析输入框中的值。*/
+			    //showMeridian: 1, /*选项里是否有天或小时*/
+			    defaultDate : new Date() ,
+			    format: 'yyyy-mm-dd hh:ii' ,
+			    minuteStep:30 
+		}).on('changeDate',function(){
+			var endtime = new Date($("#endtime").val().replace(/-/g, "/"));
+			var em = endtime.getMinutes();
+			var eh = endtime.getHours();
+			if(em>0&&em<30)
+				endtime.setMinutes(30);
+			if(em>30)
+				endtime.setHours(eh+1,00);
+			var endtimestr = endtime.Format("yyyy-MM-dd hh:mm");
+			$("#endtime").val(endtimestr);
+		});
+		Date.prototype.Format = function (fmt) { //author: meizz 
+		    var o = {
+		        "M+": this.getMonth() + 1, //月份 
+		        "d+": this.getDate(), //日 
+		        "h+": this.getHours(), //小时 
+		        "m+": this.getMinutes(), //分 
+		        "s+": this.getSeconds(), //秒 
+		        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+		        "S": this.getMilliseconds() //毫秒 
+		    };
+		    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		    for (var k in o)
+		    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		    return fmt;
+		}
+	</script>
+</body></html>

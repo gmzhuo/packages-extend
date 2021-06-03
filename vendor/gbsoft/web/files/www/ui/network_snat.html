@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/js/mustache.js"></script>
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<script type="text/javascript" src="js/pub.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/webportal.js"></script>
+<script src="../js/uiapi/network.js"></script>
+<script src="network_snat.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title>源地址转换</title>
+
+</head>
+<body>
+  <div id="maindiv">
+  	<div id="divtitle"><span id="curgpname">源地址转换</span></div>
+    <table id="logtable" style="width:100%">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="15%" align="center">目标地址</th>
+        <th width="15%" align="center">转换地址</th>
+        <th width="6%" align="center">目标接口</th>
+        <th width="7%" align="center">端口</th>
+        <th width="5%" align="center">状态</th>
+        <th width="10%" align="center">描述</th>
+        <th width="6%" align="center">编辑</th>
+        <th width="6%" align="center">删除</th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<script type="text/x-mustache" id="snats">
+			{{#snats}}
+			<tr class = "snat">
+                            <td>{{oipstart}}-{{oipend}}</td>
+							<td>{{nipstart}}-{{nipstart}}</td>
+							<td>{{interface}}</td>
+							<td>{{nportstart}}</td>
+							<td>{{enable}}</td>
+							<td>{{memo}}</td>
+							<td class="center" ><a data="{{section}}" class="section-edit"><img src="images/edit.gif" width="16" height="16"></td>
+							<td class="center" ><a data="{{section}}" class="section-delete"><img src="images/remove.gif" width="16" height="16"></td>
+            </tr>
+			{{/snats}}
+		</script>
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span>
+    	<input type="button" value="添加源地址转换" onclick="addNATSNAT()" />
+  	</div>
+</div>
+</body>
+<script type="text/x-mustache" id="snatEdit">
+	<div id="dialog-snatEdit" title="{{title}}">
+	<form method="POST" id="snatEditForm" name="snatEditForm" action="/doform/SET_NET_CONFIG">
+		<input type="hidden" name="section" id="section" value="">
+		<div id="maindiv" style="width:100%">
+			<table id="logtable" style="width:100%">
+				<tbody id="loglist">
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">是否启用</td>
+						<td>
+							<select name="enable" id="enable" style="width:160px" >
+								<option value="yes">启用</option>
+								<option value="no">禁用</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							内网起始地址
+						</td>
+						<td>
+							<input type="text" name="oipstart" id="oipstart" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							内网结束地址
+						</td>
+						<td>
+							<input type="text" name="oipend" id="oipend" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							NAT转换起始地址
+						</td>
+						<td>
+							<input type="text" name="nipstart" id="nipstart" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							NAT转换结束地址
+						</td>
+						<td>
+							<input type="text" name="nipend" id="nipend" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+						
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							目标接口
+						</td>
+						<td>
+							<select name="oif" id="oif" style="width:160px" >
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							NAT外出起始端口
+						</td>
+						<td>
+							<input type="text" name="nportstart" id="nportstart" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align:right; padding-right:10px;">
+							备注
+						</td>
+						<td>
+							<input type="text" name="memo" id="memo" value="" 
+								class="ipt-text" 
+								datatype="text" maxLength="31" minLength="1" 
+							/>
+						</td>
+					</tr>
+					
+					
+				</tbody>
+			</table>
+		</div>
+	</form>
+	</div>	
+</script>
+</html>

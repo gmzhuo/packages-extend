@@ -1,0 +1,136 @@
+@charset "utf-8";
+/* CSS Document */
+
+html, body {
+	margin:0px;
+	height:100%;
+	font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+	text-align:center;
+	font-size:14px;
+}
+
+#logintable
+{
+	color:#4D4D4D;
+	width:400px; border:2px solid #429cF5; line-height:30px;
+	margin:auto;
+	margin-top:70px;
+}
+
+#logintable td
+{
+	text-align:left;
+}
+
+#login_title
+{
+	height:45px;
+	line-height:45px;
+	color:#fff;
+	background-color:#429cF5;
+	font-size:24px;
+	padding-left:30px;
+}
+
+#login_pass
+{
+	width:110px;
+	height:18px;
+	border:1px solid #666;
+}
+
+.btn
+{
+	border:1px solid #333;
+	height:28px;
+	font-size:16px;
+}
+
+.btn_over
+{
+	border:1px solid #333;
+	height:28px;
+	font-size:16px;
+	color:#429cF5;
+	cursor:hand;
+}
+
+.mtable_tr_style1
+{
+	background:#D7E2F4;
+}
+
+.mtable_tr_style2
+{
+	background:#F8F8F8;
+}
+
+table{
+	line-height:25px;
+	width:900px;
+	margin:auto;
+	margin-top:30px;
+	margin-bottom:30px;
+	text-align:left;
+	border-spacing:0px;
+}
+table td
+{
+	padding-left:60px;
+	padding-right:0px;
+}
+
+.tr_head
+{
+	font-weight:bold;
+	font-size:18px;
+	padding-left:25px;
+}
+
+.td_head
+{
+	text-align:right;
+	width:200px;
+}
+
+#mbody
+{
+	text-align:center;
+}
+
+#tablebody td
+{
+	margin:0px;
+	padding:0px;
+	text-align:center;
+}
+
+input[type="text"]
+{
+	width:150px;
+	height:18px;
+	border:1px solid #666;
+}
+
+input[type="password"]
+{
+	width:150px;
+	height:18px;
+	border:1px solid #666;
+}
+
+select
+{
+	width:150px;
+	height:20px;
+	border:1px solid #666;
+}
+.td_submit
+{
+	text-align:left;
+	line-height:50px;
+	height:50px;
+	background:#F8F8F8;
+	border-top:1px solid #666;
+	border-bottom:1px solid #666;
+}

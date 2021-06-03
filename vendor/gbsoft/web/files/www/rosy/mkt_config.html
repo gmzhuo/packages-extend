@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<script src="../js/uiutils.js"></script>
+<script src="mkt_config.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title>认证设置</title>
+
+</head>
+<body>
+<form method="post" id="portalForm">
+  <input type=hidden name="page" value="mkt_config.asp">
+<div id="maindiv">
+  <div id="divtitle">认证设置</div>
+  <div id="divline">&nbsp;</div>
+  <div id="divgroup"> </div>
+  <div id="divline">&nbsp;</div>
+  <table id="normaltable" style="width:985px" class="normaltable">
+    <tr>
+      <td width="30%" class="tdhead">认证配置</td>
+      <td width="70%">
+      	<label><input type="radio" name="enable" 
+        	id="enableOn" value="on" checked><span>开启</span></label>
+		<label><input type="radio" name="enable" 
+        	id="enablOff" value="off"><span>关闭</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">特权码认证</td>
+      <td width="70%">
+      	<label><input type="radio" name="specialEnable" id="specialon"
+        	value="on" checked> <span>开启</span></label>
+		<label><input type="radio" name="specialEnable" id="specialoff"
+        	value="off"><span>关闭</span></label>
+      </td>
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">特权码</td>
+      <td width="70%"><input type="text" name="specialID" id="specialID" maxlength="15" style="width:60px;" />
+		</td>
+    </tr>
+    <tr style="display:none;">
+      <td width="30%" class="tdhead">上网方式</td>
+      <td width="70%"><input type="checkbox" id="authweb" name="authweb" checked="checked" disabled="disabled"/>
+        网页认证上网
+        <!--<input type="checkbox" id="arpbind" name="arpbind" />
+        ARP绑定用户直接上网 </td>-->
+    </tr>
+    <tr>
+      <td width="30%" class="tdhead">会话过期时间</td>
+      <td width="70%"><input type="text" name="expireTime" id="expireTime" maxlength="4" style="width:60px;" />
+        分钟 </td>
+    </tr>
+  </table>
+  <div id="divsavebtn"><span class="head">&nbsp;</span>
+    <input type="button" value="保存" onclick="configSubmit()" />
+    <input type="button" value="取消" onclick="javascript:window.location.reload();"/>
+  </div>
+</div>
+</form>
+</body>
+</html>

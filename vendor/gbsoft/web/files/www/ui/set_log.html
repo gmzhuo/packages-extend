@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/uiutls.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/global.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<script>
+var logs = '2014-01-01 01:01:01;System;系统启动';
+var logs = '1970-01-01 00:00:07;1;System is running^2016-05-25 22:29:21;1;NTP:Update time success^';
+var showlog = function()
+{
+	function showLoGCB(json)
+	{
+		json = json;
+		$("#cmdout").val(json.info);
+	}
+	showLog(showLoGCB);
+}
+$(function(){
+	showlog();
+});
+</script>
+<title>登陆管理</title>
+</head>
+<body>
+<form>
+  <div id="maindiv">
+    <div id="divtitle">日志警告</div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold;">
+    	<tr>
+            <td class="tdhead" style="text-align:center;">
+            <textarea style="width:98%; height:400px" name="cmdout" id="cmdout" readonly="readonly" value="" ></textarea>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</form>
+</div>
+</body>
+</html>

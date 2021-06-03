@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/ac.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="/js/uiutils.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="/js/jqtable/css/jquery.dataTables.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="/js/jqtable/js/jquery.dataTables.min.js"></script>
+<link type="text/css" href="css/style.css" rel="stylesheet">
+<script>
+
+	var currentGroupName = "";
+	var currentPos = 0;
+	var currentTotal = 0;
+	var wtpDataTable;
+
+	function refreshData()
+	{
+		dumpWTP("allll");
+	}
+
+	function wtpSubmit(){
+		var wtpinfo = new Object();
+		function refresLocal(json)
+		{
+			setTimeout("refreshData();", 2000);
+		}
+		wtpinfo.options = {
+			"groupname":$("#wtpEditForm select[name='groupname']").val(),
+			"name":$("#wtpEditForm input[name='name']").val(),
+			"location":$("#wtpEditForm #location").val(),
+		};
+		setupWTP(wtpinfo, refresLocal);
+	}
+
+	var groupsname = new Array();
+	function dumpCB(json, context)
+	{
+		var groupsObj = json.config.groups
+		for(var key in groupsObj){
+			var groupdefine = {
+				"value": key,
+			};
+			groupsname.push(groupdefine);
+		}
+
+		return;
+	}
+	acDumpJsonConfig(dumpCB, {});
+
+	function dumpWTPCB(json, context) {
+		if(json.resultCode != 0) {
+			return;
+		}
+
+		for(var j = 0; j < json.info.wtps.length; ++j){
+			//添加一行
+			var wtp = json.info.wtps[j];
+			wtpDataTable.row.add( [ 
+					json.info.wtps[j].serial, json.info.wtps[j].totalStationNum,
+					json.info.wtps[j].WTPName,
+					wtp.vendorID + "-" + wtp.boardID + "-" + wtp.boardReversion,
+					json.info.wtps[j].runImageID,
+					json.info.wtps[j].group || "缺省组",
+					json.info.wtps[j].location,
+					json.info.wtps[j].ipaddr || "未记录"]).draw( false );
+			currentPos++;
+		}
+
+		currentTotal = json.info.total;
+		if(json.info.wtps.length == 0){
+			return;
+		}
+
+		dumpWTP(currentGroupName);
+	}
+
+	function dumpWTP(groupName) {
+		if(groupName != currentGroupName) {
+			currentPos = 0;
+			currentGroupName = groupName;
+			currentTotal = 0;
+			wtpDataTable.clear();
+			wtpDataTable.draw();
+		}
+		wtpDump(currentPos, currentGroupName, dumpWTPCB);
+	}
+
+
+</script>
+<title>AP列表</title>
+</head>
+<body>
+<div id="maindiv">
+    <table width="100%" class="display" id="wtps" cellspacing="0">
+		<thead>
+            <tr>
+                <th width="110">序列号</th>
+                <th width="70">终端数</th>
+                <th width="120">设备名称</th>
+                <th width="180">硬件信息</th>
+				<th width="220">软件版本</th>
+                <th width="100">分组</th>
+                <th width="110">安装位置</th>
+                <th width="80">IP地址</th>
+            </tr>
+		</thead>
+	</table>
+</div>
+<script>
+function openWTPEditDialog() {
+	var itemtemp = $("#wtpEdit").html();
+	$("#dialog-wtpEdit").remove();
+	itemtemp = Mustache.render(itemtemp, {});
+	$(itemtemp).dialog({
+		resizable: false,
+		width: 450,
+		modal: true,
+		open:function(a, b) {
+			var formdata = {
+			};
+			var tr = wtpDataTable.$('tr.selected');
+			formdata.values = {
+				name:tr[0].firstChild.innerHTML,
+				groupname:tr[0].children[5].innerHTML,
+				location:tr[0].children[6].innerHTML,
+			};
+			formdata.domains = new Object();
+			formdata.domains.groupname = groupsname;
+			$("#wtpEditForm").forminit2(formdata);
+		},
+		buttons: {
+			"取消": function() {
+				$( this ).dialog( "close" );
+				$("#dialog-wtpEdit").remove();
+			},
+
+			"确定": function() {
+				wtpSubmit();
+				//commitPortmapSetup();
+				$( this ).dialog( "close" );
+				$("#dialog-wtpEdit").remove();
+			}
+     	}
+	});
+}
+$(function(){
+	wtpDataTable = $('#wtps').DataTable({"language": {
+				"lengthMenu": "每页 _MENU_ 条记录",
+				"zeroRecords": "没有找到记录",
+				"info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+				"infoEmpty": "无记录",
+				"infoFiltered": "(从 _MAX_ 条记录过滤)",
+				"search": "查找",
+				"paginate": {
+        			"first":      "第一页",
+					"last":      "最后一页",
+					"next":       "下一页",
+					"previous":   "上一页"
+    			},
+		},});
+		$('#wtps tbody').on( 'mousedown', 'tr', function (e) {
+			if(e.button == 0)
+				return;
+			if ( $(this).hasClass('selected') ) {
+				openWTPEditDialog();
+				return true;
+			}
+		});
+		$('#wtps tbody').on( 'mousedown', 'tr', function (e) {
+			if(e.button != 0)
+				return;
+			if ( $(this).hasClass('selected') ) {
+				wtpDataTable.$('tr.selected').removeClass('selected');
+			} else {
+				wtpDataTable.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+			} );
+	dumpWTP("allll");
+});
+</script>
+<script type="text/x-mustache" id="wtpEdit">
+	<div id="dialog-wtpEdit" title="AP配置">
+	<form name="wtpEditForm" id="wtpEditForm" action="#" class="form form-group"
+		style="padding-top:25px;padding-right:25px;padding-left:25px">
+		<input type="hidden" id="name" name="name" maxlength="32"/>
+		<div class="form-item form-item-input form-item-pppoe">
+			<label class="k">安装位置</label>
+			<span class="v"><input type="text" name="location" id="location" value="" class="ipt-text" 
+				autocomplete="off" datatype="text" maxLength="31" minLength="1" 
+				reqMsg="location" /></span>
+			<em class="t"></em>
+		</div>
+		<br/>
+		<div class="form-item form-item-input form-item-pppoe">
+			<label class="k">归&nbsp;属&nbsp;组&nbsp;</label>
+			<select id="groupname" name="groupname" style="width:155px;">
+		</div>
+	</form>
+	</div>
+</script>
+</body></html>

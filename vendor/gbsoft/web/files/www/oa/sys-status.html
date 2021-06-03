@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="hrms/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="hrms/css/iconfont.css" type="text/css">
+<style type="text/css">
+a {
+	text-decoration: none;
+}
+
+a hover: {
+	text-decoration: none;
+}
+
+#applyProModel th, #toDoTaskModel th {
+	width: 33.33%;
+}
+
+#applyProModel td, #toDoTaskModel td {
+	width: 33.33%;
+}
+</style>
+</head>
+<body>
+	<div class="body_all">
+		<div class="welcome_head">
+			<!-- /centriole_oa/rest//overtime/toOvertimeApply -->
+			<a class="J_menuItem" id="overtime" href="javascript:void(0)" data-href="/hrms/centriole_oa/rest/overtime/toOvertimeApply" data-index="0">
+				<div class="request">
+					<ul class="request_carousel">
+						<li class="icon iconfont"></li>
+						<li class="request_title">加班</li>
+					</ul>
+				</div>
+			</a>
+			<div class="request">
+				<ul class="request_carousel" id="leaverequest" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">请假</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="punch" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">补卡</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="reserve" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">预约</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="wechat" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">签到</li>
+				</ul>
+			</div>
+			<div class="request_strut"></div>
+			
+			
+		</div>
+
+		<form id="leaveform">
+			<table id="leavetable" style='margin:0 auto;width:600px;border:0;'>
+				<tr>
+					<td colspan="2" style='text-align:center;'>
+						<h2>请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假</h2>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</strong></td>
+					<td><span id="name"> 卓贵明</span></td>
+				</tr>
+				<tr>
+					<td><strong>部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门：</strong></td>
+					<td><span id="deptment"> 组员</span></td>
+				</tr>
+				<tr>
+					<td><strong>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</strong></td>
+					<td><span id="post">组员</span></td>
+				</tr>
+				<tr>
+					<td><strong>请假类型：</strong></td>
+					<td>
+						<select id="leaveType" name="leaveType" class="form-control"  data-live-search="true" required  >
+							<option value="">   --请选择--   </option>
+							
+								  
+									  
+									
+										<option  value="1" type="0" >事假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="10" type="0" >病假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="11" type="1" >调休</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="12" type="0" >陪产假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="13" type="0" >3.8假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="14" type="0" >6.1假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="2" type="0" >产假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="3" type="0" >产检</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="4" type="0" >公假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="5" type="0" >公出</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="6" type="0" >出差</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="7" type="0" >婚假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="8" type="1" >年假</option>
+									  
+								
+							
+								  
+									  
+									
+										<option  value="9" type="0" >特批</option>
+									  
+								
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>开始时间：</strong></td>
+					<td><input id="starttime" name="starttime" type="text" class="form_datetime form-control" value="" required readonly="readonly"/></td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>结束时间：</strong></td>
+					<td><input id="endtime" name="endtime"  value="" type="text" class="form_datetime form-control" required readonly="readonly"/></td>
+				</tr>
+				<tr>
+					<td><strong>请假时长：</strong></td>
+					<td><span id="hourLength"></span>小时</td>
+				</tr>
+				<tr class="leaveInfoLength" style="display: none;">
+					<td><strong>剩余库存：</strong></td>
+					<td><span id="leaveInfoLength">0</span>小时</td>
+				</tr>
+				<tr>
+					<td><strong>审&nbsp;&nbsp;批&nbsp;&nbsp;人：</strong></td>
+					<td>
+						<select id="submit" name="approver" class="form-control"  data-live-search="true">
+							<option value="">   --请选择--   </option>
+							
+								  
+									  
+									
+										<option value="35">沈斌</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="3">刘羽</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="4">刘丹</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="24">丁杰</option>
+									  
+								
+							
+								  
+									  
+									
+										<option value="26">唐锐</option>
+									  
+								
+							 
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>紧急联系人：</strong></td>
+					<td><input id="linkman" type="text" class="form-control" maxlength="10" value=""/></td>
+				</tr>
+				<tr>
+					<td><strong>关&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</strong></td>
+					<td><input id="relOfLinkman" type="text" class="form-control" value="" maxlength="10"/></td>
+				</tr>
+				<tr>
+					<td><strong>联系方式：</strong></td>
+					<td><input id="telOfLinkman" name="telOfLinkman" type="text" value="" class="form-control" maxlength="11"/>
+						<span id="telCheck" style="color:#d45252;font-size:12px;"></span>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>请假事由：</strong></td>
+					<td><textarea id="leaveReason" name="leaveReason" required maxlength="200"></textarea></td>
+				</tr>
+				<tr>
+					<td valign="top"><strong>附&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件：</strong></td>
+					<td><input type="file" id="uploadFile" name="files" accept="image/png,image/gif,image/jpg,image/jpeg" placeholder="婚假、产假、病假需上传附件" multiple class="projectfile"/></td>
+				</tr>
+				<tr>
+					<td colspan="2" style='text-align:center;'>
+						<input id="diveditcontent-leave-req-insert-submit" class="btn btn-primary" value="申&nbsp;&nbsp;请" />
+					</td>
+				</tr>
+			</table>
+		</form>
+
+		<div class="welcome_body">
+			<!-- 公告展示 -->
+			<div class="body_module" id="noticeModel" style="display: none;">
+				<div class="body_module_title" style="background-color: cornflowerblue;" id="noticePanl">
+					<span class="body_module_title_span" id="notice">公告列表<span id="bulletinTotal"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="noticeTable">
+						<tbody><tr>
+							<th><span>发布者</span></th>
+							<th style="text-align: left;"><span>标题</span></th>
+							<th style="text-align: right;"><span>发布日期</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+			<div class="body_module" id="personalDayStatModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="abnormal">异常考勤<span id="personalDayStat"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="personalDayStatTable">
+						<tbody><tr>
+							<th><span>日期</span></th>
+							<th class="table_right"><span>状态</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="arvhiceToDoModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="matter">待办事项<span id="arvhiceToDo"></span></span>
+				</div>
+				<div style="height: 266px;overflow-y: auto;">
+					<table class="body_module_table" id="arvhiceToDoTable">
+						<tbody><tr>
+							<th><span>待办提醒说明</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="toDoTaskModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="examinationly">待审批<span id="toDoTask"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="toDoTaskTable">
+						<tbody><tr>
+							<th><span>流程名称</span></th>
+							<th style="text-align: center;"><span>申请人工号</span></th>
+							<th style="text-align: right;"><span>申请人</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="applyProModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="myApply">我的申请<span id="applyPro"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="applyProTable">
+						<tbody><tr>
+							<th><span>流程名称</span></th>
+							<th style="text-align: center;"><span>业务编号</span></th>
+							<th style="text-align: right;"><span>批复人</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+	<script src="/js/tr069.js"></script>
+	<script src="../js/uiapi/login.js"></script>
+
+	<script src="hrms/js/bootstrap.js"></script>
+	<script src="hrms/js/bootstrap-table.js"></script>
+	<script src="hrms/js/bootstrap-table-zh-CN.js"></script>
+	<script src="hrms/js/json-tree.js"></script>
+
+
+</body>
+</html>

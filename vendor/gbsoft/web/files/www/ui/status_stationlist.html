@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/ac.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="/js/uiutils.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="/js/jqtable/css/jquery.dataTables.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="/js/jqtable/js/jquery.dataTables.min.js"></script>
+<link type="text/css" href="css/style.css" rel="stylesheet">
+<script>
+
+	var currentPos = 0;
+	var currentTotal = 0;
+	var stationDataTable;
+
+	function refreshData()
+	{
+		currentPos = 0;
+		stationDump(currentPos);
+	}
+
+	function stationDeleteSubmit(macaddr){
+
+		function refresLocal(json)
+		{
+			setTimeout("refreshData();", 2000);
+		}
+
+		stationDelete(macaddr, refresLocal);
+	}
+
+	function dumpStationCB(json, context) {
+		if(json.resultCode != 0) {
+			return;
+		}
+
+		if(currentPos == 0) {
+			stationDataTable.clear();
+			stationDataTable.draw();
+		}
+
+		for(var j = 0; j < json.info.stations.length; ++j){
+			//添加一行
+			var station = json.info.stations[j];
+			stationDataTable.row.add( [ 
+					station.macaddr, station.signal,
+					station.APSerial, station.APLocation]).draw( false );
+			currentPos++;
+		}
+
+		currentTotal = json.info.total;
+		if(json.info.stations.length == 0){
+			return;
+		}
+
+		stationDump(currentPos);
+	}
+
+
+</script>
+<title>终端列表</title>
+</head>
+<body>
+<div id="maindiv">
+    <table width="100%" class="display" id="stations" cellspacing="0">
+		<thead>
+            <tr>
+                <th width="15%">MAC地址</th>
+                <th width="10%">信号强度</th>
+                <th width="20%">AP序号</th>
+                <th width="20%">AP位置</th>
+            </tr>
+		</thead>
+	</table>
+</div>
+<script>
+function deleteStationCommit() {
+	
+}
+$(function(){
+	stationDataTable = $('#stations').DataTable({"language": {
+				"lengthMenu": "每页 _MENU_ 条记录",
+				"zeroRecords": "没有找到记录",
+				"info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+				"infoEmpty": "无记录",
+				"infoFiltered": "(从 _MAX_ 条记录过滤)",
+				"search": "查找",
+				"paginate": {
+        			"first":      "第一页",
+					"last":      "最后一页",
+					"next":       "下一页",
+					"previous":   "上一页"
+    			},
+		},});
+		$('#stations tbody').on( 'mousedown', 'tr', function (e) {
+			if(e.button == 0)
+				return;
+			if ( $(this).hasClass('selected') ) {
+				openWTPEditDialog();
+				return true;
+			}
+		});
+		$('#stations tbody').on( 'mousedown', 'tr', function (e) {
+			if(e.button != 0)
+				return;
+			if ( $(this).hasClass('selected') ) {
+				stationDataTable.$('tr.selected').removeClass('selected');
+			} else {
+				stationDataTable.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+			} );
+	stationDump(currentPos, dumpStationCB);
+});
+</script>
+
+</body></html>

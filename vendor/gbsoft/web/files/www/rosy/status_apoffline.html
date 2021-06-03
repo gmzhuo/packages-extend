@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/ac.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.min.css">
+<link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.min.css">
+<link rel="stylesheet" href="/js/jqtable/css/jquery.dataTables.min.css">
+<script language="JavaScript" src="/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="/js/jqtable/js/jquery.dataTables.min.js"></script>
+<link type="text/css" href="css/style.css" rel="stylesheet">
+<script>
+
+	var currentGroupName = "";
+	var currentPos = 0;
+	var currentTotal = 0;
+
+	function dumpWTPCB(json, context) {
+		if(json.resultCode != 0) {
+			return;
+		}
+
+		for(var j = 0; j < json.info.wtps.length; ++j){
+			//添加一行
+			wtpDataTable.row.add( [ 
+					json.info.wtps[j].serial, 0,
+					json.info.wtps[j].WTPName,
+					json.info.wtps[j].boardReversion,
+					json.info.wtps[j].runImageID,
+					json.info.wtps[j].group || "缺省组",
+					json.info.wtps[j].location]).draw( false );
+			currentPos++;
+		}
+
+		currentTotal = json.info.total;
+		if(json.info.wtps.length == 0){
+			return;
+		}
+
+		dumpWTP(currentGroupName);
+	}
+
+	function dumpWTP(groupName) {
+		if(groupName != currentGroupName) {
+			currentPos = 0;
+			currentGroupName = groupName;
+			currentTotal = 0;
+			wtpDataTable.clear();
+			wtpDataTable.draw();
+		}
+		wtpDump(currentPos, currentGroupName, dumpWTPCB);
+	}
+
+
+	var t;
+	var currentGroupName = "";
+	var currentPos = 0;
+	var currentTotal = 0;
+
+	function dumpWTPCB(json, context) {
+		if(json.resultCode != 0) {
+			return;
+		}
+
+		for(var j = 0; j < json.info.wtps.length; ++j){
+			//添加一行
+			currentPos++;
+			if(json.info.wtps[j].state == "online") {
+				continue;
+			}
+			wtpDataTable.row.add( [ 
+					json.info.wtps[j].serial,
+					json.info.wtps[j].WTPName,
+					json.info.wtps[j].location,
+					json.info.wtps[j].runImageID,
+					json.info.wtps[j].ipaddr || "未记录"]
+					).draw( false );
+		}
+
+		currentTotal = json.info.total;
+		if(json.info.wtps.length == 0){
+			return;
+		}
+
+		dumpHistory(currentGroupName);
+	}
+
+	function dumpHistory(groupName) {
+		if(groupName != currentGroupName) {
+			currentPos = 0;
+			currentGroupName = groupName;
+			currentTotal = 0;
+			wtpDataTable.clear();
+			wtpDataTable.draw();
+		}
+		historyDump(currentPos, currentGroupName, dumpWTPCB);
+	}
+
+	function deleteHistory()
+	{
+		var tr = wtpDataTable.$('tr.selected');
+		var name = tr[0].firstChild.innerHTML;
+		function delCB(json)
+		{
+			alert("成功删除");
+		}
+		delHistory(name, delCB);
+	}
+
+</script>
+<title>AP列表</title>
+</head>
+<body>
+<div id="maindiv">
+    <table width="100%" class="display" id="wtps" cellspacing="0">
+		<thead>
+            <tr>
+                <th width="140">序列号</th>
+                <th width="80">设备名称</th>
+				<th width="200">安装位置</th>
+				<th width="160">软件版本</th>
+                <th width="80">IP地址</th>
+            </tr>
+		</thead>
+	</table>
+    <button type="submit" class="btn btn-primary btn-l " onClick="deleteHistory();" style="margin-left:230mm">
+    	<span>删除所选</span>
+    </button>
+</div>
+<script>
+$(function(){
+	wtpDataTable = $('#wtps').DataTable({"language": {
+				"lengthMenu": "每页 _MENU_ 条记录",
+				"zeroRecords": "没有找到记录",
+				"info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+				"infoEmpty": "无记录",
+				"infoFiltered": "(从 _MAX_ 条记录过滤)",
+				"search": "查找",
+				"paginate": {
+        			"first":      "第一页",
+					"last":      "最后一页",
+					"next":       "下一页",
+					"previous":   "上一页"
+    			},
+		},});
+		$('#wtps tbody').on( 'mousedown', 'tr', function () {
+			if ( $(this).hasClass('selected') ) {
+				$(this).removeClass('selected');
+			} else {
+				wtpDataTable.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+			}
+			} );
+	dumpHistory("allll");
+});
+</script>
+</body></html>

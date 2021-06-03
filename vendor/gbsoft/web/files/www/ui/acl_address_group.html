@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/network.js"></script>
+<script src="../js/uiapi/login.js"></script>
+<script src="../js/uiapi/appiden.js"></script>
+<script type="text/javascript" src="js/pub.js"></script>
+<script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/mustache.js"></script>
+<script src="ap_configs.js"></script>
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css" />
+<script type="text/javascript" src="js/common.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+
+<title>网络设置</title>
+</head>
+<body>
+<table style="width:100%">
+<tr>
+<td style="width:35%">
+<form method="POST" action="/doform/SET_NET_CONFIG">
+  <input type=hidden name="page" value="set_net.asp">
+  <div id="maindiv" style="width:100%">
+    <div id="divtitle">地址组编辑</div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable" style="width:100%">
+    <tbody id="loglist">
+    	<tr>
+        	<td style="width:20%; text-align:right; padding-right:10px;">
+					组名称
+				</td>
+                <td>:<input type="text" id="groupName" name="groupName" maxlength="32"/></td>
+            </tr>
+    	<tr>
+        <tr>
+        	<td style="width:20%; text-align:right; padding-right:10px;">
+					备注
+				</td>
+                <td>:<input type="text" id="memo" name="memo" maxlength="32"/></td>
+            </tr>
+    	<tr>
+        <script type="text/x-mustache" id="IPAddr">
+			   		<div class="ipaddrEdit">
+					<div class="form-item form-item-input">
+						<label class="k">起始地址</label>
+						<span class="v"><input type="text" name="addrStart{{index}}" value="{{ipAddr}}" class="IPAddrStart ipt-text" 
+							autocomplete="off" datatype="ssid" maxLength="31" minLength="1" 
+							reqMsg="起始地址" /></span>
+					</div>
+					<div class="form-item form-item-input">
+						<label class="k">结束地址</label>
+						<span class="v"><input type="text" name="addrEnd{{index}}" value="{{ipEnd}}" class="IPAddrEnd ipt-text" 
+							autocomplete="off" datatype="ssid" maxLength="31" minLength="1" 
+							reqMsg="结束地址" /></span>
+						<em class="t" onClick="addIPAddr()" name="IPAddrAdd" style="cursor:pointer">+</em>
+					</div>
+					</div>
+				</script>
+		<div id="IPAddrAfter"></div>
+    	
+    </tbody>
+    </table>
+    <div id="divsavebtn"><span class="head">&nbsp;</span><input type="button" value="确定"  onclick="presubmit()"/><input type="button" value="取消" onclick="javascript:window.location.reload();"/></div>
+  </div>
+</form>
+</td>
+<td style="vertical-align:top">
+<div id="maindiv" style="vertical-align:top">
+  	<div id="divtitle"><span id="curgpname">地址组规则</span></div>
+    <table id="logtable" style="width:99%">
+    <thead bgcolor="#429CF5" style="color:#FFF; font-weight:bold; font-size:14px;">
+    	<tr>
+        <th width="10%" align="center">名称</th>
+        <th width="8%" align="center">地址</th>
+        <th width="8%" align="center">备注</th>
+        <th width="8%" align="center">编辑</th>
+        <th width="8%" align="center">删除</th>
+        </tr>
+    </thead>
+    <tbody id="aplist" style="font-size:12px;">
+    	<script type="text/x-mustache" id="firmwares">
+			{{#firmwares}}
+			<tr class = "firmware">
+				<td>{{imageID}}</td>
+                            <td>{{vendorID}}-{{boardID}}-{{boardReversion}}</td>
+							<td>{{memo}}</td>
+							<td class="center" ><a data="{{index}}" class="firmware-delete"><img src="images/remove.gif" width="16" height="16"></td>
+            </tr>
+			{{/firmwares}}
+		</script>
+    	<tr>
+    		<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+        </tr>
+    </tbody>
+    </table>
+  </div>
+</td>
+</tr>
+</table>
+
+</body>
+<script src="acl_rule.js"></script>
+</html>

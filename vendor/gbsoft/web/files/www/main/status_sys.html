@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/iframe_content.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="/js/tr069.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<title></title>
+<script type="text/javascript">
+
+function showSysinfo()
+{
+	function sysinfoResult(result)
+	{
+		var ParameterList = result.ParameterList;
+		var uptime = parseInt(ParameterList["Device.DeviceInfo.UpTime"].Value);
+		var day = uptime;
+		day /= (3600 * 24);
+		day = day.toFixed(0);
+
+		var hour = uptime;
+		hour /= 3600;
+		hour = hour.toFixed(0);
+		hour %= 24;
+
+		var miniute = uptime;
+		miniute /= 60;
+		miniute = miniute.toFixed(0);
+		miniute %= 60;
+
+		var second = uptime;
+		second %= 60;
+
+		$("#uptime").text(day + "天" + hour + "小时" + miniute + "分钟" + second + "秒");
+		$("#currenttime").text(ParameterList["Device.Time.CurrentLocalTime"].Value);
+		$("#softversion").text(ParameterList["Device.DeviceInfo.SoftwareVersion"].Value);
+		$("#model").text(ParameterList["Device.DeviceInfo.ModelName"].Value);
+		$("#hardwareversion").text(ParameterList["Device.DeviceInfo.HardwareVersion"].Value);
+		$("#sn").text(ParameterList["Device.DeviceInfo.SerialNumber"].Value);
+
+		var memfree = parseInt(ParameterList["Device.DeviceInfo.MemoryStatus.Free"].Value);
+		var memtotal = parseInt(ParameterList["Device.DeviceInfo.MemoryStatus.Total"].Value);
+		var memused = memtotal - memfree;
+		var rateused = memused * 100 / memtotal;
+		rateused = rateused.toFixed(2);
+		$("#memused").text(rateused + "%");
+	}
+
+	var parameters ={ ParameterNames: [
+		"Device.DeviceInfo.Manufacturer",
+		"Device.DeviceInfo.ManufacturerOUI",
+		"Device.DeviceInfo.ModelName",
+		"Device.DeviceInfo.Description",
+		"Device.DeviceInfo.ProductClass",
+		"Device.DeviceInfo.SerialNumber",
+		"Device.DeviceInfo.HardwareVersion",
+		"Device.DeviceInfo.SoftwareVersion",
+		"Device.DeviceInfo.MemoryStatus.Total",
+		"Device.DeviceInfo.MemoryStatus.Free",
+		
+		"Device.Time.CurrentLocalTime",
+		"Device.DeviceInfo.UpTime",
+	]};
+	TR069_RPC("GetParameterValues", parameters, sysinfoResult);
+	
+
+}
+
+showSysinfo();
+</script>
+</head>
+<body style="height:500px;">
+<div id="maindiv" style="height:500px;">
+    <div id="divtitle">系统信息</div>
+<table style="width:985px;" id="aplist" class="divcenter">
+<tr><td width="40%" class="tdhead">设备型号</td><td><lable id="model"></lable></td></tr>
+<tr><td width="40%" class="tdhead">内存使用率</td><td><lable id="memused"></lable></td></tr>
+<tr><td class="tdhead">系统时间</td><td><lable id="currenttime"></lable></td></tr>
+<tr><td class="tdhead">开机时间</td><td><lable id="uptime"></lable></td></tr>
+<tr><td class="tdhead">软件版本号</td><td><lable id="softversion">v1.0</lable></td></tr>
+<tr><td class="tdhead">硬件版本号</td><td><lable id="hardwareversion">V1.0</lable></td></tr>
+<tr><td class="tdhead">产品序列号</td><td><lable id="sn">V1.0</lable></td></tr>
+</table>
+</div>
+</body>
+</html>

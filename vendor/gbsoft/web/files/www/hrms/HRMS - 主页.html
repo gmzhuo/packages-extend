@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<title>HRMS - 主页</title>
+
+<!--[if lt IE 8]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+<link rel="shortcut icon" href="http://oa.centriole.cn/hrms/favicon.ico">
+<link href="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/bootstrap.css" rel="stylesheet">
+<link href="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/font-awesome.css" rel="stylesheet">
+<link href="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/animate.css" rel="stylesheet">
+<link href="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/style.css" rel="stylesheet">
+
+<style type="text/css">
+@media ( max-width :768px) {
+	* {
+		font-size: 20px;
+	}
+}
+
+#pushTabs, #closeOtherTabs, #closeAllTabs {
+	margin-left: 5px;
+	margin-bottom: 2px;
+}
+
+#pushTabs:hover, #closeOtherTabs:hover, #closeAllTabs:hover {
+	background: #4281F4;
+	color: #FFF;
+}
+</style>
+<link rel="stylesheet" href="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/layer_002.css" id="layui_layer_skinlayercss" style=""><script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/layer.js" id="layui_layer_extendlayerextjs"></script><link rel="stylesheet" href="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/layer.css" id="layui_layer_skinlayerextcss" style=""></head>
+
+<body class="fixed-sidebar full-height-layout gray-bg  pace-done" style="overflow: hidden"><div class="pace  pace-inactive"><div class="pace-progress" style="width: 100%;" data-progress-text="100%" data-progress="99">
+  <div class="pace-progress-inner"></div>
+</div>
+<div class="pace-activity"></div></div>
+	<div id="wrapper">
+		<!--左侧导航开始-->
+		<nav id="left-nav" class="navbar-default navbar-static-side" role="navigation">
+			<div class="nav-close">
+				<i class="fa fa-times-circle"></i>
+			</div>
+			<div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;"><div class="sidebar-collapse" style="width: auto; height: 100%;">
+				<ul class="nav" id="side-menu">
+					<li class="nav-header">
+						<div class="dropdown profile-element">
+							<!-- 头像显示栏 -->
+							<span><img id="headImg" alt="image" class="img-circle" src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/profile_small.jpg" style="cursor: hand;" width="64" height="64"></span> <a data-toggle="dropdown" class="dropdown-toggle" href="#"> <span class="clear">
+									<span class="block m-t-xs"><strong class="font-bold">卓贵明</strong></span>
+									<span class="text-muted text-xs block">普通用户<b class="caret"></b></span>
+							</span>
+							</a>
+							<ul class="dropdown-menu animated fadeInRight m-t-xs">
+								
+								<li style="display: none;"><a class="J_menuItem" href="" data-index="0"></a>
+								</li>
+								<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest/archive/toPersonalInfo" data-index="1">个人资料</a></li>
+								<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest/leaveinfo/toPersonLeaveInfo" data-index="2">个人假期查询</a>
+								</li>
+								<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest/punch/stat/personal" data-index="3">个人考勤查询</a></li>
+								<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest/growth/toPersonRecord" data-index="4">个人成长记录卡查询</a></li>
+								<li><a href="#" data-toggle="modal" data-target="#modifyPassWordModal">修改密码</a> 
+								</li><li><a class="J_menuItem" style="display: none;" href="http://oa.centriole.cn/hrms/rest/chamber/toReserve" data-index="5">会议室预定</a>
+								<!--  --></li>
+								<!--  <li><a class="J_menuItem" href="contacts.html">联系我们</a>
+             </li>
+             <li><a class="J_menuItem" href="mailbox.html">信箱</a> -->
+					
+					<li class="divider"></li>
+					<li><a href="http://oa.centriole.cn/hrms/rest/logout">安全退出</a></li>
+				</ul>
+			</div>
+
+			<div class="logo-element">HRMS</div>
+			</li>
+			
+			<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/welcome-index.jsp" data-index="0">首页</a>
+			</li>
+			
+			
+			<li>
+				 <a href="#"> <i class="fa fa-home"></i>
+					<span class="nav-label">发起申请</span> <span class="fa arrow"></span>
+			</a>
+				<ul class="nav nav-second-level collapse">
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//leaverequest/toleave" data-index="0">请假申请</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//punch/repair" data-index="0">补卡申请</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//overtime/toOvertimeApply" data-index="0">加班申请</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//flow/toStart" data-index="0">通用流程</a></li>
+					
+					
+				</ul>
+			</li>
+			
+			
+			<li>
+				 <a href="#"> <i class="fa fa-home"></i>
+					<span class="nav-label">我的申请</span> <span class="fa arrow"></span>
+			</a>
+				<ul class="nav nav-second-level collapse">
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//workflowManage/applyRunningPro" data-index="0">审批中</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//workflowManage/applyFinishedPro" data-index="0">已结束</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//workflowManage/toReturnableTodoTasks" data-index="0">被退回</a></li>
+					
+					
+				</ul>
+			</li>
+			
+			
+			<li>
+				 <a href="#"> <i class="fa fa-home"></i>
+					<span class="nav-label">我的审批</span> <span class="fa arrow"></span>
+			</a>
+				<ul class="nav nav-second-level collapse">
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//workflowManage/approTodoTask" data-index="0">待审批</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//workflowManage/approRunningApprovedPro" data-index="0">已审批(未结束)</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//workflowManage/approFinishedApprovedPro" data-index="0">已审批(已结束)</a></li>
+					
+					<li><a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//approveActivity/toApproeActivity" data-index="0">已审批流程报表</a></li>
+					
+					
+				</ul>
+			</li>
+			
+			
+			<li>
+				
+						<a class="J_menuItem" href="http://oa.centriole.cn/hrms/rest//announcement/toNoticeList" style="display: none" data-index="18">
+							<i class="fa fa-home"></i> <span class="nav-label">公告列表</span>
+						</a>
+
+			</li></ul>
+	</div><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 728px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.9; z-index: 90; right: 1px;"></div></div>
+	</nav>
+	<!--左侧导航结束-->
+	<!--右侧部分开始-->
+	<div id="page-wrapper" class="gray-bg dashbard-1">
+		<div class="row border-bottom">
+			<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+				<div class="navbar-header">
+					<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+				</div>
+				<ul class="nav navbar-top-links navbar-right">
+					<li><a href="http://oa.centriole.cn/hrms/rest/sso/toTrain" target="view_window">
+							<img src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/share.png">培训平台
+					</a></li>
+					<li><a href="http://oa.centriole.cn/resource/hrms_operation_manual.docx?oper=down" download=""> <img src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/help.png">OA操作手册
+					</a></li>
+					<li><a href="ftp://222.211.83.217/" target="view_window"> <img src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/share.png">共享平台
+					</a></li>
+					<li class="dropdown hidden-xs"><a class="right-sidebar-toggle" aria-expanded="false"> <i class="fa fa-tasks"></i> 主题
+					</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="row content-tabs">
+			<button class="roll-nav roll-left J_tabLeft">
+				<i class="fa fa-backward"></i>
+			</button>
+			<nav class="page-tabs J_menuTabs">
+				<div class="page-tabs-content">
+					<a href="javascript:;" class="active J_menuTab" data-id="/hrms/welcome-index.jsp" src="">首页<i class="fa fa-times-circle"></i></a>
+				</div>
+			</nav>
+			<button class="roll-nav roll-right J_tabRight">
+				<i class="fa fa-forward"></i>
+			</button>
+			<div class="btn-group roll-nav roll-right">
+				<button class="dropdown J_tabClose" data-toggle="dropdown">
+					关闭操作<span class="caret"></span>
+				</button>
+				<ul role="menu" class="dropdown-menu dropdown-menu-right">
+					<li class="J_tabShowActive"><a>定位当前选项卡</a></li>
+					<li class="divider"></li>
+					<li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
+					<li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
+				</ul>
+			</div>
+			<a href="http://oa.centriole.cn/hrms/rest/login" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+		</div>
+		<div class="row J_mainContent" id="content-main">
+			
+			<iframe class="J_iframe" name="iframe0" src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/welcome-index.html" data-id="/hrms/welcome-index.jsp" seamless="" width="100%" height="100%" frameborder="0"></iframe>
+		</div>
+		<div class="footer">
+			<div class="pull-right">
+				© 2016 <a href="http://www.microcorecn.com/" target="_blank">微核科技</a>
+			</div>
+		</div>
+	</div>
+	<!--右侧部分结束-->
+	<!--右侧边栏开始-->
+	<div id="right-sidebar">
+		<div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;"><div class="sidebar-container" style="width: auto; height: 100%;">
+			<ul class="nav nav-tabs navs-3">
+				<li class="active"><a data-toggle="tab" href="#tab-1"> <i class="fa fa-gear"></i> 主题
+				</a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="tab-1" class="tab-pane active">
+					<div class="sidebar-title">
+						<h3>
+							<i class="fa fa-comments-o"></i> 主题设置
+						</h3>
+						<small><i class="fa fa-tim"></i>
+							你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
+					</div>
+					<div class="skin-setttings">
+						<div class="title">主题设置</div>
+						<div class="setings-item">
+							<span>收起左侧菜单</span>
+							<div class="switch">
+								<div class="onoffswitch">
+									<input name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu" type="checkbox"> <label class="onoffswitch-label" for="collapsemenu"> <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="setings-item">
+							<span>固定顶部</span>
+							<div class="switch">
+								<div class="onoffswitch">
+									<input name="fixednavbar" class="onoffswitch-checkbox" id="fixednavbar" type="checkbox"> <label class="onoffswitch-label" for="fixednavbar"> <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="setings-item">
+							<span>固定宽度</span>
+							<div class="switch">
+								<div class="onoffswitch">
+									<input name="boxedlayout" class="onoffswitch-checkbox" id="boxedlayout" type="checkbox"> <label class="onoffswitch-label" for="boxedlayout"> <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="title">皮肤选择</div>
+						<div class="setings-item default-skin nb">
+							<span class="skin-name "> <a href="#" class="s-skin-0">默认皮肤</a>
+							</span>
+						</div>
+						<div class="setings-item blue-skin nb">
+							<span class="skin-name "> <a href="#" class="s-skin-1">蓝色主题</a>
+							</span>
+						</div>
+						<div class="setings-item yellow-skin nb">
+							<span class="skin-name "> <a href="#" class="s-skin-3">黄色/紫色主题</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><div class="slimScrollBar" style="background: rgb(0, 0, 0) none repeat scroll 0% 0%; width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 667px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51) none repeat scroll 0% 0%; opacity: 0.4; z-index: 90; right: 1px;"></div></div>
+	</div>
+	<!--右侧边栏结束-->
+	</div>
+
+
+	<!-- 上传头像模态框 -->
+	<div class="modal fade" id="myModal-input" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">头像上传</h4>
+				</div>
+				<div class="modal-body">
+					<form id="uploadForm">
+						<input name="filePhoto" type="file">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="uploadFile" type="button" class="btn btn-primary">上传头像</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+	<div id="ycf-alert" class="modal ui-draggable" style="z-index: 99999 !important">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						<i class="fa fa-exclamation-circle"></i> [Title]
+					</h5>
+				</div>
+				<div class="modal-body small">
+					<p>[Message]</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info ok" data-dismiss="modal">[BtnOk]</button>
+					<button type="button" class="btn btn-default cancel" data-dismiss="modal">[BtnCancel]</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 修改密码模态框 start -->
+	<div class="modal fade" id="modifyPassWordModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" id="ui-modal-3" style="width: 500px;">
+			<div class="modal-content">
+				<div class="modal-header bg-primary">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">
+						<span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+						<span id="lblAddTitle" style="font-weight: bold">修改密码</span>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form id="modifyPassWordForm">
+						<table class="table table-form w-300px" align="center">
+							<tbody>
+								<tr>
+									<th style="width: 90px;">用户名</th>
+									<td>00279</td>
+								</tr>
+								<tr>
+									<th>原密码</th>
+									<td><span class="input-group"> <input name="oldPassWord" id="oldPassWord" value="" class="form-control" placeholder="原密码" type="password">
+									</span></td>
+								</tr>
+								<tr>
+									<th>密码</th>
+									<td><span class="input-group"> <input name="newPassword" id="newPassword" value="" class="form-control" placeholder="新密码" type="password">
+									</span></td>
+								</tr>
+								<tr>
+									<th>请重复密码</th>
+									<td><span class="input-group"> <input name="checkPassword" id="checkPassword" value="" class="form-control" placeholder="确认密码" type="password">
+									</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="modPassWordSubmit" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="finishedProcessInstanceModal" tabindex="-1" role="dialog" aria-hidden="true"></div>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/jquery-1.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/jquery-ui.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/bootstrap.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/alert-modal.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/jquery_002.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/jquery.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/layer_002.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/index.js"></script>
+	<script type="text/javascript" src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/contabs.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/pace.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/jquery-form.js" charset="UTF-8"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/common.js"></script>
+	<script src="HRMS%20-%20%E4%B8%BB%E9%A1%B5_files/json-tree.js"></script>
+	<script type="text/javascript">
+  	$(function(){
+  		$("#ycf-alert").draggable({
+		    handle: ".modal-content"
+		});
+  	});
+  	
+  //修改密码提交
+    $('#modPassWordSubmit').click(function () {
+    	var oldPassWord = $("#oldPassWord").val();
+   		var newPassWord = $("#newPassword").val();
+   		var checkPassWord = $("#checkPassword").val();
+   		if (null == oldPassWord || ''==oldPassWord) {
+   			top.Modal.alert({ 
+     			success:false,
+             		msg: "原始密码不能为空",
+             		title: '提示',
+             		btnok: '确定'});
+     		return false;
+		}
+   		if (oldPassWord==newPassWord) {
+   			top.Modal.alert({ 
+     			success:false,
+             		msg: "新密码不能与原始密码一致",
+             		title: '提示',
+             		btnok: '确定'});
+     		return false;
+		}
+   		if (null==newPassWord || '' == newPassWord) {
+   			top.Modal.alert({ 
+     			success:false,
+             		msg: "新密码不能为空",
+             		title: '提示',
+             		btnok: '确定'});
+     		return false;
+		}
+   	 	if(newPassWord != checkPassWord){
+     		top.Modal.alert({ 
+     			success:false,
+             		msg: "新密码与确认密码不一致",
+             		title: '提示',
+             		btnok: '确定'});
+     		return false;
+     	}
+
+        var editOptions = {
+            url: '/hrms/rest/account/modifyPassword',
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+               top.Modal.alert({     
+               	success:result.success,
+               	msg: result.msg,
+               	title: '标题',
+               	btnok: '确定'}).on(function(){
+               		if(result.success){
+               			top.location.href="/hrms/rest/logout";
+               		}
+               	});
+            },
+            error: function() {$("#modifyPassWordForm").resetForm();},
+            iframe: false
+        };
+
+        $('#modifyPassWordForm').ajaxSubmit(editOptions);
+        return false;
+
+    });
+
+    	//监听头像点击
+        $('#headImg').on('click',function(){
+        	//判断是否为管理员
+        	if(false){
+        		error("管理员不能更换头像");
+        		return;
+        	}
+        	//弹出模态框清空内容
+        	document.getElementById("uploadForm").reset();
+        	$('#myModal-input').modal('show');
+        })
+        
+        
+        $("#uploadFile").click(function(){
+			var file = $("input[name=filePhoto]").val();
+				if(file!=''){
+	 				var url = "/hrms/rest/account/headImg";
+		  			$.ajax({
+			          url: url,  
+			          type: 'POST',  
+			          data: new FormData($("#uploadForm")[0]),  
+			          async: false,  
+			          cache: false,  
+			          contentType: false,  
+			          processData: false,  
+			          success: function (result) {
+			        	  if(result.success){
+			        		  location.reload()
+			        	  }else{
+			        		  error(result.msg);
+			        		  document.getElementById("uploadForm").reset(); 
+			        		  return;
+			        	  }
+			          }
+			    });
+					return;
+			}
+			error('请选择需要上传的头像文件');
+        })
+        
+  </script>
+
+
+	<div id="load_wait_div" class="modal-backdrop in" style="z-index: 99999 !important; display: none;">
+		<div class="sk-spinner sk-spinner-circle" style="margin-top: 20%; width: 100px; height: 100px;">
+			<div class="sk-circle1 sk-circle"></div>
+			<div class="sk-circle2 sk-circle"></div>
+			<div class="sk-circle3 sk-circle"></div>
+			<div class="sk-circle4 sk-circle"></div>
+			<div class="sk-circle5 sk-circle"></div>
+			<div class="sk-circle6 sk-circle"></div>
+			<div class="sk-circle7 sk-circle"></div>
+			<div class="sk-circle8 sk-circle"></div>
+			<div class="sk-circle9 sk-circle"></div>
+			<div class="sk-circle10 sk-circle"></div>
+			<div class="sk-circle11 sk-circle"></div>
+			<div class="sk-circle12 sk-circle"></div>
+		</div>
+
+	</div>
+
+
+
+
+</body></html>

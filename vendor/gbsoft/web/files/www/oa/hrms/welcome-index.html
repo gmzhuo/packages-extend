@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="bootstrap.css" type="text/css">
+<link rel="stylesheet" href="welcome-index_data/iconfont.css" type="text/css">
+<style type="text/css">
+a {
+	text-decoration: none;
+}
+
+a hover: {
+	text-decoration: none;
+}
+
+#applyProModel th, #toDoTaskModel th {
+	width: 33.33%;
+}
+
+#applyProModel td, #toDoTaskModel td {
+	width: 33.33%;
+}
+</style>
+</head>
+<body>
+	<div class="body_all">
+		<div class="welcome_head">
+			<!-- /centriole_oa/rest//overtime/toOvertimeApply -->
+			<a class="J_menuItem" id="overtime" href="javascript:void(0)" data-href="/hrms/centriole_oa/rest/overtime/toOvertimeApply" data-index="0">
+				<div class="request">
+					<ul class="request_carousel">
+						<li class="icon iconfont"></li>
+						<li class="request_title">加班</li>
+					</ul>
+				</div>
+			</a>
+			<div class="request">
+				<ul class="request_carousel" id="leaverequest" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">请假</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="punch" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">补卡</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="reserve" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">预约</li>
+				</ul>
+			</div>
+			<div class="request">
+				<ul class="request_carousel" id="wechat" style="cursor: pointer;">
+					<li class="icon iconfont"></li>
+					<li class="request_title">签到</li>
+				</ul>
+			</div>
+			<div class="request_strut"></div>
+			
+			
+		</div>
+
+		<div class="welcome_body">
+			<!-- 公告展示 -->
+			<div class="body_module" id="noticeModel" style="display: none;">
+				<div class="body_module_title" style="background-color: cornflowerblue;" id="noticePanl">
+					<span class="body_module_title_span" id="notice">公告列表<span id="bulletinTotal"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="noticeTable">
+						<tbody><tr>
+							<th><span>发布者</span></th>
+							<th style="text-align: left;"><span>标题</span></th>
+							<th style="text-align: right;"><span>发布日期</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+			<div class="body_module" id="personalDayStatModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="abnormal">异常考勤<span id="personalDayStat"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="personalDayStatTable">
+						<tbody><tr>
+							<th><span>日期</span></th>
+							<th class="table_right"><span>状态</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="arvhiceToDoModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="matter">待办事项<span id="arvhiceToDo"></span></span>
+				</div>
+				<div style="height: 266px;overflow-y: auto;">
+					<table class="body_module_table" id="arvhiceToDoTable">
+						<tbody><tr>
+							<th><span>待办提醒说明</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="toDoTaskModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="examinationly">待审批<span id="toDoTask"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="toDoTaskTable">
+						<tbody><tr>
+							<th><span>流程名称</span></th>
+							<th style="text-align: center;"><span>申请人工号</span></th>
+							<th style="text-align: right;"><span>申请人</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div class="body_module" id="applyProModel" style="display: none;">
+				<div class="body_module_title">
+					<span class="body_module_title_span" id="myApply">我的申请<span id="applyPro"></span></span>
+				</div>
+				<div>
+					<table class="body_module_table" id="applyProTable">
+						<tbody><tr>
+							<th><span>流程名称</span></th>
+							<th style="text-align: center;"><span>业务编号</span></th>
+							<th style="text-align: right;"><span>批复人</span></th>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<script src="welcome-index_data/jquery-1.js"></script>
+	<script src="bootstrap.js"></script>
+	<script src="welcome-index_data/bootstrap-table.js"></script>
+	<script src="welcome-index_data/bootstrap-table-zh-CN.js"></script>
+	<script src="json-tree.js"></script>
+	<script type="text/javascript">
+//加班申请
+var OVERTIME = "/hrms/rest/"+"/overtime/toOvertimeApply";
+//请假申请
+var LEAVEREQUEST = "/hrms/rest/"+"/leaverequest/toleave";
+//签卡申请
+var PUNCH = "/hrms/rest/"+"/punch/repair";
+//签到申请
+var WECHAT = "/hrms/rest/"+"/wechart/wechartPunch";
+//会议室预约
+var RESERVE = "/hrms/rest"+"/chamber/toReserve";
+
+//待办事项
+var MATTER = "/hrms/rest/"+"/archive/toArchive";
+//待审批
+var EXAMINATIONLY = "/hrms/rest/"+"/workflowManage/approTodoTask";
+//我的申请
+var MYAPPLY = "/hrms/rest/"+"/workflowManage/applyRunningPro";
+//异常考勤
+var ABNORMAL = "/hrms/rest/punch/stat/personal";
+//公告列表
+var NOTICE = "/hrms/rest/"+"/announcement/toNoticeList";
+
+//加班申请wechat
+var OVERTIMEw = "/hrms/rest/"+"/overtime/toWechatOvertimeApply";
+//请假申请wechat
+var LEAVEREQUESTw = "/hrms/rest/"+"/leaverequest/toWechatleave";
+//签卡申请wechat
+var PUNCHw = "/hrms/rest/"+"/punch/repair/toWechatPunchrepair";
+//会议室预约wechat
+var RESERVEw = "/hrms/rest"+"/chamber/toWechatReserve";
+//异常考勤wechat
+var ABNORMALw = "/hrms/rest/punch/stat/wechatPersonal";
+//我的申请wechat
+var MYAPPLYw = "/hrms/rest/"+"/workflowManage/wechatApplyRunningPro";
+//待审批wechat
+var EXAMINATIONLYw = "/hrms/rest/"+"/workflowManage/wechatApproTodoTask";
+	
+    $(function(){
+		var nav = $(parent.document.getElementsByTagName("body"));
+		$("#overtime").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==OVERTIME||$(elements[i]).attr("href")==OVERTIMEw){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		$("#leaverequest").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==LEAVEREQUEST||$(elements[i]).attr("href")==LEAVEREQUESTw){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		$("#punch").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==PUNCH||$(elements[i]).attr("href")==PUNCHw){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					
+					break;
+				}
+			}
+		});
+		$("#wechat").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==WECHAT){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		$("#reserve").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==RESERVE||$(elements[i]).attr("href")==RESERVEw){/* ||$(elements[i]).attr("href")==RESERVEw */
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		
+		/*异常考勤*/
+		$("#personalDayStatModel").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==ABNORMAL||$(elements[i]).attr("href")==ABNORMALw){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		
+		/*待办事项*/
+		$("#arvhiceToDoModel").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				//跳转到档案管理
+				if($(elements[i]).attr("href")==MATTER){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		
+		/*待审批*/
+		$("#toDoTaskModel").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==EXAMINATIONLY||$(elements[i]).attr("href")==EXAMINATIONLYw){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		
+		/*我的申请*/
+		$("#applyProModel").click(function(){
+			var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+			for(var i=0;i< elements.length;i++){
+				if($(elements[i]).attr("href")==MYAPPLY||$(elements[i]).attr("href")==MYAPPLYw){
+					elements[i].click();
+					if($(window).width()<768){
+						nav.addClass("mini-navbar");
+					}
+					break;
+				}
+			}
+		});
+		
+		//用户登录后直接从session中获取头像
+
+		
+	});
+    
+	/*公告展示跳转列表*/
+	$("#noticeModel").click(function(){
+		var elements = $(parent.document.getElementsByClassName("J_menuItem"));
+		for(var i=0;i< elements.length;i++){
+			//跳转到公告列表
+			if($(elements[i]).attr("href")==NOTICE){
+				elements[i].click();
+				if($(window).width()<768){
+					nav.addClass("mini-navbar");
+				}
+				break;
+			}
+		}
+	});
+
+	$.ajax({
+		type: "post",
+        url: "/hrms/rest/index/index_welcome",
+				dataType : "json",
+				success : function(data) {
+					var personalDayContent = data.personalStat;
+					var archiveToDo = data.archiveToDo;
+					var toDoTask = data.toDoTask;
+					var applyPro = data.applyPro;
+					//公告部分
+					var noticeMap = data.noticeMap;
+					if (personalDayContent.success) {
+						if(personalDayContent.content.length>0){
+							$("#personalDayStatModel").show();
+							var html = "";
+							$("#personalDayStat").html(
+									"(" + personalDayContent.total + ")");
+							$.each(personalDayContent.content,function(i, obj) {
+										if (i < 10) {
+											var absenceDesc =  "";
+											if(!obj.punchFlag){
+												absenceDesc =  "打卡异常";
+											}
+											if(obj.absenceType =="4" || obj.absenceType=="6"){
+												if(absenceDesc == ""){
+													absenceDesc +=  "缺勤异常";
+												}else{
+													absenceDesc +=  " & 缺勤异常";
+												}
+											}
+											if(obj.absenceType =="1" || obj.absenceType=="2" || obj.absenceType =="7"){
+												if(absenceDesc == ""){
+													if(obj.absenceType =="1"){
+														absenceDesc +=  "迟到";
+													}else if(obj.absenceType =="2"){
+														absenceDesc +=  "早退";
+													}else if(obj.absenceType =="7"){
+														absenceDesc +=  "迟到早退";
+													}
+												}else{
+													if(obj.absenceType =="1"){
+														absenceDesc +=  " & 迟到";
+													}else if(obj.absenceType =="2"){
+														absenceDesc +=  " & 早退";
+													}else if(obj.absenceType =="7"){
+														absenceDesc +=  " & 迟到早退";
+													}
+												}
+											}
+												html += '<tr><td><span>'
+													 + obj.punchDateStr
+													 + '</span></td><td class="table_right"><span style="color: red;">'+absenceDesc+'</span></td></tr>';
+										} else {
+										return false;
+									}
+							});
+							$("#personalDayStatTable").append(html);						
+						}
+					} else {
+						$("#personalDayStatModel").hide();
+					}
+					if (archiveToDo.success) {
+						var html = "";
+						$("#arvhiceToDo").html("(" + archiveToDo.total + ")");
+						$.each(archiveToDo.content, function(i, obj) {
+							// if (i < 10) {
+								html += '<tr><td><span>' + obj
+										+ '</span></td></tr>';
+							// } else {
+							// 	return false;
+							// }
+						});
+						$("#arvhiceToDoTable").append(html);
+						$("#arvhiceToDoModel").show();
+					} else {
+						$("#arvhiceToDoModel").hide();
+					}
+					if (toDoTask.success) {
+						$("#toDoTaskModel").show();
+						var html = "";
+						$("#toDoTask").html("(" + toDoTask.total + ")");
+						$.each(toDoTask.content,function(i, obj) {
+								html += '<tr><td><span>'
+										+ obj.proccessName
+										+ '</span></td><td style="text-align: center;"><span>'
+										+ obj.empCode
+										+ '</span></td><td style="text-align: right;"><span>'
+										+ obj.applyUserName
+										+ '</span></td></tr>';
+						});
+						$("#toDoTaskTable").append(html);
+					} else {
+						$("#toDoTaskModel").hide();
+					}
+					if (applyPro.success) {
+						$("#applyProModel").show();
+						var html = "";
+						$("#applyPro").html("(" + applyPro.total + ")");
+						$.each(applyPro.content,function(i, obj) {
+						           html += '<tr><td><span>'
+										+ obj.proccessName
+										+ '</span></td><td style="text-align: center;"><span>'
+										+ obj.businessKey
+										+ '</span></td><td style="text-align: right;"><span>'
+										+ obj.approverName
+										+ '</span></td></tr>';
+						});
+						$("#applyProTable").append(html);
+					} else {
+						$("#applyProModel").hide();
+					}
+					
+					//************公告展示***********
+					if (noticeMap.success) {
+						$("#noticeModel").show();
+						var html = "";
+						$("#bulletinTotal").html("(" + noticeMap.total + ")");
+						$.each(noticeMap.content,function(index, notice) {
+							if(index<10){
+								//每个公告的id
+					           html +='<tr><td><span>'
+									+ notice.writer
+									+ '</span></td><td style="text-align: left;"><span>'
+									+ notice.title
+									+ '</span></td><td style="text-align: right;"><span>'
+									+ notice.modificationTime
+									+ '</span></td></tr>';
+							}else{
+								return false;
+							}
+						});
+						$("#noticeTable").append(html);
+					} else {
+						$("#noticeModel").hide();
+					}
+					//***********展示结束*************
+				}
+			});
+			
+</script>
+
+</body></html>

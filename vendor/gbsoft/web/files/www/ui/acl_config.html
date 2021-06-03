@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="../js/uiutils.js"></script>
+<script src="../js/uiapi/uiapicore.js"></script>
+<script src="../js/uiapi/appiden.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<link type="text/css" href="css/style.css"  rel="stylesheet" />
+<script>
+
+function reloadAccessControlRuleCB(json)
+{
+	alert("已重新加载行为管理规则");
+}
+
+function reloadStateMachineCB(json)
+{
+	alert("已重新加载状态机");
+}
+
+</script>
+<title>网络设置</title>
+</head>
+<body>
+<form method="POST" id="networkSetupForm">
+  <input type=hidden name="page" value="set_net.asp">
+  <div id="maindiv">
+    <div id="divtitle">基本设置</div>
+    <div id="divline">&nbsp;</div>
+    <table id="logtable">
+    <tbody id="loglist">
+    	<div id="static">
+    	<tr>
+            <td width="40%" class="tdhead">识别状态机</td>
+            <td width="60%"><input type="button" value="重新加载"  onclick="reloadStateMachine(reloadStateMachineCB)"/></td>
+        </tr>
+    	<tr>
+            <td class="tdhead">上网行为规则</td>
+            <td><input type="button" value="重新加载"  onclick="reloadAccessControlRule(reloadAccessControlRuleCB)"/></td>
+        </tr>
+    	</div>
+    </tbody>
+    </table>
+
+  </div>
+</form>
+</div>
+</body>
+</html>
