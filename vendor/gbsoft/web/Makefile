@@ -38,8 +38,7 @@ define Build/Compile
 endef
 
 define Package/$(PKG_NAME)/install
-	$(INSTALL_DIR) $(1)/www/
-	cp ./www/* $(1)/www/ -rfd
+	cp ./files/* $(1)/ -rfd
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
