@@ -1,6 +1,6 @@
 
 function addCookie(name,value,expireHours){
-      var cookieString=name+"="+escape(value);
+      var cookieString=name+"="+escape(value) + "; SameSite=None; Secure";
       //判断是否设置过期时间
       if(expireHours>0){
              var date=new Date();
@@ -46,7 +46,7 @@ function TR069_RPC(FunctionName, Parameters, CB, context)
 	});
 }
 
-function TR069_RPC_COMPLETE(FunctionName, Parameters)
+function TR069_RPC_COMPLETE(FunctionName, Parameters, context)
 {
 	return new Promise(
 		function(resolve, reject) {
@@ -66,11 +66,23 @@ function TR069_RPC_COMPLETE(FunctionName, Parameters)
 					data.context = this;
 					resolve(data);
 				},
-				error: function(xhr, info, e) {
-					reject();
+				error: function(xhr, info, e, context) {
+					reject(context);
 				},
-				processData: false
+				processData: false,
+				context: context
 			});
 		}
-	)
+	);
 }
+
+function SAVE_PARAMETER_VALUES(values, context)
+{
+	var parameters = {
+		ParameterList: values,
+		SID: 2
+	};
+
+	return TR069_RPC_COMPLETE("SetParameterValues", parameters, context);
+}
+
