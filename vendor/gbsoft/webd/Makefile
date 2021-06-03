@@ -45,8 +45,8 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) ./files/* $(1)/
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/webd $(1)/usr/bin/webd
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/webd $(1)/usr/sbin/webd
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
