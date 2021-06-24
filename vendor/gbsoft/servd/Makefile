@@ -15,8 +15,10 @@ PKG_SOURCE_URL=git@github.com:gmzhuo/servd.git
 PKG_SOURCE_DATE:=2021-01-06
 PKG_SOURCE_VERSION:=2b14bb2d69e7e3901f7afc1af7ba027c02eedcf7
 
+PKG_USE_NINJA=0
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
+PKG_USE_NINJA=0
 
 TARGET_CXXFLAGS += -I$(STAGING_DIR)/usr/include/libnl-tiny/ -std=c++17 -Wall -fpermissive
 EXTRA_CFLAGS += -Wall
