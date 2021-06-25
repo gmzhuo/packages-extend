@@ -12,8 +12,8 @@ PKG_VERSION:=1.0.10.2
 PKG_RELEASE:=1
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=git@github.com:gmzhuo/servd.git
-PKG_SOURCE_DATE:=2021-06-24
-PKG_SOURCE_VERSION:=714e996b3058a9dc631389664b47167ad48b061b
+PKG_SOURCE_DATE:=2021-06-25
+PKG_SOURCE_VERSION:=HEAD
 
 PKG_USE_NINJA=0
 include $(INCLUDE_DIR)/package.mk
@@ -43,6 +43,7 @@ endef
 
 define Package/$(PKG_NAME)/install
 	$(CP) ./files/* $(1)/
+	$(CP) $(PKG_BUILD_DIR)/files/* $(1)/
 	mkdir -p $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/servdd $(1)/usr/sbin/servd
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dmdd $(1)/usr/sbin/dmd
