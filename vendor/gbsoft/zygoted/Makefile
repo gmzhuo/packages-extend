@@ -7,7 +7,7 @@ PKG_RELEASE:=2
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=git@github.com:gmzhuo/zygoted.git
 PKG_SOURCE_DATE:=2021-06-02
-PKG_SOURCE_VERSION:=1174c5f813c783b60f538bb00b25c2e0d6d6bbf4
+PKG_SOURCE_VERSION:=HEAD
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 

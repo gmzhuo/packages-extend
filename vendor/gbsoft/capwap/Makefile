@@ -7,7 +7,7 @@ PKG_RELEASE:=2
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=git@github.com:gmzhuo/capwap.git
 PKG_SOURCE_DATE:=2021-06-24
-PKG_SOURCE_VERSION:=45ad8785c27ae93f9a70b84d10c0b85ad9f8bba3
+PKG_SOURCE_VERSION:=HEAD
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
