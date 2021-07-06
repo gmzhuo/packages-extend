@@ -19,6 +19,7 @@ PKG_BUILD_DEPENDS:=libcore
 CMAKE_SOURCE_SUBDIR:=/src
 CMAKE_OPTIONS:= "-DCMAKE_INSTALL_INCLUDEDIR=$(PKG_INSTALL_DIR)/usr/include/"
 
+PKG_USE_NINJA=0
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 

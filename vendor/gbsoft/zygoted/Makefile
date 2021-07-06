@@ -8,8 +8,11 @@ PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=git@github.com:gmzhuo/zygoted.git
 PKG_SOURCE_DATE:=2021-06-02
 PKG_SOURCE_VERSION:=HEAD
+
+PKG_USE_NINJA=0
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
+PKG_USE_NINJA=0
 
 TARGET_CXXFLAGS += -I$(STAGING_DIR)/usr/include/libnl-tiny/ -std=c++17 -Wall -fpermissive
 EXTRA_CFLAGS += -Wall
