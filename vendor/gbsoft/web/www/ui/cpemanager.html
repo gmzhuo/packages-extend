@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<!Debug scp gmzhuo@192.168.2.192:/opt/work/developer/openwrt-trunk/feeds/packages_extend/vendor/gbsoft/web/www/ui/cpemanager.html ./cpemanager.html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
 		<title>CPEManager</title>
-		<script src="/luci-static/argon/js/jquery.min.js?v=2.2.1"></script>
-        <script src="/luci-static/argon/js/jquery.i18n.properties.min.js?v=1.2.7"></script>
+		<script src="/js/jquery.min.js?v=2.2.1"></script>
+        <script src="/js/jquery.i18n.properties.min.js?v=1.2.7"></script>
         <script type="text/javascript" src="/js/tr069.js"></script>
         <script type="text/javascript" src="/js/login.js"></script>
         <script type="text/javascript" src="/js/vue.js"></script>
@@ -103,12 +104,25 @@
 									thisApp.attributes = attributes.attrs;
 									var currentFields = [];
 
-									for(var key in parameterList) {
-										var item = parameterList[key];
+									if(thisApp.attributes.multiInst == "yes" && typeof(parameterList["__Instance"]) != "number"){
+										for(var key in parameterList) {
+											var item = parameterList[key];
+											var attribute = attributes[key];
+											if(typeof(item) == "object") {
+												thisApp.currentNodes.push({key:key, Alias:(typeof(item.Alias) == "string" && item.Alias.length > 0)?item.Alias:""});
+											}
+										}
+										return;
+									}
+									for(var key in attributes) {
+										if(key == "attrs") {
+											continue;
+										}
+										var item = parameterList[key]||"";
 										var attribute = attributes[key];
-										if(typeof(item) == "object") {
+										if(attribute.type == "object") {
 											thisApp.currentNodes.push({key:key, Alias:(typeof(item.Alias) == "string" && item.Alias.length > 0)?item.Alias:""});
-										} else if(typeof(item) == "string") {
+										} else {
 											var fieldInfo = {};
 											fieldInfo.Name = key;
 											fieldInfo.Value = item;
@@ -140,6 +154,9 @@
 							
 																	}
 																}
+															}
+															if(thisField.Value.length > 0) {
+																optionInfo.push({Value:thisField.Value, Content:thisField.Value})
 															}
 															enumResults[0].context.Attribute.optionInfo = optionInfo;
 															thisApp.currentFields.push(enumResults[0].context);
@@ -202,15 +219,15 @@
 						},
 						itemType:function(attribute) {
 							if(!attribute)
-								return "undefined"
+								return "undefined";
 							if(attribute.enum)
-								return "enum"
-							var flagValue = parseInt(attribute.Flag, 16);
-							if(flagValue & 0x10)
-								return "boolean";
-							if(flagValue & 0x4)
-								return "string";
-							return "undefined"
+								return "enum";
+							return attribute.type;
+						},
+						isWritable:function(attribute) {
+							if(attribute.write == "false")
+								return false;
+							return true;
 						},
 						itemOptions:function(attribute) {
 							var options = attribute.enum.split(',');
@@ -304,12 +321,14 @@
 					<div class="edit-line" v-for="(row, index) in currentFields">
 						<span class="field-id" >{{row.Name}}:</span>
 						<span class="field-value" >
-							<input :id="row.Name" type="checkbox" value="true" v-model="row.Value" v-if='itemType(row.Attribute) === "boolean"'/>
+							<span class="field-value" v-if='!isWritable(row.Attribute)'>{{row.Value}}</span>
+							<input :id="row.Name" type="checkbox" value="true" v-model="row.Value" v-else-if='itemType(row.Attribute) === "boolean"'/>
 							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "string"'/>
 							<select :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "enum"'>
 								<option v-for="(option, ok) in row.Attribute.optionInfo" :value="option.Value">{{option.Content}}</option>
 							</select>
-							<span class="field-value" v-else>{{row.Value}}</span>
+							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "unsignedInt"'/>
+							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "int"'/>
 						</span>
 					</div>
 				</div>
