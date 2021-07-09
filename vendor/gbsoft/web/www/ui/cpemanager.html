@@ -10,7 +10,7 @@
         <script type="text/javascript" src="/js/login.js"></script>
         <script type="text/javascript" src="/js/vue.js"></script>
 		<script type="text/javascript" src="/js/loadinit.js"></script>
-		<script type="text/javascript" src="js/cpemanager.js?v=1.1"></script>
+		<script type="text/javascript" src="js/cpemanager.js?v=1.2"></script>
 		<link rel="stylesheet" type="text/css" href="css/cpemanager.css"/>
 	</head>
 
@@ -32,9 +32,11 @@
 							<span class="field-value" v-if='!isWritable(row.Attribute)'>{{row.Value}}</span>
 							<input :id="row.Name" type="checkbox" value="true" v-model="row.Value" v-else-if='itemType(row.Attribute) === "boolean"'/>
 							<input :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "string"'/>
-							<span v-else-if='itemType(row.Attribute) === "checkbox"' v-for="(option, ok) in row.Attribute.optionInfo">
-								<input type="checkbox" :value="option.Value" v-model="row.Value"/>
-								<label :for="option.Value">{{option.Value}}</label>
+							<span v-else-if='itemType(row.Attribute) === "checkbox"' >
+								<span v-for="(option, ok) in row.Attribute.optionInfo">
+									<input type="checkbox" :value="option.Value" v-model="row.Value"/>
+									<label :for="option.Value">{{option.Value}}</label>
+								</span>
 							</span>
 							<select :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "enum"'>
 								<option v-for="(option, ok) in row.Attribute.optionInfo" :value="option.Value">{{option.Content}}</option>

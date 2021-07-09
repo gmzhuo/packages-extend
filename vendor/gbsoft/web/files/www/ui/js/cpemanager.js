@@ -71,9 +71,9 @@ function handleEnumFieldWithInstanceValue(thisApp, fieldInfo)
 				level += 1;
 			}
 
-			var length = thisApp.currentAccessPath.length - level;
+			var length = currentAccessPath.length - level;
 			for(k = 0; k < length; ++k) {
-				pathname = pathname + thisApp.currentAccessPath[k].key + ".";
+				pathname = pathname + currentAccessPath[k].key + ".";
 			}
 			pathname += pathsegs[pathsegs.length - 1];
 		}
@@ -84,13 +84,8 @@ function handleEnumFieldWithInstanceValue(thisApp, fieldInfo)
 			var values = result.ParameterList;
 			var optionInfo = [];
 			for (var val in values) {
-				var subvalues = values[val].Value.split(',');
-				for(k = 0; k < subvalues.length; ++k) {
-					if(subvalues[k].length > 0) {
-						optionInfo.push({Value:subvalues[k],
-							Content:subvalues[k]});
-					}
-				}
+				optionInfo.push({Value:values[val].Value,
+							Content:values[val]});
 			}
 			result.context.Attribute.optionInfo = optionInfo;
 			addField(thisApp, fieldInfo);
@@ -176,7 +171,7 @@ function contentUpdate()
 					fieldInfo.Name = key;
 					fieldInfo.Value = item;
 					fieldInfo.Attribute = attribute;
-					if(fieldInfo.Attribute.enum) {
+					if(thisApp.itemType(fieldInfo.Attribute) === "enum") {
 						handleEnumField(thisApp, fieldInfo);
 					} else {
 						addField(thisApp, fieldInfo);
