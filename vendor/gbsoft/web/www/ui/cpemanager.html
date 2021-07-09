@@ -41,8 +41,8 @@
 							<select :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "enum"'>
 								<option v-for="(option, ok) in row.Attribute.optionInfo" :value="option.Value">{{option.Content}}</option>
 							</select>
-							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "unsignedInt"'/>
-							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "int"'/>
+							<input :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "unsignedInt"'/>
+							<input :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "int"'/>
 						</span>
 					</div>
 				</div>

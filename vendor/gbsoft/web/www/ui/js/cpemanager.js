@@ -212,7 +212,7 @@ function submitChange()
 
 	TR069_RPC_COMPLETE("SetParameterValues", parameters, this).then(
 		function(value, context) {
-			value = value;
+			value.context.pathClick(value.context.currentAccessPath.length);
 		}
 	);
 }
