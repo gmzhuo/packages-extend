@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!Debug scp gmzhuo@192.168.2.192:/opt/work/developer/openwrt-trunk/feeds/packages_extend/vendor/gbsoft/web/www/ui/cpemanager.html ./cpemanager.html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
@@ -9,307 +10,37 @@
         <script type="text/javascript" src="/js/login.js"></script>
         <script type="text/javascript" src="/js/vue.js"></script>
 		<script type="text/javascript" src="/js/loadinit.js"></script>
-		<style type="text/css">
-			button {
-				border: 2px solid rgb(0, 217, 0); border-radius: 10px; margin: 20px; padding: 3px; background-color: aqua; color: rgb(255, 0, 255);
-			}
-			.button-placeholder {
-				width:60%;display:inline-block;
-			}
-			.navigator {
-				height:28px;
-			}
-			.navigator, .itemsview, .editview {
-				border:3px solid #00d900;border-radius:10px;margin-bottom:3px;margin:10px;padding:3px
-			}
-			.path-node {
-				cursor:pointer;
-			}
-			.field-id, .field-value {
-				width:280px;display:inline-block;
-			}
-			.item-line {
-				width:280px;display:inline-block;cursor:pointer;
-			}
-			.edit-line, .item-line {
-				margin:8px;
-			}
-			.path-node-op {
-				float:right;
-				margin: 0px;
-				margin-right: 6px;
-			}
-			.form-action {
-				height: 67.5px
-			}
-			.form-action-buttons {
-				float:right;
-				margin: 0px;
-				margin-right: 6px;
-			}
-		</style>
-		<script>
-			var modalData;
-			var dataProvider ={
-				devices:[],
-				currentDevice:{},
-				currentAccessPath:[],
-				currentNodes:[],
-				currentFields:[],
-				attributes:{},
-			};
-
-			
-
-			document.addEventListener('frame-loaded', function (ev) {
-				var myDate = new Date();
-				login("admin", "admin", myDate.getTime()/1000).then(function(data){});
-				modalApp = new Vue({
-					el: '#cpeManager',
-					data: dataProvider,
-					created: function() {
-						this.currentAccessPath.push({key:"Device"});
-						this.contentUpdate();
-					},
-					methods: {
-						getCurrentPathname: function() {
-							var pathname = "";
-							for(i = 0; i < this.currentAccessPath.length; ++i) {
-								pathname = pathname + this.currentAccessPath[i].key + ".";
-							}
-							return pathname;
-						},
-						contentUpdate:function() {
-							var thisApp = this;
-							//first we form object path
-							var pathname = this.getCurrentPathname();
-
-							//then we dump object path
-							var object = TR069_RPC_COMPLETE("DumpObject", {ObjectName:pathname});
-							var objectAttributes = TR069_RPC_COMPLETE("DumpObjectAttributes", {ObjectName:pathname});
-							this.currentNodes.splice(0);
-							this.currentFields.splice(0);
-							Promise.all([object, objectAttributes]).then(
-								function(result) {
-									//update this.currentNodes
-									//update this.currentFields
-									var object = result[0];
-									var attributes = result[1];
-									var parameterList = object.ParameterList[pathname];
-									if(attributes && attributes.ParameterList && attributes.ParameterList[pathname])
-										attributes = attributes.ParameterList[pathname];
-									else
-										attributes = {};
-									thisApp.attributes = attributes.attrs;
-									var currentFields = [];
-
-									for(var key in parameterList) {
-										var item = parameterList[key];
-										var attribute = attributes[key];
-										if(typeof(item) == "object") {
-											thisApp.currentNodes.push({key:key, Alias:(typeof(item.Alias) == "string" && item.Alias.length > 0)?item.Alias:""});
-										} else if(typeof(item) == "string") {
-											var fieldInfo = {};
-											fieldInfo.Name = key;
-											fieldInfo.Value = item;
-											fieldInfo.Attribute = attribute;
-											if(thisApp.itemType(fieldInfo.Attribute) === "enum") {
-												if(fieldInfo.Attribute.enumType === "instance") {
-													var options = fieldInfo.Attribute.enum.split(',');
-													var enumPromises = [];
-													var thisField = fieldInfo;
-													for(i = 0; i < options.length; i++) {
-														var enumPromise = TR069_RPC_COMPLETE("DumpObject", {ObjectName:options[i]}, fieldInfo);
-														enumPromises.push(enumPromise);
-													}
-													Promise.all(enumPromises).then(
-														function(enumResults) {
-															var optionInfo = [];
-															for(i = 0; i < enumResults.length; ++i) {
-																var objectSets = enumResults[i].ParameterList;
-																for(key1 in objectSets) {
-																	if(key1 == "context")
-																		continue;
-																	var objects = objectSets[key1]
-																	for(key2 in objects) {
-																		var object = objects[key2];
-																		var pathname = key1 + key2 + ".";
-																		optionInfo.push({Value:pathname,
-																			Content:(typeof(object.Alias) == "string" && object.Alias.length > 0) ?
-																				object.Alias + "("+ pathname + ")": pathname})
-							
-																	}
-																}
-															}
-															enumResults[0].context.Attribute.optionInfo = optionInfo;
-															thisApp.currentFields.push(enumResults[0].context);
-														}
-													);
-												} else {
-													var options = fieldInfo.Attribute.enum.split(',');
-													var optionInfo = [];
-													if(options.length > 1) {
-														for(index in options) {
-															var option = options[index];
-															if(option && option.length)
-																optionInfo.push({Value:option, Content:option})
-														}
-													}
-													fieldInfo.Attribute.optionInfo = optionInfo;
-													thisApp.currentFields.push(fieldInfo);
-												}
-											} else {
-												thisApp.currentFields.push(fieldInfo);
-											}
-										}
-									}
-								}
-							);
-						},
-						submitChange:function() {
-							var pathname = this.getCurrentPathname();
-							var values = {}
-
-							for(key in this.currentFields) {
-								var row = this.currentFields[key];
-								var keypath = pathname + key;
-								values[keypath] = row.Value;
-								var parameters = {
-									ParameterList: values,
-									SID: 2
-								};
-								TR069_RPC_COMPLETE("SetParameterValues", parameters, this).then(
-									function(value, context) {
-										value = value;
-									}
-								);
-							}
-						},
-						abortChange:function() {
-							this.contentUpdate();
-						},
-						pathClick:function(index) {
-							//splice the currentAccessPath from click position to tail
-							this.currentAccessPath.splice(index + 1, 65535);
-							//update the content
-							this.contentUpdate();
-						},
-						itemClick:function(index) {
-							//update the accessPath to the item clicked
-							this.currentAccessPath.push(this.currentNodes[index]);
-							//update the content
-							this.contentUpdate();
-						},
-						itemType:function(attribute) {
-							if(!attribute)
-								return "undefined"
-							if(attribute.enum)
-								return "enum"
-							var flagValue = parseInt(attribute.Flag, 16);
-							if(flagValue & 0x10)
-								return "boolean";
-							if(flagValue & 0x4)
-								return "string";
-							return "undefined"
-						},
-						itemOptions:function(attribute) {
-							var options = attribute.enum.split(',');
-							var optionInfo = [];
-							if(options.length > 1) {
-								for(index in options) {
-									var option = options[index];
-									if(option && option.length)
-										optionInfo.push({Value:option, Content:option})
-								}
-								return optionInfo;
-							}
-							return [{Value:"aa", Content:"aac"}, {Value:"bb", Content:"bbc"}];
-						},
-						isDeletableInstance:function() {
-							if(this.attributes.multiInst != "yes")
-								return false;
-							var length = this.currentAccessPath.length;
-							var lastNode = this.currentAccessPath[length - 1];
-							var code = lastNode.key.charAt(0);
-							if(code >= '0' && code <='9')
-								return true;
-							return false;
-						},
-						isMultiInstance:function() {
-							if(this.attributes.multiInst != "yes")
-								return false;
-							var length = this.currentAccessPath.length;
-							var lastNode = this.currentAccessPath[length - 1];
-							var code = lastNode.key.charAt(0);
-							if(code >= '0' && code <='9')
-								return false;
-							return true;
-						},
-						addObject: function() {
-							var pathname = this.getCurrentPathname();
-							TR069_RPC_COMPLETE("AddObject", {ObjectName:pathname, SID:2}, this).then(
-									function(value, context) {
-										this.pathClick(this.currentAccessPath.length);
-									}
-								);
-						},
-						deleteObject: function() {
-							var pathname = this.getCurrentPathname();
-							TR069_RPC_COMPLETE("DeleteObject", {ObjectName:pathname, SID:2}, this).then(
-									function(value, context) {
-										this.pathClick(this.currentAccessPath.length - 1);
-									}
-								);
-						},
-						itemInfo: function(row) {
-							var info = row.key;
-							if(typeof(row.Alias) == "string" && row.Alias.length > 0)
-								info = row.Alias + "(:" + info + ")";
-							return info;
-						},
-						itemNode: function(row) {
-							var info = row.key;
-							if(typeof(row.Alias) == "string" && row.Alias.length > 0)
-								info = "[" + row.Alias + ":" + info + "]";
-							return info;
-						}
-					}
-				});
-				loginStatus(function(data){
-					if(!data.result) {
-						var myDate = new Date();
-						login("admin", "admin", myDate.getTime()/1000).then(
-							function(data) {
-							
-							}
-						);
-					}
-				});
-			});
-		</script>
+		<script type="text/javascript" src="js/cpemanager.js?v=1.1"></script>
+		<link rel="stylesheet" type="text/css" href="css/cpemanager.css"/>
 	</head>
 
 	<body>
 		<div class="main" id="cpeManager">
 			<div class="navigator">
 				<span class="path-node" v-for="(row, index) in currentAccessPath" @click="pathClick(index)">{{itemNode(row)}}.</span>
-				<button class="path-node-op" type="button" @click="addObject()" v-if="isDeletableInstance()">删除对象</button>
-				<button class="path-node-op" type="button" @click="deleteObject()" v-if="isMultiInstance()">添加对象</button>
+				<button class="path-node-op" type="button" @click="deleteObject()" data-lang="delete_object" v-if="isDeletableInstance()">Delete Object</button>
+				<button class="path-node-op" type="button" @click="addObject()" data-lang="add_object" v-if="isMultiInstance()">Add Object</button>
 			</div>
 			<div class="itemsview" v-if='currentNodes.length > 0' >
-				<span class="item-line" v-for="(row, index) in currentNodes" @click="itemClick(index)">{{itemInfo(row)}}</span>
+				<span class="item-line" :data-lang="itemInfo(row)" v-for="(row, index) in currentNodes" @click="itemClick(index)">{{itemInfo(row)}}</span>
 			</div>
 			<div class="editview" v-if='currentFields.length > 0' >
 				<div>
 					<div class="edit-line" v-for="(row, index) in currentFields">
-						<span class="field-id" >{{row.Name}}:</span>
+						<span :data-lang="row.Name" class="field-id" >{{row.Name}}</span>
 						<span class="field-value" >
-							<input :id="row.Name" type="checkbox" value="true" v-model="row.Value" v-if='itemType(row.Attribute) === "boolean"'/>
-							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "string"'/>
+							<span class="field-value" v-if='!isWritable(row.Attribute)'>{{row.Value}}</span>
+							<input :id="row.Name" type="checkbox" value="true" v-model="row.Value" v-else-if='itemType(row.Attribute) === "boolean"'/>
+							<input :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "string"'/>
+							<span v-else-if='itemType(row.Attribute) === "checkbox"' v-for="(option, ok) in row.Attribute.optionInfo">
+								<input type="checkbox" :value="option.Value" v-model="row.Value"/>
+								<label :for="option.Value">{{option.Value}}</label>
+							</span>
 							<select :id="row.Name" type="text" v-model="row.Value" v-else-if='itemType(row.Attribute) === "enum"'>
 								<option v-for="(option, ok) in row.Attribute.optionInfo" :value="option.Value">{{option.Content}}</option>
 							</select>
-							<span class="field-value" v-else>{{row.Value}}</span>
+							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "unsignedInt"'/>
+							<input :id="row.Name" type="text" :value="row.Value" v-else-if='itemType(row.Attribute) === "int"'/>
 						</span>
 					</div>
 				</div>
