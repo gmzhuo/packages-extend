@@ -32,7 +32,8 @@ define Package/$(PKG_NAME)
   TITLE:=servd
   MAINTAINER:=soft
   DEPENDS:= +libubus +libubox +libstdcpp +libblobmsg-json \
-  +libubus +libstdcpp +libexpat +libnl-tiny +libev +zlib +libcore
+  +libubus +libstdcpp +libexpat +libnl-tiny +libev +zlib +libcore \
+  +libunwind
   MENU:=1
 endef
 
